@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});require("./index-ByRfqzMr.cjs");require("./dom-dataset-Byuf1YmW.cjs");const e=require("./Excalidraw-GUVW-IqC.cjs");exports.Excalidraw=e.Excalidraw;

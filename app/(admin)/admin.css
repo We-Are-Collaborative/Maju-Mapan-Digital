@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Admin Specific Overrides if needed */
+body {
+    font-family: 'Inter', sans-serif !important;
+}

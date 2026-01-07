@@ -1,0 +1,540 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
+
+/* @source '../views'; */
+/* @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php'; */
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+}
+
+/* 
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+}
+*/
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+* {
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+/*
+  ---break---
+*/
+
+@theme inline {
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-brand-50: #f0fdf4;
+    --color-brand-100: #dcfce7;
+    --color-brand-200: #bbf7d0;
+    --color-brand-300: #86efac;
+    --color-brand-400: #2fddad;
+    --color-brand-500: #2fddad;
+    --color-brand-600: #16a34a;
+    --color-brand-700: #15803d;
+    --color-brand-800: #166534;
+    --color-brand-900: #14532d;
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* CKEditor List Padding Styles */
+
+/* Add padding to the main editor content area */
+.ck-editor__editable {
+    padding: 20px !important;
+}
+
+/* Style for unordered lists (bullet points) */
+.ck-content ul {
+    padding-left: 40px !important;
+    margin-left: 0 !important;
+    list-style-type: disc !important;
+}
+
+/* Style for ordered lists (numbers) */
+.ck-content ol {
+    padding-left: 40px !important;
+    margin-left: 0 !important;
+    list-style-type: decimal !important;
+}
+
+/* Style for list items */
+.ck-content ul li,
+.ck-content ol li {
+    margin-left: 0 !important;
+    padding-left: 8px !important;
+}
+
+/* Nested list styles */
+.ck-content ul ul {
+    list-style-type: circle !important;
+    padding-left: 30px !important;
+}
+
+.ck-content ul ul ul {
+    list-style-type: square !important;
+}
+
+.ck-content ol ol {
+    list-style-type: lower-alpha !important;
+    padding-left: 30px !important;
+}
+
+.ck-content ol ol ol {
+    list-style-type: lower-roman !important;
+}
+
+/* Todo list specific styles */
+.ck-content .todo-list {
+    padding-left: 40px !important;
+}
+
+.ck-content .todo-list__label {
+    margin-left: 0 !important;
+}
+
+/* Additional spacing for better readability */
+.ck-content ul li,
+.ck-content ol li,
+.ck-content .todo-list li {
+    margin-bottom: 5px !important;
+}
+
+/* Ensure proper indentation for nested lists */
+.ck-content ul li ul,
+.ck-content ol li ol,
+.ck-content ul li ol,
+.ck-content ol li ul {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+/* PDF Iframe Styles */
+.pdf-iframe {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background-color: #1f2937;
+    margin: 1rem 0;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: block;
+    position: relative;
+}
+
+/* Ensure iframe content is visible */
+.pdf-iframe iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Responsive PDF iframe */
+@media (max-width: 768px) {
+    .pdf-iframe {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pdf-iframe {
+        height: 300px;
+    }
+}
+
+/* Fallback link styling */
+.fallback-link {
+    color: #2fddad;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.fallback-link:hover {
+    color: #16a34a;
+    text-decoration: none;
+}
+
+/* Custom animations for About Us page */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+}
+
+/* Article Content Styles - CKEditor Output */
+.article-content {
+    @apply text-gray-300;
+}
+
+.article-content h1 {
+    @apply mt-8 mb-6 text-4xl font-bold text-white;
+}
+
+.article-content h2 {
+    @apply mt-7 mb-5 text-3xl font-bold text-white;
+}
+
+.article-content h3 {
+    @apply mt-6 mb-4 text-2xl font-bold text-white;
+}
+
+.article-content h4 {
+    @apply mt-5 mb-3 text-xl font-semibold text-white;
+}
+
+.article-content h5 {
+    @apply mt-4 mb-3 text-lg font-semibold text-white;
+}
+
+.article-content h6 {
+    @apply mt-3 mb-2 text-base font-semibold text-white;
+}
+
+.article-content p {
+    @apply mb-4 leading-relaxed text-gray-300;
+}
+
+.article-content a {
+    @apply text-brand-400 underline transition-colors hover:text-brand-500;
+}
+
+.article-content ul {
+    @apply mb-4 list-disc space-y-2 pl-8;
+}
+
+.article-content ol {
+    @apply mb-4 list-decimal space-y-2 pl-8;
+}
+
+.article-content li {
+    @apply leading-relaxed text-gray-300;
+}
+
+.article-content ul ul,
+.article-content ol ol,
+.article-content ul ol,
+.article-content ol ul {
+    @apply mt-2 mb-2;
+}
+
+.article-content blockquote {
+    @apply my-6 rounded-r border-l-4 border-brand-500 bg-gray-800/50 py-2 pl-4 text-gray-400 italic;
+}
+
+.article-content code {
+    @apply rounded bg-gray-800 px-2 py-1 font-mono text-sm text-brand-400;
+}
+
+.article-content pre {
+    @apply mb-4 overflow-x-auto rounded-lg border border-gray-800 bg-gray-900 p-4 text-gray-300;
+}
+
+.article-content pre code {
+    @apply bg-transparent p-0 text-sm;
+}
+
+.article-content table {
+    @apply mb-6 w-full border-collapse text-sm;
+}
+
+.article-content thead {
+    @apply bg-gray-800;
+}
+
+.article-content th {
+    @apply border border-gray-700 px-4 py-3 text-left font-semibold text-white;
+}
+
+.article-content td {
+    @apply border border-gray-700 px-4 py-3 text-gray-300;
+}
+
+.article-content tbody tr:hover {
+    @apply bg-gray-800/50;
+}
+
+.article-content figure {
+    @apply my-6;
+}
+
+.article-content figcaption {
+    @apply mt-2 text-center text-sm text-gray-400 italic;
+}
+
+.article-content img {
+    @apply h-auto max-w-full rounded-lg;
+}
+
+.article-content hr {
+    @apply my-8 border-gray-700;
+}
+
+.article-content strong,
+.article-content b {
+    @apply font-bold text-white;
+}
+
+.article-content em,
+.article-content i {
+    @apply italic;
+}
+
+.article-content iframe {
+    @apply my-6 w-full rounded-lg;
+}
+
+.article-content .pdf-iframe {
+    @apply min-h-[600px];
+}
+
+/* Media embeds */
+.article-content .media {
+    @apply my-6;
+}
+
+/* Todo list styles for article content */
+.article-content .todo-list {
+    @apply list-none pl-0;
+}
+
+.article-content .todo-list__label {
+    @apply flex items-start gap-2;
+}
+
+.article-content .todo-list__label input[type='checkbox'] {
+    @apply mt-1;
+}
+
+/* Definition lists */
+.article-content dl {
+    @apply mb-4;
+}
+
+.article-content dt {
+    @apply mt-4 font-semibold text-white;
+}
+
+.article-content dd {
+    @apply mb-2 ml-6 text-gray-300;
+}
+
+/* Text alignment utilities */
+.article-content .text-tiny {
+    @apply text-xs;
+}
+
+.article-content .text-small {
+    @apply text-sm;
+}
+
+.article-content .text-big {
+    @apply text-lg;
+}
+
+.article-content .text-huge {
+    @apply text-2xl;
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    .article-content table {
+        @apply text-xs;
+    }
+
+    .article-content th,
+    .article-content td {
+        @apply px-2 py-2;
+    }
+}

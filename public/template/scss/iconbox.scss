@@ -1,0 +1,150 @@
+/* Icon Box */
+.pxl-icon-box{
+    position: relative;
+    overflow: hidden;
+    .pxl-item--link{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+    }
+    &.pxl-icon-box1{
+        .pxl-item--main{
+            display: flex;
+            flex-direction: column;
+        }
+        .pxl-item--icon{
+            width: 50px;
+            min-width: 50px;
+            height: 50px;
+            background: #FFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 10px;
+            @extend .pxl-dflex-center;
+        }
+        .pxl-item--title {
+            font-size: 24px;
+            line-height: 1.41667;
+            letter-spacing: -0.48px;
+            margin-top: 18px;
+        }
+        .pxl-item--description{
+            color: #666;
+            font-family: "Funnel Display";
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.625;
+            margin-top: 6px;
+        }
+    }
+    &.pxl-icon-box2{
+        .pxl-item--main{
+            display: flex;
+            align-items: center;
+            gap: 17px;
+        }
+        .pxl-item--icon{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(#FFF, 0.04);
+            @extend .pxl-dflex-center;
+        }
+        .pxl-item--title {
+            color: #FFF;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.4;
+            text-transform: capitalize;
+            letter-spacing: 0;
+        }
+        .pxl-item--description{
+            color: #999;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+            text-transform: capitalize;
+            letter-spacing: 0;
+            @extend h3;
+        }
+    }
+
+    &.pxl-icon-box3{
+        .pxl-item--main{
+            padding: 30px;
+            border: 1px solid #E5E5E5;
+            border-radius: 20px;
+            background: #FFF;
+        }
+        .pxl-item--title {
+            color: var(--color-primary);
+            font-family: "Funnel Display";
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.72px;
+            margin-top: 70px;
+        }
+        .pxl-item--description{
+            color: #666;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.5556;
+            margin-top: 20px;
+        }
+    }
+
+    &.pxl-icon-box4{
+        border-radius: 20px;
+        background: #FFF;
+        padding: 40px;
+        .pxl-item--title {
+            color: var(--color-primary);
+            font-family: "Funnel Display";
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.72px;
+        }
+        .pxl-item--description{
+            color: #666;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.5556;
+            margin-top: 15px;
+        }
+        .pxl-item--icon{
+            text-align: center;
+            margin-top: 50px;
+        }
+        .pxl--categories{
+            position: relative;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 40px;
+            a{
+                color: var(--color-primary);
+                font-family: "Funnel Display";
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 26px;
+                text-transform: uppercase;
+                border: 1px solid #E5E5E5;
+                border-radius: 30px;
+                padding: 0 12px;
+                @include transition(all 0.3s linear);
+                &:hover{
+                    color: #FFF;
+                    background: var(--color-primary);
+                }
+            }
+        }
+    }
+}
+
+/* End Icon Box */

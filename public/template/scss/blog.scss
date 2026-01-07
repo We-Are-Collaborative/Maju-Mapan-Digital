@@ -1,0 +1,33 @@
+/*--------------------------------------------------------------
+BLOG STYLE
+----------------------------------------------------------------
+# Blog Grid
+# Blog Carousel
+--------------------------------------------------------------*/
+
+.title-hover-line {
+	--title-line-color: var(--color-primary);
+	a {
+		background-repeat: no-repeat;
+		background-position-y: -1px;
+		background-image: linear-gradient(transparent calc(100% - 1px), var(--title-line-color) 1px);
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		animation: 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) pxl-wide-menu-underline forwards;
+		&:hover {
+			animation: 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) pxl-wide-menu-underline-hover forwards;
+		}
+	}
+}
+.pxl-blog-grid{
+	.pxl-swiper-slide{
+		&.slick-slide{
+			padding: 0;
+		}
+	}
+	
+}
+
+
+body.rtl {
+}
