@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -35,8 +35,8 @@ model PageSection {
   name                String?
   type                String
   position            Int         @default(0)
-  htmlContent         String?
-  splitFeatureSection String?
+  htmlContent         String?     @db.Text
+  splitFeatureSection String?     @db.Text
   pageId              String
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
@@ -58,7 +58,7 @@ model NavMenu {
 model GlobalSettings {
   id              String   @id @default(cuid())
   siteName        String   @default("My Website")
-  siteDescription String?
+  siteDescription String?  @db.Text
   contactEmail    String?
   publicAccess    Boolean  @default(true)
   maintenanceMode Boolean  @default(false)
@@ -67,17 +67,17 @@ model GlobalSettings {
   logoAlt         String?  @default("Maju Mapan Digital Logo")
   
   // Crawlers & Server
-  robotsTxt       String?  // Custom robots.txt content
-  htaccess        String?  // Custom .htaccess content (simulation/storage only)
+  robotsTxt       String?  @db.Text // Custom robots.txt content
+  htaccess        String?  @db.Text // Custom .htaccess content (simulation/storage only)
 
   // Analytics & Tracking
-  googleAnalyticsScript String?
-  metaPixelScript       String?
-  tiktokPixelScript     String?
+  googleAnalyticsScript String? @db.Text
+  metaPixelScript       String? @db.Text
+  tiktokPixelScript     String? @db.Text
 
   // Custom Injection
-  customHeadScripts String?
-  customBodyScripts String?
+  customHeadScripts String? @db.Text
+  customBodyScripts String? @db.Text
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -86,7 +86,7 @@ model GlobalSettings {
 model Theme {
   id        String   @id @default(cuid())
   name      String   @unique
-  colors    String
+  colors    String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -95,18 +95,18 @@ model SEO {
   id              String   @id @default(cuid())
   // Core SEO
   metaTitle       String?
-  metaDescription String?
-  keywords        String?
+  metaDescription String?  @db.Text
+  keywords        String?  @db.Text
   canonicalUrl    String?
   robots          String?  @default("index, follow")
 
   // Open Graph
   ogTitle         String?
-  ogDescription   String?
+  ogDescription   String?  @db.Text
   ogImage         String?
 
   // Technical
-  structuredData  String?  // Custom JSON-LD
+  structuredData  String?  @db.Text // Custom JSON-LD
 
   // GEO / Local
   geoRegion       String?
@@ -124,7 +124,7 @@ model SEO {
 model Script {
   id        String   @id @default(cuid())
   name      String
-  code      String
+  code      String   @db.Text
   location  String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -157,8 +157,8 @@ model ChatMessage {
   id              String      @id @default(cuid())
   sessionId       String
   role            String
-  content         String
-  behaviorContext String?
+  content         String      @db.Text
+  behaviorContext String?     @db.Text
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   session         ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
@@ -168,7 +168,7 @@ model Value {
   id        String   @id @default(cuid())
   title     String
   subtitle  String?
-  excerpt   String?
+  excerpt   String?  @db.Text
   slug      String   @unique
   iconUrl   String?
   iconAlt   String?
@@ -183,7 +183,7 @@ model TeamMember {
   id           String   @id @default(cuid())
   name         String
   position     String
-  excerpt      String?
+  excerpt      String?  @db.Text
   thumbnailUrl String?
   imageAlt     String?
   linkedinUrl  String?
@@ -198,8 +198,8 @@ model Speciality {
   title        String
   subtitle     String?
   slug         String   @unique
-  excerpt      String?
-  description  String?
+  excerpt      String?  @db.Text
+  description  String?  @db.Text
   iconUrl      String?
   iconAlt      String?
   bgUrl        String?
@@ -215,8 +215,8 @@ model Client {
   id          String      @id @default(cuid())
   name        String
   slug        String      @unique
-  description String?
-  excerpt     String?
+  description String?     @db.Text
+  excerpt     String?     @db.Text
   logoUrl     String?
   logoAlt     String?
   isFeatured  Boolean     @default(false)
@@ -226,7 +226,7 @@ model Client {
   updatedAt   DateTime    @updatedAt
   email       String?     @unique
   password    String?
-  address     String?
+  address     String?     @db.Text
   legalName   String?
   logo        String?
   phone       String?
@@ -264,8 +264,8 @@ model Article {
   id           String    @id @default(cuid())
   title        String
   slug         String    @unique
-  excerpt      String?
-  content      String?
+  excerpt      String?   @db.Text
+  content      String?   @db.Text
   thumbnailUrl String?
   thumbnailAlt String?
   status       String    @default("draft")
@@ -280,8 +280,8 @@ model CaseStudy {
   id           String    @id @default(cuid())
   title        String
   slug         String    @unique
-  excerpt      String?
-  content      String?
+  excerpt      String?   @db.Text
+  content      String?   @db.Text
   thumbnailUrl String?
   thumbnailAlt String?
   clientId     String?
@@ -291,7 +291,7 @@ model CaseStudy {
   isFeatured   Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  metrics      String?
+  metrics      String?   @db.Text
   client       Client?   @relation(fields: [clientId], references: [id], onDelete: Cascade)
 }
 
@@ -303,9 +303,9 @@ model Career {
   type         String?
   minSalary    Float?
   maxSalary    Float?
-  description  String?
-  content      String?
-  requirements String?          @default("[]")
+  description  String?          @db.Text
+  content      String?          @db.Text
+  requirements String?          @default("[]") @db.Text
   isRemote     Boolean          @default(false)
   applyUrl     String?
   status       String           @default("published")
@@ -324,8 +324,8 @@ model JobApplication {
   linkedinUrl  String?
   portfolioUrl String?
   resumeUrl    String?
-  coverLetter  String?
-  answers      String?
+  coverLetter  String?  @db.Text
+  answers      String?  @db.Text
   status       String   @default("new")
   careerId     String
   userId       String?
@@ -366,10 +366,10 @@ model HomeHeroSlide {
 model AudienceIntelligence {
   id              String   @id @default(cuid())
   sessionId       String   @unique
-  interests       String?  // JSON or comma separated keywords
-  browsingHistory String?  // JSON
+  interests       String?  @db.Text // JSON or comma separated keywords
+  browsingHistory String?  @db.Text // JSON
   lastSearch      String?
-  topTopics       String?  // From web trends
+  topTopics       String?  @db.Text // From web trends
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
