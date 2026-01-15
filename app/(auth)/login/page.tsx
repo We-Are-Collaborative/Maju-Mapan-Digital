@@ -112,7 +112,6 @@ function LoginContent() {
                         name="email"
                         type="email"
                         placeholder="admin@example.com"
-                        required
                         className="bg-slate-950 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500"
                     />
                 </div>
@@ -125,7 +124,6 @@ function LoginContent() {
                         id="password"
                         name="password"
                         type="password"
-                        required
                         className="bg-slate-950 border-slate-800 text-white focus-visible:ring-emerald-500"
                     />
                 </div>

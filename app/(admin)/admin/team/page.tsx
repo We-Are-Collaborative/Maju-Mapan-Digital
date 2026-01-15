@@ -5,6 +5,7 @@ import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import Link from 'next/link';
 import DeleteTeamMemberButton from './DeleteTeamMemberButton';
 import { redirect } from 'next/navigation';
+import { TeamMemberImage } from '@/components/team/team-member-image';
 
 
 export default async function AdminTeamPage() {
@@ -28,24 +29,19 @@ export default async function AdminTeamPage() {
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {employees.map((employee) => (
-                    <Card key={employee.id} className="overflow-hidden">
-                        <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                            <div className="h-12 w-12 rounded-full overflow-hidden bg-muted">
-                                {employee.thumbnailUrl ? (
-                                    <img src={employee.thumbnailUrl} alt={employee.name} className="h-full w-full object-cover" />
-                                ) : (
-                                    <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground">N/A</div>
-                                )}
+                    <Card key={employee.id} className="overflow-hidden group transition-all hover:border-brand-500/50">
+                        <div className="aspect-[4/5] relative bg-muted overflow-hidden">
+                            <TeamMemberImage
+                                src={employee.thumbnailUrl}
+                                alt={employee.name}
+                                fallbackId={employee.id}
+                            />
+                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
+                                <CardTitle className="text-white text-base line-clamp-1">{employee.name}</CardTitle>
+                                <p className="text-brand-400 text-xs font-semibold uppercase tracking-wider line-clamp-1">{employee.position}</p>
                             </div>
-                            <div className="flex-1 overflow-hidden">
-                                <CardTitle className="text-base line-clamp-1">{employee.name}</CardTitle>
-                                <p className="text-sm text-muted-foreground line-clamp-1">{employee.position}</p>
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4 h-10">
-                                {employee.excerpt || "No description provided."}
-                            </p>
+                        </div>
+                        <CardContent className="p-4 bg-background">
                             <div className="flex items-center gap-2">
                                 <Button variant="outline" size="sm" className="flex-1" asChild>
                                     <Link href={`/admin/team/${employee.id}`}>

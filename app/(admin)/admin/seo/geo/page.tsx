@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function GeoTargetingPage() {
     return (
-        <div className="max-w-7xl mx-auto p-8 space-y-8 animate-in fade-in duration-700">
+        <div className=" p-8 space-y-8 animate-in fade-in duration-700">
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-4xl font-black tracking-tight text-slate-900">Geo Targeting</h1>

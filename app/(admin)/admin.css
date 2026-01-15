@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@source '..';
+@source '../*';
+@source '!../backup_legacy/**/*';
+@source '!../node_modules/**/*';
+@source '!../.next/**/*';
+@source '!../*.html';
+
 /* Admin Specific Overrides if needed */
 body {
     font-family: 'Inter', sans-serif !important;

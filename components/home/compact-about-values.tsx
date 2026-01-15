@@ -163,7 +163,7 @@ export function CompactAboutValues({ values, aboutTitle = "The Agency", valuesTi
                                                 <div className="relative flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 text-brand-500 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-500/20">
                                                     <img
                                                         src={value.iconUrl || '/placeholder.svg'}
-                                                        alt={value.title || ''}
+                                                        alt={value.iconAlt || value.title || ''}
                                                         className="size-6 object-contain"
                                                     />
                                                 </div>

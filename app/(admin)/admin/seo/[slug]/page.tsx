@@ -11,7 +11,7 @@ export default function EditSEOPage() {
     const router = useRouter();
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className=" space-y-8">
             <div className="flex items-center gap-4 mb-6">
                 <Link href="/admin/seo" className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors">
                     <ArrowLeft size={20} />

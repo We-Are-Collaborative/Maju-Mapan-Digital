@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 
 export default function ContentAnalysisPage() {
     return (
-        <div className="max-w-7xl mx-auto p-8 space-y-8 animate-in fade-in duration-700">
+        <div className=" p-8 space-y-8 animate-in fade-in duration-700">
             <div>
                 <h1 className="text-4xl font-black tracking-tight text-slate-900">Content Analysis</h1>
                 <p className="text-slate-500 font-medium">Keyword density, metadata quality, and content optimization.</p>

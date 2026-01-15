@@ -5,6 +5,7 @@ import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getArticleById, createArticle, updateArticle, getCategoriesForSelect } from "@/app/actions/articles";
 import { toast } from "sonner";
+import { SeoImageUpload } from "@/components/admin/seo-image-upload";
 
 export default function EditInsight({ params }: { params: Promise<{ id: string }> }) {
     const { id: routeId } = use(params);
@@ -21,6 +22,7 @@ export default function EditInsight({ params }: { params: Promise<{ id: string }
         excerpt: "",
         content: "",
         thumbnailUrl: "",
+        thumbnailAlt: "",
         status: "draft",
         isFeatured: false,
         categoryId: "",
@@ -58,6 +60,7 @@ export default function EditInsight({ params }: { params: Promise<{ id: string }
                     excerpt: data.excerpt || "",
                     content: data.content || "",
                     thumbnailUrl: data.thumbnailUrl || "",
+                    thumbnailAlt: data.thumbnailAlt || "",
                     status: data.status || "draft",
                     isFeatured: data.isFeatured || false,
                     categoryId: data.categoryId || "",
@@ -106,7 +109,7 @@ export default function EditInsight({ params }: { params: Promise<{ id: string }
     }
 
     return (
-        <div className="max-w-5xl mx-auto p-8 animate-in fade-in duration-500">
+        <div className=" p-8 animate-in fade-in duration-500">
             <div className="flex items-center gap-4 mb-8">
                 <Link
                     href="/admin/insights"
@@ -230,22 +233,38 @@ export default function EditInsight({ params }: { params: Promise<{ id: string }
                     </div>
 
                     <div className="bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
-                        <h3 className="text-lg font-black text-slate-900">Media</h3>
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Thumbnail URL</label>
-                            <div className="relative">
-                                <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                <input
-                                    type="text"
-                                    value={formData.thumbnailUrl}
-                                    onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
-                                    className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl py-3 pl-12 pr-4 font-mono text-sm text-slate-600 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
-                                    placeholder="/assets/images/..."
-                                />
-                            </div>
+                        <h3 className="text-lg font-black text-slate-900">Media Intelligence</h3>
+                        <div className="space-y-6">
                             {formData.thumbnailUrl && (
-                                <div className="mt-4 rounded-xl overflow-hidden border-2 border-slate-200 aspect-video bg-slate-100">
-                                    <img src={formData.thumbnailUrl} alt="Preview" className="w-full h-full object-cover" />
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Current Optimized Asset</label>
+                                    <div className="rounded-2xl overflow-hidden border-2 border-slate-100 aspect-video bg-slate-50 relative group">
+                                        <img src={formData.thumbnailUrl} alt={formData.thumbnailAlt} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                            <p className="text-[10px] font-black text-lime-400 uppercase tracking-widest mb-1">Active ALT Tag</p>
+                                            <p className="text-xs font-bold text-white leading-snug">{formData.thumbnailAlt || "Missing semantic data"}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            <SeoImageUpload
+                                label="Featured Image"
+                                description="Global WebP Delivery"
+                                suggestedName={formData.slug || 'article-thumbnail'}
+                                onUploadSuccess={({ url, alt }) => setFormData({ ...formData, thumbnailUrl: url, thumbnailAlt: alt })}
+                            />
+
+                            {formData.thumbnailUrl && (
+                                <div className="space-y-2 pt-2 border-t border-slate-100">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Manual ALT Override</label>
+                                    <input
+                                        type="text"
+                                        value={formData.thumbnailAlt}
+                                        onChange={(e) => setFormData({ ...formData, thumbnailAlt: e.target.value })}
+                                        className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-lime-400 transition-all"
+                                        placeholder="Edit ALT text..."
+                                    />
                                 </div>
                             )}
                         </div>

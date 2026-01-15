@@ -19,6 +19,7 @@ export type Value = Entity & {
     bodyTitle?: string;
     bodySubtitle?: string;
     iconUrl?: string;
+    iconAlt?: string;
     slug?: string;
     description?: string;
     excerpt?: string;

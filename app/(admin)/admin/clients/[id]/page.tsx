@@ -85,7 +85,7 @@ export default function ClientDetails({ params }: { params: Promise<{ id: string
     if (loading) return <div className="p-8 text-center font-bold text-slate-500 uppercase tracking-widest animate-pulse">Loading Client Data...</div>;
 
     return (
-        <div className="space-y-8 p-8 max-w-6xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex items-center gap-4">
                 <Link href="/admin/clients" className="group p-2 hover:bg-black hover:text-white rounded-lg text-slate-500 transition-all">

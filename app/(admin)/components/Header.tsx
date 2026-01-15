@@ -1,45 +1,39 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { LogOut, ExternalLink, Bell } from "lucide-react";
+import { LogOut, ExternalLink, Bell, User } from "lucide-react";
 import Link from "next/link";
 
 export default function Header({ user }: { user: any }) {
     return (
-        <header className="h-16 flex items-center justify-between px-8 bg-white/80 backdrop-blur-xl border-b border-indigo-50/50 sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-6">
+            <Link
+                href="/"
+                target="_blank"
+                className="hidden xl:flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 hover:text-white hover:bg-indigo-600 transition-all bg-indigo-50 px-5 py-2.5 rounded-xl border border-indigo-100"
+            >
+                <ExternalLink size={14} />
+                <span>Visit Ecosystem</span>
+            </Link>
+
+            <div className="h-8 w-[1px] bg-slate-100 hidden sm:block" />
+
             <div className="flex items-center gap-4">
-                <h2 className="text-xl font-black tracking-tight text-slate-900">Dashboard</h2>
-            </div>
-
-            <div className="flex items-center gap-6">
-                <Link
-                    href="/"
-                    target="_blank"
-                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-700 transition-colors bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-lg"
-                >
-                    <ExternalLink size={14} />
-                    <span>View Site</span>
-                </Link>
-
-                <div className="h-6 w-[1px] bg-slate-200" />
-
-                <div className="flex items-center gap-3">
-                    <div className="text-right hidden md:block">
-                        <p className="text-sm font-bold text-slate-900">{user?.name || "Admin"}</p>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{user?.role || "Administrator"}</p>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/20">
-                        {user?.name?.[0] || "A"}
-                    </div>
+                <div className="text-right hidden sm:block">
+                    <p className="text-sm font-black text-slate-900 leading-none mb-1">{user?.name || "Admin"}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-lime-600">{user?.role || "Administrator"}</p>
                 </div>
-
-                <button
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
-                    title="Sign Out"
-                >
-                    <LogOut size={20} />
-                </button>
+                <div className="size-11 rounded-[1.2rem] bg-slate-900 border-4 border-white shadow-xl flex items-center justify-center text-white ring-2 ring-slate-100">
+                    <User size={18} className="text-lime-400" />
+                </div>
             </div>
-        </header>
+
+            <button
+                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="size-11 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[1.2rem] transition-all border border-transparent hover:border-rose-100 shadow-sm sm:shadow-none"
+                title="Sign Out"
+            >
+                <LogOut size={20} />
+            </button>
+        </div>
     );
 }

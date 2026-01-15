@@ -11,6 +11,8 @@ import { getValues, getTeam, getClients, getPageSeo } from '@/app/actions/public
 import { BrandedHero } from '@/components/ui/branded-hero';
 import { BrandedSectionHeader } from '@/components/ui/branded-section-header';
 import { BrandedCTA } from '@/components/ui/branded-cta';
+import { TeamMemberImage } from '@/components/team/team-member-image';
+import { ValueSwitcher } from '@/components/about/value-switcher';
 
 type Stat = {
     value: string;
@@ -268,62 +270,7 @@ export default async function AboutUs() {
                             subtitle={pageSeo?.content?.values_subtitle || 'Our values are the foundation of everything we do and guide every decision we make.'}
                         />
 
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-                            {values.map((value, index) => (
-                                <article
-                                    key={index}
-                                    data-animate
-                                    id={`value-${index}`}
-                                    className="group relative overflow-hidden rounded-3xl border border-gray-800/50 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-brand-500/30 hover:shadow-2xl hover:shadow-brand-500/10"
-                                    itemScope
-                                    itemType="https://schema.org/Thing"
-                                >
-                                    <div className="relative aspect-[4/5] overflow-hidden sm:aspect-square lg:aspect-[4/5]">
-                                        <img
-                                            src={value.background?.originalUrl || '/assets/net.svg'}
-                                            alt=""
-                                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                            loading="lazy"
-                                        />
-
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 transition-all duration-500 group-hover:from-brand-500/30 group-hover:via-black/60" />
-
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center p-8 sm:p-10">
-                                            <div className="mb-6 flex justify-center sm:mb-8">
-                                                <div className="relative flex size-16 items-center justify-center rounded-2xl bg-brand-500 shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-brand-500/50 sm:size-20">
-                                                    <div className="absolute inset-0 animate-pulse rounded-2xl bg-brand-400/50 blur-xl" />
-                                                    <img
-                                                        src={value.iconUrl || '/placeholder.svg'}
-                                                        alt={`${value.title} icon`}
-                                                        className="relative size-8 object-contain sm:size-10"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-4 text-center sm:space-y-5">
-                                                <h3 itemProp="name" className="text-2xl leading-tight font-bold text-white sm:text-3xl">
-                                                    {value.title}
-                                                </h3>
-                                                <p className="text-lg leading-snug font-medium text-brand-400 sm:text-xl">{value.subtitle}</p>
-                                                <p itemProp="description" className="line-clamp-3 text-base leading-relaxed text-gray-200 sm:text-lg">
-                                                    {value.excerpt}
-                                                </p>
-
-                                                <Link
-                                                    href={`/value/${value.slug}`}
-                                                    className="inline-flex items-center gap-2 rounded-xl bg-brand-500/10 px-4 py-2 text-base font-semibold text-brand-500 backdrop-blur-sm transition-all duration-300 hover:gap-3 hover:bg-brand-500/20 hover:text-brand-400 focus:ring-2 focus:ring-brand-500/50 focus:ring-offset-2 focus:ring-offset-black focus:outline-none sm:text-lg"
-                                                    aria-label={`Learn more about ${value.title}`}
-                                                >
-                                                    {pageSeo?.content?.values_cta_text || 'Learn More'}
-                                                    <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
+                        <ValueSwitcher values={values} />
                     </div>
                 </section>
 
@@ -380,73 +327,60 @@ export default async function AboutUs() {
                                         key={member.id}
                                         data-animate
                                         id={`team-${index}`}
-                                        className="group relative overflow-hidden rounded-2xl border border-gray-800/50 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-brand-500/30 hover:shadow-2xl hover:shadow-brand-500/10"
+                                        className="group relative overflow-hidden rounded-3xl border border-white/5 bg-gray-900/40 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:border-brand-500/30 hover:shadow-[0_20px_50px_-12px_rgba(249,115,22,0.15)]"
                                         itemScope
                                         itemType="https://schema.org/Person"
                                     >
                                         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-
-                                        <div className="relative aspect-square overflow-hidden">
-                                            <img
-                                                itemProp="image"
-                                                src={member.thumbnail?.originalUrl || '/placeholder.svg'}
-                                                alt={`${member.name}, ${member.position} at Maju Mapan`}
-                                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                                loading="lazy"
+                                        <div className="relative aspect-[4/5] overflow-hidden">
+                                            <TeamMemberImage
+                                                src={member.thumbnail?.originalUrl}
+                                                alt={member.thumbnail?.alt || `${member.name}, ${member.position} at Maju Mapan`}
+                                                fallbackId={member.id}
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
-                                            {/* Social Links Overlay */}
-                                            <div className="absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-t from-brand-500/30 via-black/80 to-black/60 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
+                                            {/* Premium Gradient Overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" />
+
+                                            {/* Social Links Overlay - Elegant side positioning */}
+                                            <div className="absolute top-4 right-4 flex flex-col gap-3 translate-x-12 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
                                                 {member.linkedinUrl && (
                                                     <a
                                                         itemProp="sameAs"
                                                         href={member.linkedinUrl}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex size-12 items-center justify-center rounded-full border-2 border-brand-500 bg-brand-500/20 text-brand-500 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-brand-500 hover:text-black hover:shadow-xl hover:shadow-brand-500/50"
+                                                        className="flex size-10 items-center justify-center rounded-xl bg-white/10 text-white backdrop-blur-md transition-all duration-300 hover:bg-brand-500 hover:text-black"
                                                         aria-label={`View ${member.name}'s LinkedIn profile`}
                                                     >
-                                                        <Linkedin className="size-6" />
+                                                        <Linkedin className="size-5" />
                                                     </a>
                                                 )}
                                                 {member.email && (
                                                     <a
                                                         href={`mailto:${member.email}`}
-                                                        className="flex size-12 items-center justify-center rounded-full border-2 border-brand-500 bg-brand-500/20 text-brand-500 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-brand-500 hover:text-black hover:shadow-xl hover:shadow-brand-500/50"
+                                                        className="flex size-10 items-center justify-center rounded-xl bg-white/10 text-white backdrop-blur-md transition-all duration-300 hover:bg-brand-500 hover:text-black"
                                                         aria-label={`Email ${member.name}`}
                                                     >
-                                                        <Mail className="size-6" />
+                                                        <Mail className="size-5" />
                                                     </a>
                                                 )}
                                             </div>
 
-                                            {/* Hover Border Effect */}
-                                            <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-brand-500 to-transparent" />
-                                                <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-brand-500 to-transparent" />
-                                            </div>
-                                        </div>
-
-                                        <div className="relative p-6 sm:p-8">
-                                            <div className="absolute top-0 left-1/2 h-px w-3/4 -translate-x-1/2 -translate-y-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                                            <h3
-                                                itemProp="name"
-                                                className="mb-2 text-xl font-bold text-white transition-colors duration-300 group-hover:text-brand-400 sm:text-2xl"
-                                            >
-                                                {member.name}
-                                            </h3>
-                                            <p itemProp="jobTitle" className="mb-4 text-base font-semibold text-brand-500 sm:text-lg">
-                                                {member.position}
-                                            </p>
-                                            <p itemProp="description" className="text-sm leading-relaxed text-gray-400 sm:text-base">
-                                                {member.excerpt}
-                                            </p>
-
-                                            {/* Decorative Element */}
-                                            <div className="absolute right-0 bottom-0 size-24 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                                                <div className="absolute right-0 bottom-0 size-full bg-gradient-to-tl from-brand-500/10 to-transparent blur-2xl" />
+                                            {/* Name & Position Overlay for high-end feel */}
+                                            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                                                <div className="relative">
+                                                    <div className="absolute -left-4 top-0 h-full w-1 rounded-full bg-brand-500 opacity-0 transition-all duration-500 group-hover:opacity-100" />
+                                                    <h3
+                                                        itemProp="name"
+                                                        className="mb-1 text-2xl font-bold text-white transition-colors duration-300 group-hover:text-brand-400 sm:text-3xl"
+                                                    >
+                                                        {member.name}
+                                                    </h3>
+                                                    <p itemProp="jobTitle" className="text-sm font-semibold tracking-widest text-brand-500 uppercase transition-all duration-300 group-hover:text-white">
+                                                        {member.position}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </article>
@@ -456,104 +390,16 @@ export default async function AboutUs() {
                     </div>
                 </section>
 
-                {/* Trusted Clients Section - Enhanced */}
-                <section
-                    className="relative overflow-hidden border-y border-gray-800/50 bg-gradient-to-b from-black via-gray-900/50 to-black"
-                    id="trusted-clients"
-                    aria-labelledby="clients-heading"
-                >
-                    <div className="pointer-events-none absolute inset-0">
-                        <div className="absolute top-1/2 left-1/2 size-[32rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/20 opacity-70 blur-3xl sm:size-[40rem] lg:size-[48rem]" />
-                        <div
-                            className="absolute top-20 right-20 size-1 animate-pulse rounded-full bg-brand-400/60"
-                            style={{ animationDelay: '0.3s' }}
-                        />
-                        <div
-                            className="absolute bottom-32 left-20 size-1.5 animate-ping rounded-full bg-brand-500/50"
-                            style={{ animationDelay: '0.9s' }}
-                        />
-                    </div>
-
-                    <div className="relative container mx-auto px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-                        <BrandedSectionHeader
-                            id="clients-header"
-                            badgeIcon={Award}
-                            badgeText="Trusted By"
-                            title={
-                                <>
-                                    Our{' '}
-                                    <span className="bg-gradient-to-r from-brand-50 to-brand-600 bg-clip-text text-transparent">
-                                        Valued Clients
-                                    </span>
-                                </>
-                            }
-                            subtitle={pageSeo?.content?.clients_subtitle || 'Proud to partner with leading brands and innovative companies across industries.'}
-                        />
-
-                        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                            {clients.map((client, index) => (
-                                <Link
-                                    key={client.id}
-                                    href={`/case-studies?client=${client.slug}`}
-                                    data-animate
-                                    id={`client-${index}`}
-                                    className="group relative aspect-[3/2] overflow-hidden rounded-xl border border-gray-800/50 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/10"
-                                    aria-label={`View ${client.name} case studies`}
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-                                    <div className="relative flex h-full items-center justify-center p-6">
-                                        {client.logo?.originalUrl ? (
-                                            <img
-                                                src={client.logo.originalUrl}
-                                                alt={`${client.name} logo`}
-                                                className="max-h-full max-w-full object-contain opacity-70 grayscale transition-all duration-500 group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0"
-                                                loading="lazy"
-                                            />
-                                        ) : (
-                                            <div className="text-center">
-                                                <p className="text-lg font-semibold text-gray-400 transition-colors duration-300 group-hover:text-brand-500">
-                                                    {client.name}
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Hover Effect Border */}
-                                    <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                        <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-brand-500 to-transparent" />
-                                        <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-brand-500 to-transparent" />
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-
-                        {/* View All Button */}
-                        <div className="mt-12 flex justify-center sm:mt-16" data-animate id="clients-cta">
-                            <Button
-                                asChild
-                                size="lg"
-                                variant="outline"
-                                className="h-12 rounded-full border-2 border-brand-500/50 bg-transparent px-8 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-brand-500 hover:bg-brand-500/10"
-                            >
-                                <Link href="/case-studies">
-                                    View All Case Studies
-                                    <ArrowRight className="ml-2 size-5" />
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                </section>
-
                 {/* Call to Action Section - Enhanced */}
-                <BrandedCTA
-                    title={pageSeo?.content?.cta_title || "Ready to Elevate Your Brand?"}
+                < BrandedCTA
+                    title={pageSeo?.content?.cta_title || "Ready to Elevate Your Brand?"
+                    }
                     description={pageSeo?.content?.cta_description || "Let's transform your vision into reality. Join forces with a team that's passionate about your success."}
                     buttonText={pageSeo?.content?.cta_button_text || "Let's Talk"}
                     source="About Us"
                     backgroundImage="/assets/bg_hello_dekstop.webp"
                 />
-            </div>
+            </div >
         </>
     );
 }

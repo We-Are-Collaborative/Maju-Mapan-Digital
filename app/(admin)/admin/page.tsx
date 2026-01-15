@@ -20,7 +20,7 @@ export default function AdminDashboard() {
     // Role-specific views
     if (role === 'client') {
         return (
-            <div className="space-y-10 p-8 max-w-[1600px] mx-auto animate-in fade-in duration-700">
+            <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
                 <div>
                     <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-2">Welcome Back</h1>
                     <p className="text-lg font-medium text-slate-500 max-w-2xl">
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
 
 
     return (
-        <div className="space-y-10 p-8 max-w-[1600px] mx-auto animate-in fade-in duration-700">
+        <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
             {/* Header Section */}
             <div>
                 <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-2">Dashboard</h1>

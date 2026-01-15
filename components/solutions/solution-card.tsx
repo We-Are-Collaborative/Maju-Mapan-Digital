@@ -21,6 +21,7 @@ interface SolutionCardProps {
     };
     featured?: boolean;
     backgroundImage?: string;
+    backgroundImageAlt?: string | null;
     clientLogos?: string[];
 }
 
@@ -33,6 +34,7 @@ export const SolutionCard: React.FC<SolutionCardProps> = ({
     styles,
     featured = false,
     backgroundImage,
+    backgroundImageAlt,
     clientLogos
 }) => {
     return (
@@ -49,7 +51,7 @@ export const SolutionCard: React.FC<SolutionCardProps> = ({
                 <div className="absolute inset-0 z-0">
                     <img
                         src={backgroundImage}
-                        alt=""
+                        alt={backgroundImageAlt || title}
                         className={`size-full object-cover opacity-40 transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />

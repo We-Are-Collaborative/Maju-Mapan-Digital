@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Search, Trash2, Building, ExternalLink } from "lucide-react";
 import { getClientsAdmin, deleteClient, createClient } from "@/app/actions/clients";
 import { toast } from "sonner";
+import { SeoImageUpload } from "@/components/admin/seo-image-upload";
 
 export default function ClientsManager() {
     const [clients, setClients] = useState<any[]>([]);
@@ -18,6 +19,7 @@ export default function ClientsManager() {
         phone: "",
         address: "",
         logoUrl: "",
+        logoAlt: "",
         brandColor: ""
     });
 
@@ -56,7 +58,7 @@ export default function ClientsManager() {
             if (result.success) {
                 toast.success("Client created successfully");
                 setIsModalOpen(false);
-                setFormData({ name: "", legalName: "", website: "", phone: "", address: "", logoUrl: "", brandColor: "" });
+                setFormData({ name: "", legalName: "", website: "", phone: "", address: "", logoUrl: "", logoAlt: "", brandColor: "" });
                 fetchClients();
             } else {
                 toast.error(result.error || "Failed to create client");
@@ -69,7 +71,7 @@ export default function ClientsManager() {
     const filteredClients = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <div className="space-y-8 p-8 max-w-6xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -146,13 +148,31 @@ export default function ClientsManager() {
                                         onChange={e => setFormData({ ...formData, address: e.target.value })}
                                     />
                                 </div>
-                                <div className="col-span-full space-y-2">
-                                    <input
-                                        type="text"
-                                        placeholder="https://example.com/logo.svg"
-                                        className="w-full bg-slate-50 border-2 border-slate-100 rounded-xl py-3 px-4 focus:ring-2 focus:ring-black outline-none transition-all font-medium text-slate-900"
-                                        value={formData.logoUrl}
-                                        onChange={e => setFormData({ ...formData, logoUrl: e.target.value })}
+                                <div className="col-span-full space-y-4">
+                                    <label className="text-xs font-black uppercase tracking-widest text-slate-500">Brand Identity (Logo)</label>
+                                    {formData.logoUrl && (
+                                        <div className="p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl flex items-center gap-4">
+                                            <div className="size-16 bg-white rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center p-2">
+                                                <img src={formData.logoUrl} alt={formData.logoAlt || "Client logo"} className="w-full h-full object-contain" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Current Active Asset</p>
+                                                <p className="text-xs font-bold text-slate-900 truncate">{formData.logoAlt || "Missing ALT tag"}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, logoUrl: "", logoAlt: "" })}
+                                                className="text-xs font-black text-rose-500 uppercase tracking-widest hover:bg-rose-50 px-3 py-1.5 rounded-lg"
+                                            >
+                                                Replace
+                                            </button>
+                                        </div>
+                                    )}
+                                    <SeoImageUpload
+                                        label="Logo Optimization"
+                                        description="WebP + Smart Naming"
+                                        suggestedName={`${formData.name || 'client'}-logo`.toLowerCase().replace(/[^a-z0-9]/g, '-')}
+                                        onUploadSuccess={({ url, alt }) => setFormData({ ...formData, logoUrl: url, logoAlt: alt })}
                                     />
                                 </div>
                                 <div className="col-span-full space-y-2">
@@ -211,7 +231,7 @@ export default function ClientsManager() {
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="p-3 bg-slate-50 text-slate-900 rounded-xl border-2 border-slate-100 group-hover:scale-110 transition-transform overflow-hidden relative w-16 h-16 flex items-center justify-center">
                                         {client.logoUrl ? (
-                                            <img src={client.logoUrl} alt={client.name} className="w-full h-full object-contain" />
+                                            <img src={client.logoUrl} alt={client.logoAlt || client.name} className="w-full h-full object-contain" />
                                         ) : (
                                             <Building size={24} className="text-slate-400" />
                                         )}

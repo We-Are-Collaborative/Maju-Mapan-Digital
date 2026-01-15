@@ -2,8 +2,9 @@
 
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { GlobalSettings } from "@prisma/client";
 
-export async function getGlobalSettings() {
+export async function getGlobalSettings(): Promise<GlobalSettings> {
     try {
         const settings = await prisma.globalSettings.findFirst();
         // If no settings exist, create default
@@ -21,8 +22,22 @@ export async function getGlobalSettings() {
             id: "mock-id",
             siteName: "Maju Mapan Digital",
             publicAccess: true,
-            maintenanceMode: false
-        };
+            maintenanceMode: false,
+            siteDescription: null,
+            contactEmail: null,
+            logoType: "svg",
+            logoGifUrl: null,
+            logoAlt: null,
+            robotsTxt: null,
+            htaccess: null,
+            googleAnalyticsScript: null,
+            metaPixelScript: null,
+            tiktokPixelScript: null,
+            customHeadScripts: null,
+            customBodyScripts: null,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        } as GlobalSettings;
     }
 }
 
@@ -63,6 +78,25 @@ export async function setLogoSettings(type: "svg" | "gif", gifUrl?: string) {
         revalidatePath("/");
         return { success: true };
     } catch (e: any) {
+        return { success: false, error: e.message };
+    }
+}
+
+export async function updateGlobalSettings(data: any) {
+    try {
+        const settings = await getGlobalSettings();
+        if (!settings || !settings.id || settings.id === "mock-id") {
+            return { success: false, error: "Settings not initialized" };
+        }
+
+        await prisma.globalSettings.update({
+            where: { id: settings.id },
+            data: data
+        });
+        revalidatePath("/");
+        return { success: true };
+    } catch (e: any) {
+        console.error("Update settings failed", e);
         return { success: false, error: e.message };
     }
 }

@@ -116,6 +116,7 @@ export async function getPageContentById(id: string) {
         return await db.pageContent.findUnique({
             where: { id },
             include: {
+                seo: true,
                 sections: {
                     orderBy: { position: 'asc' }
                 }
@@ -217,6 +218,33 @@ export async function reorderSections(ids: string[]) {
         await db.$transaction(updates);
         return { success: true };
     } catch (e: any) {
+        return { success: false, error: e.message };
+    }
+}
+
+export async function updatePageSeo(pageId: string, seoData: any) {
+    try {
+        const existingInfo = await db.sEO.findUnique({
+            where: { pageId }
+        });
+
+        if (existingInfo) {
+            await db.sEO.update({
+                where: { id: existingInfo.id },
+                data: seoData
+            });
+        } else {
+            await db.sEO.create({
+                data: {
+                    ...seoData,
+                    pageId
+                }
+            })
+        }
+        revalidatePath(`/admin/content/edit/${pageId}`);
+        return { success: true };
+    } catch (e: any) {
+        console.error("SEO update failed", e);
         return { success: false, error: e.message };
     }
 }

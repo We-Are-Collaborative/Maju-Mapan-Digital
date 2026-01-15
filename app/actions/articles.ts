@@ -46,6 +46,7 @@ export async function createArticle(data: any) {
                 excerpt: data.excerpt,
                 content: data.content,
                 thumbnailUrl: data.thumbnailUrl,
+                thumbnailAlt: data.thumbnailAlt,
                 status: data.status,
                 isFeatured: data.isFeatured,
                 category: data.categoryId ? {
@@ -71,6 +72,7 @@ export async function updateArticle(id: string, data: any) {
             excerpt: data.excerpt,
             content: data.content,
             thumbnailUrl: data.thumbnailUrl,
+            thumbnailAlt: data.thumbnailAlt,
             status: data.status,
             isFeatured: data.isFeatured,
         };

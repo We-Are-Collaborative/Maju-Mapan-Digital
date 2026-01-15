@@ -77,7 +77,7 @@ export default function ThemeManager() {
     if (loading) return <div className="text-slate-500 font-bold text-center p-12">Loading theme...</div>;
 
     return (
-        <div className="space-y-8 p-8 max-w-5xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             <div className="flex justify-between items-center">
                 <h1 className="text-4xl font-black tracking-tight text-slate-900">Theme Manager</h1>
                 <button

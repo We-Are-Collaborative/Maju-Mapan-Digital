@@ -21,4 +21,5 @@ export type Media = {
     updatedAt?: string;
     originalUrl?: string;
     previewUrl?: string;
+    alt?: string | null;
 };

@@ -18,7 +18,7 @@ interface Article {
     slug: string;
     excerpt: string;
     content: string;
-    thumbnail: { originalUrl: string | null } | null;
+    thumbnail: { originalUrl: string | null; alt?: string | null } | null;
     category_id: string | null;
     category: { name: string; slug: string } | null;
     status: string;
@@ -166,8 +166,9 @@ export function InsightsContent({ articles: allArticles, categories, pageSeo }: 
                             <Link href={`/insights/${featuredArticle.slug}`} className="group relative block aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] bg-zinc-900 border border-white/10 shadow-2xl shadow-brand-500/5">
                                 <img
                                     src={featuredArticle.thumbnail?.originalUrl ?? '/assets/bg-speciality.webp'}
-                                    alt={featuredArticle.title}
+                                    alt={featuredArticle.thumbnail?.alt || featuredArticle.title}
                                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60"
+                                    loading="eager" // Featured is above the fold usually
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                                 <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full lg:w-2/3 space-y-4">
@@ -228,8 +229,9 @@ export function InsightsContent({ articles: allArticles, categories, pageSeo }: 
                                     <div className="relative aspect-[16/10] overflow-hidden">
                                         <img
                                             src={article.thumbnail?.originalUrl ?? '/assets/bg-speciality.webp'}
-                                            alt={article.title}
+                                            alt={article.thumbnail?.alt || article.title}
                                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            loading="lazy"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                                         <div className="absolute top-4 left-4">

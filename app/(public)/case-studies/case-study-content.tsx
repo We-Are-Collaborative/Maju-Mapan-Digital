@@ -20,6 +20,7 @@ interface CaseStudy {
     slug: string;
     excerpt: string | null;
     thumbnailUrl: string | null;
+    thumbnailAlt?: string | null;
     client: {
         name: string;
         slug?: string;
@@ -118,8 +119,9 @@ export function CaseStudyContent({ caseStudies: allStudies, pageSeo }: CaseStudy
                                         {study.thumbnailUrl ? (
                                             <img
                                                 src={study.thumbnailUrl}
-                                                alt={study.title}
+                                                alt={study.thumbnailAlt || study.title}
                                                 className="h-full w-full object-cover opacity-70 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-100"
+                                                loading="lazy"
                                             />
                                         ) : (
                                             <Building2 className="h-12 w-12 text-gray-600" />

@@ -49,7 +49,7 @@ export default function MenuManager() {
     };
 
     return (
-        <div className="space-y-8 p-8 max-w-5xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             <div className="flex items-center gap-4">
                 <Link href="/admin/content" className="p-3 bg-white border-2 border-slate-200 rounded-xl text-slate-500 hover:text-black hover:border-black hover:shadow-md transition-all active:scale-95 cursor-pointer">
                     <ArrowLeft size={20} />

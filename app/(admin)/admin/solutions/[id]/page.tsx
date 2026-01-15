@@ -88,13 +88,13 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
     if (fetching) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <Loader2 className="animate-spin text-lime-500" size={48} />
+                <Loader2 className="animate-spin text-brand-500" size={48} />
             </div>
         );
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-8 animate-in fade-in duration-500">
+        <div className=" p-8 animate-in fade-in duration-500">
             <div className="flex items-center gap-4 mb-8">
                 <Link
                     href="/admin/solutions"
@@ -123,7 +123,7 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                                 type="text"
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-900 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-900 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                                 placeholder="e.g. Digital Transformation"
                             />
                         </div>
@@ -133,9 +133,10 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                                 type="text"
                                 value={formData.subtitle}
                                 onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-medium text-slate-700 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-medium text-slate-700 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                                 placeholder="e.g. Future-Ready Tech"
                             />
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Used in the sidebar value proposition card.</p>
                         </div>
                     </div>
 
@@ -146,7 +147,7 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                                 type="text"
                                 value={formData.slug}
                                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                             />
                         </div>
                     )}
@@ -157,26 +158,26 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                             rows={3}
                             value={formData.excerpt}
                             onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                            className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-medium text-slate-700 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all resize-none"
+                            className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-medium text-slate-700 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all resize-none"
                             placeholder="Short summary for cards..."
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Full Description (HTML)</label>
+                        <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Full Content (Public View)</label>
                         <textarea
                             rows={6}
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-700 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all resize-none"
-                            placeholder="<p>Detailed content goes here...</p>"
+                            className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-medium text-slate-700 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all resize-none"
+                            placeholder="Detailed overview for the individual page..."
                         />
-                        <p className="text-xs text-slate-400 font-bold">Supports basic HTML tags.</p>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Main text displayed in the Overview section of the page.</p>
                     </div>
                 </div>
 
                 <div className="bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
-                    <h3 className="text-lg font-black text-slate-900">Media</h3>
+                    <h3 className="text-lg font-black text-slate-900">Media & Visuals</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -185,29 +186,31 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                                 type="text"
                                 value={formData.iconUrl}
                                 onChange={(e) => setFormData({ ...formData, iconUrl: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                                 placeholder="/assets/icons/..."
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Thumbnail URL</label>
+                            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Hero Banner URL (Desktop)</label>
                             <input
                                 type="text"
                                 value={formData.thumbnailUrl}
                                 onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                                 placeholder="/assets/thumbnails/..."
                             />
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Used as the background in the 40vh hero section.</p>
                         </div>
                         <div className="space-y-2 md:col-span-2">
-                            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Background Image URL</label>
+                            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">Card Background URL</label>
                             <input
                                 type="text"
                                 value={formData.bgUrl}
                                 onChange={(e) => setFormData({ ...formData, bgUrl: e.target.value })}
-                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-lime-400 focus:ring-4 focus:ring-lime-400/20 transition-all"
+                                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 font-mono text-sm text-slate-600 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 transition-all"
                                 placeholder="/assets/images/..."
                             />
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Fallback background image for individual solution view.</p>
                         </div>
                     </div>
                 </div>
@@ -216,9 +219,9 @@ export default function EditSolution({ params }: { params: Promise<{ id: string 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="px-8 py-4 bg-gradient-to-r from-lime-400 to-black text-white font-bold rounded-xl shadow-xl shadow-lime-500/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                        className="px-8 py-4 bg-brand-500 text-black font-black rounded-xl shadow-xl shadow-brand-500/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 group"
                     >
-                        {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
+                        {loading ? <Loader2 className="animate-spin" /> : <Save size={20} className="group-hover:rotate-12 transition-transform" />}
                         {isNew ? "Create Solution" : "Save Changes"}
                     </button>
                 </div>

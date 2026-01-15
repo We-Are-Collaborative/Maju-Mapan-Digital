@@ -54,7 +54,7 @@ export default function UsersManager() {
     );
 
     return (
-        <div className="space-y-8 p-8 max-w-7xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-4xl font-black tracking-tight text-slate-900">User Management</h1>

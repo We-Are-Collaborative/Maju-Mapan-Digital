@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import DummyUrlHelper from '../DummyUrlHelper';
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -80,13 +81,17 @@ export default async function TeamMemberForm({ params }: Props) {
                         <div className="grid gap-2">
                             <Label htmlFor="excerpt">Description (Excerpt)</Label>
                             <Textarea id="excerpt" name="excerpt" defaultValue={employee?.excerpt || ''} placeholder="Short bio..." rows={3} />
+                            <p className="text-xs text-amber-500 font-medium italic">Note: This description is currently hidden in the public About Us page for a cleaner design.</p>
                         </div>
 
-                        {/* Image URL Input - Ideally a File Upload, but text for now as per project style */}
+                        {/* Image URL Input */}
                         <div className="grid gap-2">
                             <Label htmlFor="thumbnailUrl">Photo URL</Label>
-                            <Input id="thumbnailUrl" name="thumbnailUrl" defaultValue={employee?.thumbnailUrl || ''} placeholder="https://..." />
-                            <p className="text-xs text-muted-foreground">URL to the profile photo.</p>
+                            <div className="flex flex-col">
+                                <Input id="thumbnailUrl" name="thumbnailUrl" defaultValue={employee?.thumbnailUrl || ''} placeholder="https://..." />
+                                <DummyUrlHelper inputId="thumbnailUrl" />
+                            </div>
+                            <p className="text-xs text-muted-foreground">URL to the profile photo. If left blank, a dummy picture will be used automatically.</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">

@@ -115,45 +115,6 @@ export const mockSpecialities: Speciality[] = [
 
 export const mockClients: Client[] = [
     {
-        id: '1',
-        name: 'Client A',
-        slug: 'client-a',
-        description: 'A great client',
-        excerpt: 'Great client',
-        isFeatured: true,
-        status: 'active',
-        order: 1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/net.svg' } as any
-    },
-    {
-        id: '2',
-        name: 'Client B',
-        slug: 'client-b',
-        description: 'Another great client',
-        excerpt: 'Another client',
-        isFeatured: true,
-        status: 'active',
-        order: 2,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/net.svg' } as any
-    },
-    {
-        id: '3',
-        name: 'Grab',
-        slug: 'grab',
-        description: 'Leading super-app in Southeast Asia.',
-        excerpt: 'Southeast Asia\'s leading superapp with over 187 million users.',
-        isFeatured: true,
-        status: 'active',
-        order: 3,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/grab.svg' } as any
-    },
-    {
         id: '4',
         name: 'Traveloka',
         slug: 'traveloka',
@@ -161,10 +122,11 @@ export const mockClients: Client[] = [
         excerpt: 'The ultimate lifestyle companion for millions across the region.',
         isFeatured: true,
         status: 'active',
-        order: 4,
+        order: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/traveloka.svg' } as any
+        logo: { originalUrl: '/assets/client/Traveloka-Logo-Vector.svg-.svg' } as any,
+        brandColor: '#0194f3'
     },
     {
         id: '5',
@@ -174,10 +136,95 @@ export const mockClients: Client[] = [
         excerpt: 'Connecting millions of users through a mobile-first social commerce experience.',
         isFeatured: true,
         status: 'active',
+        order: 2,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/Shopee_logo.svg' } as any,
+        brandColor: '#ee4d2d'
+    },
+    {
+        id: '6',
+        name: 'HokBen',
+        slug: 'hokben',
+        description: 'Japanese-style fast food restaurant chain.',
+        excerpt: 'The most popular Japanese-style fast food chain in Indonesia.',
+        isFeatured: true,
+        status: 'active',
+        order: 3,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/HokBen_new_logo.svg' } as any,
+        brandColor: '#ffcc00'
+    },
+    {
+        id: '7',
+        name: 'J&T Express',
+        slug: 'jt-express',
+        description: 'Express delivery services company.',
+        excerpt: 'Fast and reliable logistics partner for e-commerce.',
+        isFeatured: true,
+        status: 'active',
+        order: 4,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/J&T_Express_logo.svg' } as any,
+        brandColor: '#ff0000'
+    },
+    {
+        id: '8',
+        name: 'OVO',
+        slug: 'ovo',
+        description: 'Leading digital payment and financial services platform.',
+        excerpt: 'Smart way to pay and manage your finances.',
+        isFeatured: true,
+        status: 'active',
         order: 5,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/shopee.svg' } as any
+        logo: { originalUrl: '/assets/client/Logo_ovo_purple.svg.svg' } as any,
+        brandColor: '#4c2a86'
+    },
+    {
+        id: '9',
+        name: 'Pegadaian',
+        slug: 'pegadaian',
+        description: 'State-owned financial services provider.',
+        excerpt: 'Solving problems without problems.',
+        isFeatured: true,
+        status: 'active',
+        order: 6,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/Pegadaian_logo.svg' } as any,
+        brandColor: '#006a4d'
+    },
+    {
+        id: '10',
+        name: 'Citroen',
+        slug: 'citroen',
+        description: 'French automobile manufacturer.',
+        excerpt: 'Comfort and innovation in automotive design.',
+        isFeatured: true,
+        status: 'active',
+        order: 7,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/Citroen-Logo-PNG-Cutout.svg' } as any,
+        brandColor: '#6e6e6e'
+    },
+    {
+        id: '11',
+        name: 'Axis',
+        slug: 'axis',
+        description: 'Mobile telecommunications services provider.',
+        excerpt: 'Youthful and innovative cellular provider.',
+        isFeatured: true,
+        status: 'active',
+        order: 8,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        logo: { originalUrl: '/assets/client/Axis_logo.svg' } as any,
+        brandColor: '#ed008c'
     }
 ];
 

@@ -25,7 +25,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="space-y-10 p-8 max-w-[1600px] mx-auto animate-in fade-in duration-700">
+        <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
             <div>
                 <h1 className="text-4xl font-black tracking-tight text-slate-900">System Settings</h1>
                 <p className="text-slate-500 font-medium mt-1">Configure global preferences and tools.</p>
@@ -46,13 +46,7 @@ export default function SettingsPage() {
                     href="/admin/settings/database"
                     color="black"
                 />
-                <SettingsCard
-                    title="File Explorer"
-                    description="Browse uploads and system files."
-                    icon={HardDrive}
-                    href="/admin/settings/files"
-                    color="slate"
-                />
+
             </div>
 
             <div className="bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/50">

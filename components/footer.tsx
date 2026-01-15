@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { LoginModal } from './auth/LoginModal';
+import { useCookieConsent } from '@/hooks/use-cookie-consent';
 
 // Mock settings if props are missing in App Router context (since usePage is Inertia)
 // In a real app we'd pass these as props or use a context. 
@@ -29,6 +30,7 @@ export const Footer = () => {
     // Assuming this component is now used in Next.js App Router context.
     const contactSettings = defaultContactSettings;
     const siteSettings = defaultSiteSettings;
+    const { openSettings } = useCookieConsent();
 
     return (
         <footer className="bg-slate-950 pt-16 pb-8 text-white border-t border-slate-900">
@@ -96,6 +98,12 @@ export const Footer = () => {
                     </p>
                     <div className="flex gap-6 text-xs text-slate-500">
                         <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">Privacy Policy</Link>
+                        <button
+                            onClick={openSettings}
+                            className="hover:text-emerald-400 transition-colors"
+                        >
+                            Cookie Settings
+                        </button>
                         <Link href="/faq" className="hover:text-emerald-400 transition-colors">Help Center</Link>
                     </div>
                 </div>

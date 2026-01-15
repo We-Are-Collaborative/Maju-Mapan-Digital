@@ -48,7 +48,7 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({
         <section className="relative overflow-hidden bg-[#050505] py-24 sm:py-32" id="our-specialties">
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-[url('/assets/bg_hello_dekstop.webp')] bg-cover bg-center opacity-10 scale-105" />
+                <div className="absolute inset-0 bg-[url(/assets/bg_hello_dekstop.webp)] bg-cover bg-center opacity-10 scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
             </div>
 
@@ -71,61 +71,70 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({
                     className="mb-20"
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 auto-rows-fr">
-                    {specialities.map((item, index) => {
-                        const styles = getUniqueCardStyles(item.slug || "");
-                        const isDigitalPerformance = item.slug === 'digital-performance-marketing';
-                        const isInfluencer = item.slug === 'influencer-kol-marketing';
-                        const isSEO = item.slug === 'seo-organic-growth';
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 auto-rows-fr">
+                    {specialities
+                        .sort((a, b) => {
+                            const slugs = [
+                                'digital-performance-marketing',
+                                'influencer-kol-marketing',
+                                'creative-content-production',
+                                'seo-organic-growth'
+                            ];
+                            return slugs.indexOf(a.slug || "") - slugs.indexOf(b.slug || "");
+                        })
+                        .map((item, index) => {
+                            const styles = getUniqueCardStyles(item.slug || "");
+                            const isDigitalPerformance = item.slug === 'digital-performance-marketing';
+                            const isInfluencer = item.slug === 'influencer-kol-marketing';
+                            const isSEO = item.slug === 'seo-organic-growth';
+                            const isCreative = item.slug === 'creative-content-production';
 
-                        // Map specific images, English content, and client logos to slugs
-                        let bgImage;
-                        let englishDescription = item.excerpt || "";
-                        let clientLogos: string[] = [];
+                            // Map specific images, English content, and client logos to slugs
+                            let bgImage;
+                            let englishDescription = item.excerpt || "";
+                            let clientLogos: string[] = [];
 
-                        if (isDigitalPerformance) {
-                            bgImage = '/assets/bg_banner_dekstop.webp';
-                            englishDescription = "Data-driven campaigns designed to scale. We optimize your ad spend across Google, Meta, and TikTok to deliver maximum ROI and predictable revenue growth.";
-                            clientLogos = ['/assets/client/grab.svg', '/assets/client/jenius.svg', '/assets/client/traveloka.svg'];
-                        }
-                        if (isInfluencer) {
-                            bgImage = '/assets/bg-speciality.webp';
-                            englishDescription = "Connect your brand with authentic voices that resonate. We manage end-to-end influencer campaigns that drive engagement, trust, and measurable conversions.";
-                            clientLogos = ['/assets/client/finally_find_you.svg', '/assets/client/ascott.svg', '/assets/client/pegadaian.svg'];
-                        }
-                        if (isSEO) {
-                            bgImage = '/assets/bg-tools.webp';
-                            englishDescription = "Dominate search results and build long-term authority. Our technical SEO and content strategies ensure your brand is found by the right audience at the right time.";
-                            clientLogos = ['/assets/client/prime_video.svg', '/assets/client/jet.svg', '/assets/client/citroen.svg'];
-                        }
+                            if (isDigitalPerformance) {
+                                bgImage = '/assets/bg_banner_dekstop.webp';
+                                englishDescription = "Data-driven campaigns designed to scale. We optimize your ad spend across Google, Meta, and TikTok to deliver maximum ROI and predictable revenue growth.";
+                                clientLogos = ['/assets/client/grab.svg', '/assets/client/jenius.svg', '/assets/client/traveloka.svg'];
+                            } else if (isInfluencer) {
+                                bgImage = '/assets/bg-speciality.webp';
+                                englishDescription = "Connect your brand with authentic voices that resonate. We manage end-to-end influencer campaigns that drive engagement, trust, and measurable conversions.";
+                                clientLogos = ['/assets/client/finally_find_you.svg', '/assets/client/ascott.svg', '/assets/client/pegadaian.svg'];
+                            } else if (isSEO) {
+                                bgImage = '/assets/bg-tools.webp';
+                                englishDescription = "Dominate search results and build long-term authority. Our technical SEO and content strategies ensure your brand is found by the right audience at the right time.";
+                                clientLogos = ['/assets/client/prime_video.svg', '/assets/client/jet.svg', '/assets/client/citroen.svg'];
+                            } else if (isCreative) {
+                                bgImage = '/assets/bg_hello_dekstop.webp';
+                                englishDescription = "Transform your brand story into high-impact visual assets. We produce professional video, photography, and motion graphics that capture attention and drive conversions.";
+                                clientLogos = ['/assets/client/achieva.svg', '/assets/client/yesci.svg', '/assets/client/prime_video.svg'];
+                            }
 
-                        // Grid positioning for Bento effect
-                        let gridClasses = "col-span-1 lg:col-span-12";
-                        if (isDigitalPerformance) {
-                            gridClasses = "lg:col-span-7 lg:row-span-2";
-                        } else if (isInfluencer || isSEO) {
-                            gridClasses = "lg:col-span-5";
-                        }
+                            // Symmetrical 2-column layout
+                            const gridClasses = "col-span-1";
 
-                        // Skip if not one of the featured 3 (though they should already be filtered)
-                        if (!isDigitalPerformance && !isInfluencer && !isSEO) return null;
+                            // Skip if not one of the featured 4
+                            if (!isDigitalPerformance && !isInfluencer && !isSEO && !isCreative) return null;
 
-                        return (
-                            <div key={item.id} className={`${gridClasses} h-full`}>
-                                <SolutionCard
-                                    title={item.title || ""}
-                                    description={englishDescription}
-                                    slug={item.slug || ""}
-                                    icon={styles.icon}
-                                    index={index}
-                                    styles={styles}
-                                    featured={isDigitalPerformance}
-                                    backgroundImage={bgImage}
-                                    clientLogos={clientLogos}
-                                />
-                            </div>
-                        );
-                    })}
+                            return (
+                                <div key={item.id} className={`${gridClasses} h-full`}>
+                                    <SolutionCard
+                                        title={item.title || ""}
+                                        description={englishDescription}
+                                        slug={item.slug || ""}
+                                        icon={styles.icon}
+                                        index={index}
+                                        styles={styles}
+                                        featured={false} // All cards uniform now for symmetry
+                                        backgroundImage={bgImage}
+                                        backgroundImageAlt={item.background?.alt || item.title}
+                                        clientLogos={clientLogos}
+                                    />
+                                </div>
+                            );
+                        })}
                 </div>
 
                 {/* Bottom CTA */}

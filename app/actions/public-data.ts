@@ -26,7 +26,7 @@ export async function getHomePageData(): Promise<HomePageData> {
             db.client.findMany({
                 where: { isFeatured: true },
                 orderBy: { order: 'asc' },
-                take: 8 // Match grid size
+                take: 50 // Increased to support infinite carousel
             }),
             // @ts-ignore
             db.caseStudy.findMany({
@@ -60,8 +60,8 @@ export async function getHomePageData(): Promise<HomePageData> {
         }
 
         const seoConfig: SeoConfig | undefined = seo ? {
-            title: seo.title || undefined,
-            description: seo.description || undefined,
+            title: seo.metaTitle || undefined,
+            description: seo.metaDescription || undefined,
             language: 'en'
         } : undefined;
 
@@ -71,7 +71,8 @@ export async function getHomePageData(): Promise<HomePageData> {
         const mappedValues = values.map((v: any) => ({
             ...v,
             iconUrl: v.iconUrl,
-            background: { originalUrl: v.bgUrl },
+            iconAlt: v.iconAlt,
+            background: { originalUrl: v.bgUrl, alt: v.bgAlt },
             // Ensure types match
             id: v.id,
             slug: v.slug,
@@ -85,8 +86,9 @@ export async function getHomePageData(): Promise<HomePageData> {
         const mappedSpecialities = specialities.map((s: any) => ({
             ...s,
             iconUrl: s.iconUrl,
-            background: { originalUrl: s.bgUrl },
-            thumbnail: { originalUrl: s.thumbnailUrl },
+            iconAlt: s.iconAlt,
+            background: { originalUrl: s.bgUrl, alt: s.bgAlt },
+            thumbnail: { originalUrl: s.thumbnailUrl, alt: s.thumbnailAlt },
             keyComponent: [], // Generic
             strategyWork: [], // Generic
             createdAt: s.createdAt.toISOString(),
@@ -95,7 +97,7 @@ export async function getHomePageData(): Promise<HomePageData> {
 
         const mappedClients = clients.map((c: any) => ({
             ...c,
-            logo: { originalUrl: c.logoUrl },
+            logo: { originalUrl: c.logoUrl, alt: c.logoAlt },
             isFeatured: c.isFeatured,
             createdAt: c.createdAt.toISOString(),
             updatedAt: c.updatedAt.toISOString(),
@@ -103,7 +105,7 @@ export async function getHomePageData(): Promise<HomePageData> {
 
         const mappedCaseStudies = showcases.map((s: any) => ({
             ...s,
-            thumbnail: s.thumbnailUrl ? { originalUrl: s.thumbnailUrl } : null,
+            thumbnail: s.thumbnailUrl ? { originalUrl: s.thumbnailUrl, alt: s.thumbnailAlt } : null,
             metrics: s.metrics ? JSON.parse(s.metrics) : [],
             client: s.client ? {
                 ...s.client,
@@ -146,7 +148,8 @@ export async function getValues(): Promise<Value[]> {
     return items.map((v: any) => ({
         ...v,
         iconUrl: v.iconUrl,
-        background: { originalUrl: v.bgUrl },
+        iconAlt: v.iconAlt,
+        background: { originalUrl: v.bgUrl, alt: v.bgAlt },
         id: v.id,
         slug: v.slug,
         title: v.title,
@@ -165,7 +168,7 @@ export async function getTeam(): Promise<any[]> { // Type 'StakeHolder' is used 
         name: m.name,
         position: m.position,
         excerpt: m.excerpt,
-        thumbnail: { originalUrl: m.thumbnailUrl },
+        thumbnail: { originalUrl: m.thumbnailUrl, alt: m.imageAlt },
         linkedinUrl: m.linkedinUrl,
         email: m.email,
         createdAt: m.createdAt.toISOString(),
@@ -179,8 +182,9 @@ export async function getSpecialities(): Promise<Speciality[]> {
     return items.map((s: any) => ({
         ...s,
         iconUrl: s.iconUrl,
-        background: { originalUrl: s.bgUrl },
-        thumbnail: { originalUrl: s.thumbnailUrl },
+        iconAlt: s.iconAlt,
+        background: { originalUrl: s.bgUrl, alt: s.bgAlt },
+        thumbnail: { originalUrl: s.thumbnailUrl, alt: s.thumbnailAlt },
         keyComponent: [],
         strategyWork: [],
         createdAt: s.createdAt.toISOString(),
@@ -193,7 +197,7 @@ export async function getClients(): Promise<Client[]> {
     const items = await db.client.findMany({ orderBy: { order: 'asc' } });
     return items.map((c: any) => ({
         ...c,
-        logo: { originalUrl: c.logoUrl },
+        logo: { originalUrl: c.logoUrl, alt: c.logoAlt },
         isFeatured: c.isFeatured,
         createdAt: c.createdAt.toISOString(),
         updatedAt: c.updatedAt.toISOString(),
@@ -221,8 +225,8 @@ export async function getPageSeo(slug: string): Promise<Page> {
     }
 
     const seoConfig: SeoConfig | undefined = seo ? {
-        title: seo.title || undefined,
-        description: seo.description || undefined,
+        title: seo.metaTitle || undefined,
+        description: seo.metaDescription || undefined,
         language: 'en'
     } : undefined;
 
@@ -269,7 +273,7 @@ export async function getArticles() {
         slug: a.slug,
         excerpt: a.excerpt,
         content: a.content,
-        thumbnail: { originalUrl: a.thumbnailUrl },
+        thumbnail: { originalUrl: a.thumbnailUrl, alt: a.thumbnailAlt },
         categoryId: a.categoryId,
         category: a.category ? { name: a.category.name, slug: a.category.slug } : null,
         status: a.status,
@@ -451,6 +455,7 @@ export async function getCaseStudies() {
         slug: item.slug,
         excerpt: item.excerpt,
         thumbnailUrl: item.thumbnailUrl,
+        thumbnailAlt: item.thumbnailAlt,
         client: item.client ? {
             name: item.client.name,
             slug: item.client.slug,

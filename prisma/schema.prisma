@@ -26,6 +26,7 @@ model PageContent {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   navMenu   NavMenu?
+  seo       SEO?
   sections  PageSection[]
 }
 
@@ -63,6 +64,21 @@ model GlobalSettings {
   maintenanceMode Boolean  @default(false)
   logoType        String   @default("svg")
   logoGifUrl      String?
+  logoAlt         String?  @default("Maju Mapan Digital Logo")
+  
+  // Crawlers & Server
+  robotsTxt       String?  // Custom robots.txt content
+  htaccess        String?  // Custom .htaccess content (simulation/storage only)
+
+  // Analytics & Tracking
+  googleAnalyticsScript String?
+  metaPixelScript       String?
+  tiktokPixelScript     String?
+
+  // Custom Injection
+  customHeadScripts String?
+  customBodyScripts String?
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -76,13 +92,33 @@ model Theme {
 }
 
 model SEO {
-  id          String   @id @default(cuid())
-  title       String?
-  description String?
-  keywords    String?
-  pageId      String?  @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  // Core SEO
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+  canonicalUrl    String?
+  robots          String?  @default("index, follow")
+
+  // Open Graph
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+
+  // Technical
+  structuredData  String?  // Custom JSON-LD
+
+  // GEO / Local
+  geoRegion       String?
+  geoPlacename    String?
+  geoPosition     String?  // lat;long
+  googleBusiness  String?
+  
+  pageId          String?  @unique
+  page            PageContent? @relation(fields: [pageId], references: [id])
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Script {
@@ -135,7 +171,9 @@ model Value {
   excerpt   String?
   slug      String   @unique
   iconUrl   String?
+  iconAlt   String?
   bgUrl     String?
+  bgAlt     String?
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -147,6 +185,7 @@ model TeamMember {
   position     String
   excerpt      String?
   thumbnailUrl String?
+  imageAlt     String?
   linkedinUrl  String?
   email        String?
   order        Int      @default(0)
@@ -162,8 +201,11 @@ model Speciality {
   excerpt      String?
   description  String?
   iconUrl      String?
+  iconAlt      String?
   bgUrl        String?
+  bgAlt        String?
   thumbnailUrl String?
+  thumbnailAlt String?
   order        Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -176,6 +218,7 @@ model Client {
   description String?
   excerpt     String?
   logoUrl     String?
+  logoAlt     String?
   isFeatured  Boolean     @default(false)
   status      String      @default("active")
   order       Int         @default(0)
@@ -224,6 +267,7 @@ model Article {
   excerpt      String?
   content      String?
   thumbnailUrl String?
+  thumbnailAlt String?
   status       String    @default("draft")
   isFeatured   Boolean   @default(false)
   categoryId   String?
@@ -239,6 +283,7 @@ model CaseStudy {
   excerpt      String?
   content      String?
   thumbnailUrl String?
+  thumbnailAlt String?
   clientId     String?
   startDate    DateTime?
   endDate      DateTime?
@@ -289,3 +334,57 @@ model JobApplication {
   user         User?    @relation(fields: [userId], references: [id])
   career       Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
 }
+
+model HomeHero {
+  id              String          @id @default(cuid())
+  isDynamic       Boolean         @default(true)
+  isActive        Boolean         @default(true)
+  slides          HomeHeroSlide[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model HomeHeroSlide {
+  id              String   @id @default(cuid())
+  heroId          String
+  titleLine1      String
+  titleHighlight  String
+  subtitle        String
+  ctaText         String
+  ctaLink         String
+  bgImageDesktop    String?
+  bgImageDesktopAlt String?
+  bgImageMobile     String?
+  bgImageMobileAlt  String?
+  bgOpacity       Float    @default(0.4)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  hero            HomeHero @relation(fields: [heroId], references: [id], onDelete: Cascade)
+}
+
+model AudienceIntelligence {
+  id              String   @id @default(cuid())
+  sessionId       String   @unique
+  interests       String?  // JSON or comma separated keywords
+  browsingHistory String?  // JSON
+  lastSearch      String?
+  topTopics       String?  // From web trends
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+model MediaAsset {
+  id           String   @id @default(cuid())
+  fileName     String
+  originalName String
+  altTag       String
+  filePath     String
+  fileSizeKb   Float
+  format       String
+  type         String   @default("IMAGE")
+  dimensions   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+

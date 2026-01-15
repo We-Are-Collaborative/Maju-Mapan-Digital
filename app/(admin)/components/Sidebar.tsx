@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Settings, Users, LogOut, Globe, Zap, Briefcase, Code, MessageSquare, Building, Tag, Activity, Map, BarChart } from "lucide-react";
+import { LayoutDashboard, FileText, Settings, Users, LogOut, Globe, Zap, Briefcase, Code, MessageSquare, Building, Tag, Activity, Map, BarChart, Folder } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
@@ -60,12 +60,18 @@ const Sidebar = () => {
 
             {/* Nav */}
             <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
-                {/* Dashboard */}
-                <div>
+                {/* Dashboard & Hero */}
+                <div className="space-y-1">
                     <Button variant={pathname === '/admin' ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
                         <Link href="/admin">
                             <LayoutDashboard className="mr-2 h-4 w-4" />
                             Dashboard
+                        </Link>
+                    </Button>
+                    <Button variant={pathname.startsWith('/admin/settings/hero') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
+                        <Link href="/admin/settings/hero">
+                            <Zap className="mr-2 h-4 w-4 text-lime-400" />
+                            Hero Home
                         </Link>
                     </Button>
                 </div>
@@ -98,22 +104,17 @@ const Sidebar = () => {
                                 Content Blocks
                             </Link>
                         </Button>
-                        <Button variant={pathname.startsWith('/admin/values') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/values">
-                                <FileText className="mr-2 h-4 w-4" />
-                                Values
+                        <Button variant={pathname.startsWith('/admin/media') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
+                            <Link href="/admin/media">
+                                <Activity className="mr-2 h-4 w-4" />
+                                Media Library
                             </Link>
                         </Button>
+
                         <Button variant={pathname.startsWith('/admin/categories') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
                             <Link href="/admin/categories">
                                 <Tag className="mr-2 h-4 w-4" />
                                 Categories
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/pages/about') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/pages/about">
-                                <FileText className="mr-2 h-4 w-4" />
-                                About Us
                             </Link>
                         </Button>
                         <Button variant={pathname.startsWith('/admin/team') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
@@ -217,16 +218,23 @@ const Sidebar = () => {
                                 Users
                             </Link>
                         </Button>
-                        <Button variant={pathname.startsWith('/admin/scripts') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/scripts">
-                                <Code className="mr-2 h-4 w-4" />
-                                Scripts
+
+                        <Button variant={pathname.startsWith('/admin/system/files') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
+                            <Link href="/admin/system/files">
+                                <Folder className="mr-2 h-4 w-4" />
+                                File Directory
                             </Link>
                         </Button>
                         <Button variant={pathname.startsWith('/admin/settings') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
                             <Link href="/admin/settings">
                                 <Settings className="mr-2 h-4 w-4" />
-                                Global Settings
+                                General Settings
+                            </Link>
+                        </Button>
+                        <Button variant={pathname.startsWith('/admin/settings/global') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
+                            <Link href="/admin/settings/global">
+                                <Globe className="mr-2 h-4 w-4" />
+                                Website Config
                             </Link>
                         </Button>
                     </div>

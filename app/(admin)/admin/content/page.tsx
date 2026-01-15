@@ -46,7 +46,7 @@ export default function ContentManager() {
     const filteredPages = pages.filter(p => p.title.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <div className="space-y-8 p-8 max-w-5xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -117,6 +117,25 @@ export default function ContentManager() {
                             </Link>
                         </div>
                     ))}
+
+                    {/* Values Card */}
+                    <div className="group bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-lime-400 hover:shadow-xl hover:translate-y-[-2px] transition-all cursor-pointer">
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
+                                <FileText size={24} />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-black text-slate-900">Company Values</h3>
+                                <p className="text-slate-500 text-sm">Core values and principles</p>
+                            </div>
+                        </div>
+                        <Link
+                            href="/admin/content/values"
+                            className="w-full py-3 bg-white border-2 border-slate-200 text-slate-900 font-bold rounded-lg text-center hover:border-black hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+                        >
+                            <Edit size={16} /> Manage Values
+                        </Link>
+                    </div>
                 </div>
             </div>
 

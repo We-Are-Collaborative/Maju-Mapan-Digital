@@ -75,7 +75,7 @@ export default function BackupManager() {
     };
 
     return (
-        <div className="space-y-6 h-full flex flex-col p-8 max-w-6xl mx-auto animate-in fade-in duration-700">
+        <div className="space-y-6 h-full flex flex-col p-8  animate-in fade-in duration-700">
             <div className="flex justify-between items-center mb-4">
                 <div>
                     <h1 className="text-4xl font-black tracking-tight text-slate-900 flex items-center gap-3">

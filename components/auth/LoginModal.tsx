@@ -159,12 +159,12 @@ export function LoginModal() {
 
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" required placeholder="name@example.com" />
+                        <Input id="email" name="email" type="email" placeholder="name@example.com" />
                     </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="password">Password</Label>
-                        <Input id="password" name="password" type="password" required />
+                        <Input id="password" name="password" type="password" />
                     </div>
 
                     {error && (

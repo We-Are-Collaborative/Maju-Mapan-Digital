@@ -3,8 +3,12 @@
 @plugin 'tailwindcss-animate';
 @plugin '@tailwindcss/typography';
 
-/* @source '../views'; */
-/* @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php'; */
+@source '..';
+@source '../*';
+@source '!../backup_legacy/**/*';
+@source '!../node_modules/**/*';
+@source '!../.next/**/*';
+@source '!../*.html';
 
 /* @custom-variant dark (&:is(.dark *)); */
 

@@ -1,0 +1,270 @@
+[
+  {
+    "url": "https://5758creativelab.com",
+    "seo_score": 45,
+    "geo_score": 60,
+    "issues": [
+      {
+        "type": "SEO",
+        "severity": "CRITICAL",
+        "message": "Missing <title> tag",
+        "scoreImpact": 20
+      },
+      {
+        "type": "SEO",
+        "severity": "CRITICAL",
+        "message": "Missing meta description",
+        "scoreImpact": 15
+      },
+      {
+        "type": "SEO",
+        "severity": "CRITICAL",
+        "message": "Missing H1 tag",
+        "scoreImpact": 15
+      },
+      {
+        "type": "SEO",
+        "severity": "INFO",
+        "message": "Missing canonical tag",
+        "scoreImpact": 0
+      },
+      {
+        "type": "SEO",
+        "severity": "WARNING",
+        "message": "Incomplete OpenGraph tags",
+        "scoreImpact": 5
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "Contact details (NAP) not clearly detected on page",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "No Google Maps embed found",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "CRITICAL",
+        "message": "Missing LocalBusiness or Organization schema",
+        "scoreImpact": 20
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "No hreflang tags found (recommended for multi-region)",
+        "scoreImpact": 0
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "Missing legacy Geo meta tags",
+        "scoreImpact": 0
+      }
+    ],
+    "recommendations": [
+      "1. Add a descriptive <title> tag such as \"[Business Name] – Your Local [Industry] Experts in [City].\"",
+      "2. Insert a meta description like \"Discover top-notch [service/product] at [Business Name]. Located in [City], we offer [key services] to meet your needs. Contact us today!\"",
+      "3. Implement LocalBusiness schema to improve visibility in local search results; ensure it includes NAP (Name, Address, Phone Number).",
+      "4. Embed a Google Map of your location to enhance local SEO and provide easy directions for users.",
+      "5. Use hreflang tags if the site targets multiple regions, ensuring proper language and regional targeting for international visitors."
+    ],
+    "details": {
+      "title": "",
+      "description": "",
+      "h1": [],
+      "images_count": 0,
+      "images_missing_alt": 0,
+      "canonical": null,
+      "schema_types": [],
+      "og_tags": {},
+      "geo_data": {
+        "nap_detected": false,
+        "map_embed": false,
+        "hreflang": false,
+        "coordinates": false
+      }
+    },
+    "timestamp": "2026-01-15T01:54:45.812Z"
+  },
+  {
+    "url": "http://localhost:3000/about-us",
+    "seo_score": 91,
+    "geo_score": 80,
+    "issues": [
+      {
+        "type": "SEO",
+        "severity": "WARNING",
+        "message": "Title length (93) is not optimal (30-60 chars)",
+        "scoreImpact": 5
+      },
+      {
+        "type": "SEO",
+        "severity": "WARNING",
+        "message": "2 images missing alt text",
+        "scoreImpact": 4
+      },
+      {
+        "type": "SEO",
+        "severity": "INFO",
+        "message": "Missing canonical tag",
+        "scoreImpact": 0
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "Contact details (NAP) not clearly detected on page",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "No Google Maps embed found",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "No hreflang tags found (recommended for multi-region)",
+        "scoreImpact": 0
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "Missing legacy Geo meta tags",
+        "scoreImpact": 0
+      }
+    ],
+    "recommendations": [
+      "Optimize title to: 'Maju Mapan Digital | AI-Driven Marketing & Creative Solutions in Indonesia'.",
+      "Add alt text for images to improve accessibility and SEO, e.g., 'Maju Mapan Team at Work'.",
+      "Include a canonical tag to consolidate duplicate URLs and strengthen SEO.",
+      "Embed a Google Map on your contact page to enhance local visibility.",
+      "Implement hreflang tags for regional targeting, improving user relevance for Indonesian audiences."
+    ],
+    "details": {
+      "title": "Maju Mapan Digital | Powering Your Growth with AI-Driven Performance MarketingInstagramTikTok",
+      "description": "Maju Mapan provides comprehensive digital marketing, web development, and creative solutions for businesses in Indonesia.",
+      "h1": [
+        "We CreateDigital Excellence"
+      ],
+      "images_count": 7,
+      "images_missing_alt": 2,
+      "canonical": null,
+      "schema_types": [
+        "Organization",
+        "BreadcrumbList",
+        "Person",
+        "Person",
+        "Person"
+      ],
+      "og_tags": {
+        "og:title": "Maju Mapan Digital | Powering Your Growth with AI-Driven Performance Marketing",
+        "og:description": "Excellence in Digital Solutions. Your partner in profitable growth—turning traffic into tangible revenue.",
+        "og:url": "http://localhost:3000",
+        "og:site_name": "Maju Mapan Digital",
+        "og:locale": "id_ID",
+        "og:image": "http://localhost:3000/assets/og-home.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Maju Mapan Digital - AI-Driven Performance Marketing",
+        "og:type": "website"
+      },
+      "geo_data": {
+        "nap_detected": false,
+        "map_embed": false,
+        "hreflang": false,
+        "coordinates": false
+      }
+    },
+    "timestamp": "2026-01-14T18:24:56.066Z"
+  },
+  {
+    "url": "http://localhost:3000/",
+    "seo_score": 90,
+    "geo_score": 60,
+    "issues": [
+      {
+        "type": "SEO",
+        "severity": "WARNING",
+        "message": "Title length (93) is not optimal (30-60 chars)",
+        "scoreImpact": 5
+      },
+      {
+        "type": "SEO",
+        "severity": "WARNING",
+        "message": "Meta description length (105) is not optimal (120-160 chars)",
+        "scoreImpact": 5
+      },
+      {
+        "type": "SEO",
+        "severity": "INFO",
+        "message": "Missing canonical tag",
+        "scoreImpact": 0
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "Contact details (NAP) not clearly detected on page",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "WARNING",
+        "message": "No Google Maps embed found",
+        "scoreImpact": 10
+      },
+      {
+        "type": "GEO",
+        "severity": "CRITICAL",
+        "message": "Missing LocalBusiness or Organization schema",
+        "scoreImpact": 20
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "No hreflang tags found (recommended for multi-region)",
+        "scoreImpact": 0
+      },
+      {
+        "type": "GEO",
+        "severity": "INFO",
+        "message": "Missing legacy Geo meta tags",
+        "scoreImpact": 0
+      }
+    ],
+    "recommendations": [
+      "Revise the title to: 'Maju Mapan Digital | AI-Driven Growth Solutions.'",
+      "Expand meta description to: 'Partner in growth with AI-powered marketing. Turn traffic into revenue with our expert solutions.'",
+      "Add LocalBusiness schema to include business address, phone number, and operating hours.",
+      "Integrate Google Maps on the contact page to enhance local visibility.",
+      "Implement hreflang tags to target specific regions and languages."
+    ],
+    "details": {
+      "title": "Maju Mapan Digital | Powering Your Growth with AI-Driven Performance MarketingInstagramTikTok",
+      "description": "Excellence in Digital Solutions. Your partner in profitable growth—turning traffic into tangible revenue.",
+      "h1": [
+        "AgencyElite Network"
+      ],
+      "images_count": 100,
+      "images_missing_alt": 0,
+      "canonical": null,
+      "schema_types": [],
+      "og_tags": {
+        "og:title": "Maju Mapan Digital | Powering Your Growth with AI-Driven Performance Marketing",
+        "og:description": "Excellence in Digital Solutions. Your partner in profitable growth—turning traffic into tangible revenue.",
+        "og:image": "http://localhost:3000/assets/og-home.png"
+      },
+      "geo_data": {
+        "nap_detected": false,
+        "map_embed": false,
+        "hreflang": false,
+        "coordinates": false
+      }
+    },
+    "timestamp": "2026-01-14T18:24:06.882Z"
+  }
+]

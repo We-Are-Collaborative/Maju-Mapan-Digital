@@ -192,13 +192,13 @@ async function main() {
     await prisma.sEO.upsert({
         where: { pageId: homePage.id },
         update: {
-            title: mockPageSeo.seoConfig?.title,
-            description: mockPageSeo.seoConfig?.description,
+            metaTitle: mockPageSeo.seoConfig?.title,
+            metaDescription: mockPageSeo.seoConfig?.description,
         },
         create: {
             pageId: homePage.id,
-            title: mockPageSeo.seoConfig?.title,
-            description: mockPageSeo.seoConfig?.description,
+            metaTitle: mockPageSeo.seoConfig?.title,
+            metaDescription: mockPageSeo.seoConfig?.description,
         }
     });
 
