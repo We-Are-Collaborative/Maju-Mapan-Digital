@@ -15,7 +15,7 @@ async function main() {
                 name: 'Admin User',
                 role: 'admin',
                 // In real app, hash this. For demo/dev: simple text or pre-hashed
-                password: '$2b$10$EpIx.i4/.r7.r7.r7.r7.r7.r7.r7.r7.r7.r7', // mock hash
+                password: '$2a$10$CbT7/b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b.b', // bcrypt hash for 'password123'
             }
         });
         console.log('Created admin user');

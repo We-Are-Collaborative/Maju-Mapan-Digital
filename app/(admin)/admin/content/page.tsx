@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Edit, FileText, Plus, Search, Trash2, Menu, LayoutDashboard } from "lucide-react";
-import { getAllPages, getSystemPages, createPage, deletePage } from "@/app/actions/pages";
+import { getAllPages, createPage, deletePage } from "@/app/actions/pages";
 
 export default function ContentManager() {
     const [pages, setPages] = useState<any[]>([]);
-    const [systemPages, setSystemPages] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
@@ -18,9 +17,8 @@ export default function ContentManager() {
     const fetchPages = async () => {
         setLoading(true);
         try {
-            const [data, sysData] = await Promise.all([getAllPages(), getSystemPages()]);
+            const data = await getAllPages();
             setPages(data);
-            setSystemPages(sysData);
         } catch (error) {
             console.error("Failed to fetch pages:", error);
         } finally {
@@ -78,46 +76,6 @@ export default function ContentManager() {
             <div className="space-y-4">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">Global Elements</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Main Menu Card */}
-                    <div className="group bg-slate-900 border-2 border-slate-900 rounded-2xl p-6 flex flex-col justify-between hover:shadow-xl hover:translate-y-[-2px] transition-all cursor-pointer">
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className="p-3 bg-white/10 text-lime-400 rounded-xl">
-                                <Menu size={24} />
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-black text-white">Main Navigation</h3>
-                                <p className="text-slate-400 text-sm">Manage public menu items</p>
-                            </div>
-                        </div>
-                        <Link
-                            href="/admin/content/menu"
-                            className="w-full py-3 bg-lime-400 text-slate-900 font-bold rounded-lg text-center hover:bg-lime-300 transition-colors flex items-center justify-center gap-2"
-                        >
-                            <Edit size={16} /> Edit Menu
-                        </Link>
-                    </div>
-
-                    {/* Footer Card */}
-                    {systemPages.map(page => (
-                        <div key={page.id} className="group bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-lime-400 hover:shadow-xl hover:translate-y-[-2px] transition-all cursor-pointer">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="p-3 bg-lime-50 text-lime-600 rounded-xl">
-                                    <LayoutDashboard size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-slate-900">{page.title}</h3>
-                                    <p className="text-slate-500 text-sm">Universal site footer</p>
-                                </div>
-                            </div>
-                            <Link
-                                href={`/admin/content/edit/${page.id}`}
-                                className="w-full py-3 bg-white border-2 border-slate-200 text-slate-900 font-bold rounded-lg text-center hover:border-black hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <Edit size={16} /> Edit Content
-                            </Link>
-                        </div>
-                    ))}
-
                     {/* Values Card */}
                     <div className="group bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-lime-400 hover:shadow-xl hover:translate-y-[-2px] transition-all cursor-pointer">
                         <div className="flex items-center gap-4 mb-4">

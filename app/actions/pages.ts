@@ -98,18 +98,7 @@ export async function getAllPages() {
     }
 }
 
-export async function getSystemPages() {
-    try {
-        return await db.pageContent.findMany({
-            where: {
-                slug: { in: ['header', 'footer'] }
-            }
-        });
-    } catch (e) {
-        console.error(e);
-        return [];
-    }
-}
+
 
 export async function getPageContentById(id: string) {
     try {
