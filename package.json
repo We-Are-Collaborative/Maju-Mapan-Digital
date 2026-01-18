@@ -9,7 +9,7 @@
     "start": "next start",
     "start:public": "next start -H 0.0.0.0",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate && prisma db push --accept-data-loss"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.8",
