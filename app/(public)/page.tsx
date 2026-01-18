@@ -11,6 +11,7 @@ import { ClientsSection } from '@/components/home/clients-section';
 import { WorksSection } from '@/components/home/works-section';
 import { CompactAboutValues } from '@/components/home/compact-about-values';
 import { InteractiveCTASection } from '@/components/home/interactive-cta-section';
+import { MapanDashboardSection } from '@/components/home/mapan-dashboard-section';
 import { HeroSlider } from '@/components/home/hero-slider';
 import { Metadata } from 'next';
 import { getHomeHeroData } from '@/app/(admin)/_actions/home-hero';
@@ -39,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-    const { values, specialities, clients, caseStudies, pageSeo } = await getHomePageData();
+    const { values, specialities, clients, caseStudies, pageSeo, sections } = await getHomePageData();
 
     // Filter top 3 featured solutions for Bento Grid
     const featuredSlugs = [
@@ -64,6 +65,52 @@ export default async function Home() {
         }];
     }
 
+    const renderSection = (section: any) => {
+        switch (section.type) {
+            case 'section_values':
+                return (
+                    <CompactAboutValues
+                        key={section.id}
+                        values={values}
+                        aboutTitle="The Agency"
+                        valuesTitle={pageSeo?.content?.values_title || 'What We Stand for'}
+                    />
+                );
+            case 'section_clients':
+                return (
+                    <ClientsSection
+                        key={section.id}
+                        clients={clients}
+                        subtitle={pageSeo?.content?.clients_subtitle}
+                    />
+                );
+            case 'section_mapan_dashboard':
+                return <MapanDashboardSection key={section.id} />;
+            case 'section_solutions':
+                return (
+                    <SolutionsSection
+                        key={section.id}
+                        specialities={topSpecialities}
+                        title={pageSeo?.content?.specialties_title}
+                        subtitle={pageSeo?.content?.specialties_subtitle}
+                    />
+                );
+            case 'section_works':
+                return (
+                    <WorksSection
+                        key={section.id}
+                        caseStudies={caseStudies}
+                        title={pageSeo?.content?.works_title}
+                        subtitle={pageSeo?.content?.works_subtitle}
+                    />
+                );
+            case 'section_cta':
+                return <InteractiveCTASection key={section.id} />;
+            default:
+                return null;
+        }
+    };
+
     return (
         <>
             <SeoHead />
@@ -71,31 +118,7 @@ export default async function Home() {
             <div className="relative overflow-hidden">
                 <HeroSlider slides={slides} isDynamic={fetchedHero?.isDynamic ?? true} />
 
-                <CompactAboutValues
-                    values={values}
-                    aboutTitle="The Agency"
-                    valuesTitle={pageSeo?.content?.values_title || 'What We Stand for'}
-                />
-
-                <ClientsSection
-                    clients={clients}
-                    subtitle={pageSeo?.content?.clients_subtitle}
-                />
-
-                <SolutionsSection
-                    specialities={topSpecialities}
-                    title={pageSeo?.content?.specialties_title}
-                    subtitle={pageSeo?.content?.specialties_subtitle}
-                />
-
-                <WorksSection
-                    caseStudies={caseStudies}
-                    title={pageSeo?.content?.works_title}
-                    subtitle={pageSeo?.content?.works_subtitle}
-                />
-
-                {/* Call to Action Section */}
-                <InteractiveCTASection />
+                {sections?.map((section) => renderSection(section))}
             </div>
         </>
     );

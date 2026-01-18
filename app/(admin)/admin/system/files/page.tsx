@@ -144,7 +144,7 @@ export default function FileDirectoryPage() {
     const pathParts = currentPath.split('/').filter(Boolean);
 
     return (
-        <div className="flex h-[calc(100vh-100px)] gap-6 animate-in fade-in duration-500">
+        <div className="flex h-[calc(100vh-100px)] gap-6 p-8 w-full animate-in fade-in duration-500">
             {/* Sidebar / Explorer */}
             <div className="w-1/3 min-w-[300px] flex flex-col bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
                 {/* Header */}

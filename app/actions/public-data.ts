@@ -6,6 +6,7 @@ import { SeoConfig } from '@/types/seo_config';
 import { Value } from '@/types/value';
 import { Speciality } from '@/types/speciality';
 import { Client } from '@/types/client';
+import { getHomeSections, SectionItem } from './home-sections';
 
 interface HomePageData {
     values: Value[];
@@ -13,10 +14,14 @@ interface HomePageData {
     clients: Client[];
     caseStudies: any[]; // Using any for now or strictly typed if possible
     pageSeo?: Page;
+    sections?: SectionItem[];
 }
 
 export async function getHomePageData(): Promise<HomePageData> {
     try {
+        // Ensure sections exist (Seeding side-effect)
+        const sortedSections = await getHomeSections();
+
         const [values, specialities, clients, showcases, pageContent] = await Promise.all([
             // @ts-ignore
             db.value.findMany({ orderBy: { order: 'asc' } }),
@@ -38,7 +43,7 @@ export async function getHomePageData(): Promise<HomePageData> {
             db.pageContent.findUnique({
                 where: { slug: 'home' },
                 include: {
-                    sections: true,
+                    sections: { orderBy: { position: 'asc' } },
                 }
             })
         ]);
@@ -123,12 +128,21 @@ export async function getHomePageData(): Promise<HomePageData> {
             slug: 'home'
         };
 
+        const safeSections: SectionItem[] = (pageContent?.sections || sortedSections).map((s: any) => ({
+            id: s.id,
+            type: s.type,
+            name: s.name || '',
+            position: s.position,
+            isEnabled: true
+        }));
+
         return {
             values: mappedValues,
             specialities: mappedSpecialities,
             clients: mappedClients,
             caseStudies: mappedCaseStudies,
-            pageSeo
+            pageSeo,
+            sections: safeSections
         };
     } catch (error) {
         console.error('Error fetching home page data:', error);
@@ -137,7 +151,8 @@ export async function getHomePageData(): Promise<HomePageData> {
             specialities: [],
             clients: [],
             caseStudies: [],
-            pageSeo: {}
+            pageSeo: {},
+            sections: []
         };
     }
 }

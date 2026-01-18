@@ -1,8 +1,9 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
-import { Save, RefreshCw, Upload, Database, Layout, HardDrive, Shield, Palette, Type, MousePointer } from "lucide-react";
+import { Save, RefreshCw, Upload, Database, Layout, HardDrive, Shield, Palette, Type, MousePointer, Cpu } from "lucide-react";
 import { restoreBackup } from "@/app/(admin)/_actions/database";
-import { getDesignSystems } from "@/app/actions/theme";
+import { getDesignSystems, updateTheme } from "@/app/actions/theme";
 import Link from "next/link";
 import AdminHeader from "../../components/AdminHeader";
 
@@ -18,8 +19,13 @@ export default function SettingsPage() {
     const [restoring, setRestoring] = useState(false);
     const [themes, setThemes] = useState<any[]>([]);
 
+    const fetchThemes = async () => {
+        const data = await getDesignSystems();
+        setThemes(data);
+    };
+
     useEffect(() => {
-        getDesignSystems().then(setThemes);
+        fetchThemes();
     }, []);
 
     const handleRestore = async () => {
@@ -32,187 +38,197 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
+        <div className="min-h-screen p-8 w-full mx-auto animate-in fade-in duration-700 space-y-12">
             <AdminHeader
-                defaultTitle="System Settings"
-                defaultSubtitle="Configure global preferences and tools."
+                defaultTitle="System Configuration"
+                defaultSubtitle="Global preferences, database tools, and design tokens."
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <SettingsCard
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <PremiumSettingsCard
                     title="Database Manager"
-                    description="View tables, run SQL, and check schema."
+                    description="Execute SQL queries, inspect tables, and manage migrations."
                     icon={Database}
                     href="/admin/settings/database"
-                    color="black"
+                    theme="dark"
+                />
+                <PremiumSettingsCard
+                    title="Home Hero Settings"
+                    description="Configure the main landing page slider and messaging."
+                    icon={Layout}
+                    href="/admin/settings/hero"
+                    theme="default"
                 />
             </div>
 
-            {/* Design System Recap */}
-            <div className="space-y-6">
-                <h2 className="text-2xl font-black tracking-tight text-slate-900">Design System Recap</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {themes.map((theme) => (
-                        <DesignSystemCard key={theme.name} theme={theme} />
-                    ))}
+            {/* Design System Section */}
+            <div className="bg-white rounded-[2.5rem] border-4 border-slate-100 p-10 shadow-xl overflow-hidden relative">
+                <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none rotate-12">
+                    <Palette size={200} />
+                </div>
+
+                <div className="relative z-10">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+                        <div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
+                                    <Cpu size={20} />
+                                </div>
+                                <span className="text-xs font-black text-purple-600 uppercase tracking-widest">Interface Engine</span>
+                            </div>
+                            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Design System Control</h2>
+                            <p className="text-slate-500 font-medium mt-1">Manage global tokens for Admin and Public interfaces.</p>
+                        </div>
+                        <DesignSystemTrigger themes={themes} onUpdate={fetchThemes} />
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="bg-slate-50 rounded-3xl p-6 border-2 border-slate-100 flex items-center gap-4">
+                            <div className="p-4 bg-white rounded-2xl shadow-sm"><Palette className="text-slate-400" /></div>
+                            <div>
+                                <h4 className="font-bold text-slate-900">Color Palette</h4>
+                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Active</p>
+                            </div>
+                        </div>
+                        <div className="bg-slate-50 rounded-3xl p-6 border-2 border-slate-100 flex items-center gap-4">
+                            <div className="p-4 bg-white rounded-2xl shadow-sm"><Type className="text-slate-400" /></div>
+                            <div>
+                                <h4 className="font-bold text-slate-900">Typography</h4>
+                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Inter / Manrope</p>
+                            </div>
+                        </div>
+                        <div className="bg-slate-50 rounded-3xl p-6 border-2 border-slate-100 flex items-center gap-4">
+                            <div className="p-4 bg-white rounded-2xl shadow-sm"><MousePointer className="text-slate-400" /></div>
+                            <div>
+                                <h4 className="font-bold text-slate-900">Interactions</h4>
+                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Enabled</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
-                <div className="flex items-center gap-4 mb-6">
-                    <div className="p-3 bg-rose-50 text-rose-600 rounded-xl border-2 border-rose-100">
-                        <Shield size={24} />
+            {/* Danger Zone */}
+            <div className="bg-rose-50/50 rounded-[2.5rem] border-4 border-rose-100 p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="flex items-center gap-6">
+                    <div className="size-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center shrink-0 border-2 border-rose-200">
+                        <Shield size={32} />
                     </div>
                     <div>
-                        <h3 className="text-xl font-black text-slate-900">Danger Zone</h3>
-                        <p className="text-slate-500 text-sm font-medium">Critical system actions.</p>
+                        <h3 className="text-2xl font-black text-rose-900">Danger Zone</h3>
+                        <p className="text-rose-700/80 font-medium">Critical system actions that affect data integrity.</p>
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-6 bg-rose-50 border-2 border-rose-100 rounded-2xl">
-                    <div>
-                        <h4 className="font-bold text-rose-800">System Reset</h4>
-                        <p className="text-xs text-rose-600 font-medium">Restore database to initial seed state.</p>
+                <div className="flex items-center gap-6 p-2 bg-white rounded-2xl border-2 border-rose-100 shadow-sm">
+                    <div className="px-4">
+                        <h4 className="font-bold text-rose-900 text-sm">System Reset</h4>
+                        <p className="text-[10px] text-rose-400 font-black uppercase tracking-wider">Factory Restore</p>
                     </div>
                     <button
                         onClick={handleRestore}
                         disabled={restoring}
-                        className="px-6 py-3 bg-white border-2 border-rose-200 text-rose-600 font-bold rounded-xl hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all active:scale-95 flex items-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
+                        className="px-6 py-3 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700 transition-all active:scale-95 flex items-center gap-2 shadow-lg hover:shadow-rose-200 disabled:opacity-50 disabled:pointer-events-none"
                     >
-                        {restoring ? <RefreshCw className="animate-spin" size={20} /> : <Upload size={20} />}
-                        {restoring ? "Restoring..." : "Restore Default Data"}
+                        {restoring ? <RefreshCw className="animate-spin" size={18} /> : <Upload size={18} />}
+                        {restoring ? "Restoring..." : "Restore Data"}
                     </button>
                 </div>
             </div>
 
             {restoring && (
-                <div className="fixed inset-0 bg-white/80 backdrop-blur-md z-50 flex items-center justify-center flex-col gap-4">
-                    <RefreshCw className="animate-spin text-lime-600" size={64} />
-                    <h2 className="text-2xl font-black text-slate-900">Restoring System...</h2>
-                    <p className="text-slate-500 font-bold">Please wait, this may take a moment.</p>
+                <div className="fixed inset-0 bg-white/90 backdrop-blur-xl z-50 flex items-center justify-center flex-col gap-6 animate-in fade-in duration-300">
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-lime-500 rounded-full animate-ping opacity-20"></div>
+                        <RefreshCw className="animate-spin text-lime-600 relative z-10" size={64} />
+                    </div>
+                    <div className="text-center">
+                        <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">Restoring System Database</h2>
+                        <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Please do not close this window</p>
+                    </div>
                 </div>
             )}
         </div>
     );
 }
 
-function SettingsCard({ title, description, icon: Icon, href, color }: SettingsCardProps) {
-    const isLime = color === 'lime';
-    const isBlack = color === 'black';
-
-    let iconBg = "bg-slate-50 text-slate-500 border-slate-200";
-    if (isLime) iconBg = "bg-lime-50 text-lime-700 border-lime-200";
-    if (isBlack) iconBg = "bg-slate-900 text-white border-slate-900";
+function PremiumSettingsCard({ title, description, icon: Icon, href, theme = "default" }: any) {
+    const isDark = theme === 'dark';
 
     return (
-        <Link href={href} className="group bg-white/90 backdrop-blur-sm border-2 border-slate-200 p-6 rounded-3xl hover:border-lime-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer block">
-            <div className={`w-14 h-14 rounded-2xl border-2 flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${iconBg}`}>
+        <Link href={href} className={`group relative overflow-hidden rounded-[2.5rem] p-8 border-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between min-h-[220px] ${isDark
+            ? 'bg-slate-900 border-slate-900 hover:border-slate-800'
+            : 'bg-white border-slate-100 hover:border-lime-200'
+            }`}>
+            <div className={`absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity rotate-12 group-hover:rotate-0 duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <Icon size={120} />
+            </div>
+
+            <div className={`size-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 shadow-sm relative z-10 ${isDark
+                ? 'bg-white/10 text-white border border-white/10'
+                : 'bg-slate-50 text-slate-900 border-2 border-slate-100 group-hover:bg-lime-50 group-hover:border-lime-100 group-hover:text-lime-600'
+                }`}>
                 <Icon size={28} />
             </div>
-            <h3 className="text-xl font-black text-slate-900 mb-2">{title}</h3>
-            <p className="text-sm font-medium text-slate-500 leading-relaxed">{description}</p>
+
+            <div className="relative z-10">
+                <h3 className={`text-2xl font-black mb-2 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{title}</h3>
+                <p className={`text-sm font-medium leading-relaxed max-w-[90%] ${isDark ? 'text-white/60' : 'text-slate-500'}`}>{description}</p>
+            </div>
         </Link>
     );
 }
 
-function DesignSystemCard({ theme }: { theme: any }) {
-    const isPublic = theme.name === 'public';
-    const { colors, config } = theme;
+
+
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger as DialogTriggerShadcn } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DesignSystemEditor from "./components/DesignSystemEditor";
+
+function DesignSystemTrigger({ themes, onUpdate }: { themes: any[], onUpdate: () => void }) {
+    const adminTheme = themes.find(t => t.name === 'admin');
+    const publicTheme = themes.find(t => t.name === 'public');
 
     return (
-        <div className="bg-white border-2 border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-            <div className={`p-6 border-b-2 border-slate-100 ${isPublic ? 'bg-slate-900' : 'bg-slate-50'}`}>
-                <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${isPublic ? 'bg-slate-800 text-white' : 'bg-white text-slate-900 border border-slate-200'}`}>
-                        <Layout size={20} />
-                    </div>
-                    <div>
-                        <h3 className={`text-lg font-black capitalize ${isPublic ? 'text-white' : 'text-slate-900'}`}>{theme.name} Site</h3>
-                        <p className={`text-xs font-medium ${isPublic ? 'text-slate-400' : 'text-slate-500'}`}>Design Specification</p>
-                    </div>
+        <Dialog>
+            <DialogTriggerShadcn asChild>
+                <button className="px-4 py-2 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors shadow-lg hover:shadow-xl flex items-center gap-2">
+                    <Layout size={18} />
+                    Open Visual Editor
+                </button>
+            </DialogTriggerShadcn>
+            <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-0 overflow-hidden bg-slate-50">
+                <DialogHeader className="p-6 bg-white border-b">
+                    <DialogTitle className="text-xl font-black">Visual Design System Editor</DialogTitle>
+                </DialogHeader>
+
+                <div className="flex-1 overflow-hidden p-6">
+                    <Tabs defaultValue="admin" className="h-full flex flex-col">
+                        <TabsList className="bg-slate-200 p-1 rounded-xl mb-4 self-start">
+                            <TabsTrigger value="admin" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold">Admin Dashboard</TabsTrigger>
+                            <TabsTrigger value="public" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm font-bold">Public Site</TabsTrigger>
+                        </TabsList>
+
+                        <div className="flex-1 overflow-y-auto pr-2">
+                            <TabsContent value="admin" className="m-0">
+                                {adminTheme ? (
+                                    <DesignSystemEditor theme={adminTheme} onUpdate={onUpdate} />
+                                ) : (
+                                    <p>Admin theme not found.</p>
+                                )}
+                            </TabsContent>
+                            <TabsContent value="public" className="m-0">
+                                {publicTheme ? (
+                                    <DesignSystemEditor theme={publicTheme} onUpdate={onUpdate} />
+                                ) : (
+                                    <p>Public theme not found.</p>
+                                )}
+                            </TabsContent>
+                        </div>
+                    </Tabs>
                 </div>
-            </div>
-
-            <div className="p-6 space-y-8">
-                {/* Colors */}
-                <div>
-                    <div className="flex items-center gap-2 mb-4 text-slate-900 font-bold">
-                        <Palette size={16} className="text-slate-400" />
-                        <h4>Colors</h4>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                        {Object.entries(colors || {}).map(([key, value]) => (
-                            <div key={key} className="flex items-center gap-3 p-2 rounded-xl bg-slate-50 border border-slate-100">
-                                <div className="w-10 h-10 rounded-lg shadow-sm border border-black/5" style={{ backgroundColor: value as string }} />
-                                <div className="overflow-hidden">
-                                    <p className="text-xs font-bold text-slate-700 capitalize truncate">{key}</p>
-                                    <p className="text-[10px] font-mono text-slate-400 uppercase">{value as string}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Typography */}
-                {config?.typography && (
-                    <div>
-                        <div className="flex items-center gap-2 mb-4 text-slate-900 font-bold">
-                            <Type size={16} className="text-slate-400" />
-                            <h4>Typography</h4>
-                        </div>
-                        <div className="space-y-3">
-                            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <p className="text-xs text-slate-400 uppercase font-bold mb-1">Primary Font</p>
-                                <p className="text-sm font-bold text-slate-900">{config.typography.primaryFont}</p>
-                            </div>
-                            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <p className="text-xs text-slate-400 uppercase font-bold mb-1">Headings</p>
-                                <p className="text-sm font-medium text-slate-700">{config.typography.headings}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Buttons */}
-                {config?.buttons && (
-                    <div>
-                        <div className="flex items-center gap-2 mb-4 text-slate-900 font-bold">
-                            <MousePointer size={16} className="text-slate-400" />
-                            <h4>Components</h4>
-                        </div>
-                        <div className="space-y-3">
-                            {Object.entries(config.buttons).map(([key, value]: [string, any]) => (
-                                <div key={key} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <p className="text-xs text-slate-400 uppercase font-bold">{key} Button</p>
-                                        <div className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-[10px] font-mono">Example</div>
-                                    </div>
-                                    <p className="text-xs font-mono text-slate-600 break-all">{value.style}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Components & Layout */}
-                {config?.components && (
-                    <div>
-                        <div className="flex items-center gap-2 mb-4 text-slate-900 font-bold">
-                            <Layout size={16} className="text-slate-400" />
-                            <h4>Components & Layout</h4>
-                        </div>
-                        <div className="space-y-3">
-                            {Object.entries(config.components).map(([key, value]) => (
-                                <div key={key} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <p className="text-xs text-slate-400 uppercase font-bold mb-1 capitalize">{key}</p>
-                                    <p className="text-sm font-medium text-slate-700">{value as string}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }

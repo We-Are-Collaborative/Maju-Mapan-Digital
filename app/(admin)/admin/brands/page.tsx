@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { getClientByEmail } from "@/app/actions/clients";
+import { getClientByEmail } from "@/app/actions/mapan";
 import { Building, Image as ImageIcon, ExternalLink, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AdminHeader from "../../components/AdminHeader";

@@ -78,8 +78,8 @@ export default function AdminHeader({ defaultTitle, defaultSubtitle }: AdminHead
         <div className="group relative">
             <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">{title}</h1>
-                    <p className="text-lg font-medium text-slate-500 max-w-3xl">{subtitle}</p>
+                    <h1 className="text-4xl font-black tracking-tight mb-2" style={{ color: 'var(--colors-global-text-heading)' }}>{title}</h1>
+                    <p className="text-lg font-medium max-w-3xl" style={{ color: 'var(--colors-global-text-muted)' }}>{subtitle}</p>
                 </div>
 
                 <Button

@@ -12,7 +12,7 @@ export function InteractiveCTASection() {
 
     return (
         <section
-            className="relative overflow-hidden py-24 lg:py-32 bg-black min-h-[90vh] flex items-center justify-center"
+            className="relative overflow-hidden py-24 lg:py-32 bg-black flex items-center justify-center"
             onMouseEnter={() => setHasFocus(true)}
             onMouseLeave={() => setHasFocus(false)}
         >

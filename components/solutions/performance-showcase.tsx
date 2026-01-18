@@ -99,7 +99,7 @@ export const PerformanceShowcase: React.FC = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
                         { label: "Average ROI", val: "250%", sub: "+15% vs Industry", icon: <TrendingUp /> },
-                        { label: "Ad spend managed", val: "$10M+", sub: "Annually", icon: <Wallet /> },
+                        { label: "Ad spend managed", val: "Rp 150M+", sub: "Annually", icon: <Wallet /> },
                         { label: "Average CTR", val: "4.8%", sub: "+1.2% Lift", icon: <MousePointer2 /> },
                         { label: "Client retention", val: "95%", sub: "Long-term Partners", icon: <Handshake /> }
                     ].map((stat, i) => (

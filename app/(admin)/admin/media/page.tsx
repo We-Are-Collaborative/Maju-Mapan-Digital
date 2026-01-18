@@ -152,7 +152,7 @@ export default function MediaLibraryPage() {
     };
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-24">
+        <div className="min-h-screen p-8 w-full mx-auto space-y-8 animate-in fade-in duration-700 pb-24">
             {/* Header Area */}
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex-1">

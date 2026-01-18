@@ -45,7 +45,7 @@ export default function ContentManager() {
     const filteredPages = pages.filter(p => p.title.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <div className="space-y-8 p-8  animate-in fade-in duration-700">
+        <div className="min-h-screen space-y-8 p-8 w-full mx-auto animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="flex-1">

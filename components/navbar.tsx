@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from '@/lib/inertia-adapter';
 import { OverlayMenu } from '@/components/overlay-menu';
+import { NewsletterModal } from '@/components/newsletter-modal';
+import { LeadModal } from '@/components/lead-modal';
 
 interface NavItem {
     title: string;
@@ -29,6 +31,9 @@ interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Navbar({ navItems, ctaHref = '/#contact-us', logoType = "svg", logoGifUrl, className, ...props }: NavbarProps) {
     const pathname = usePathname();
     const [overlayOpen, setOverlayOpen] = useState(false);
+    const [newsletterOpen, setNewsletterOpen] = useState(false);
+    const [newsletterTriggered, setNewsletterTriggered] = useState(false);
+    const [strategyOpen, setStrategyOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [visible, setVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -47,6 +52,12 @@ export function Navbar({ navItems, ctaHref = '/#contact-us', logoType = "svg", l
         const handleScroll = () => {
             const currentY = window.scrollY;
 
+            // Trigger newsletter on scroll (if not already triggered)
+            if (!newsletterTriggered && currentY > 500) {
+                setNewsletterTriggered(true);
+                setNewsletterOpen(true);
+            }
+
             // Show/Hide based on direction
             if (currentY > lastScrollY && currentY > 100) {
                 setVisible(false);
@@ -61,11 +72,39 @@ export function Navbar({ navItems, ctaHref = '/#contact-us', logoType = "svg", l
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [lastScrollY]);
+    }, [lastScrollY, newsletterTriggered]);
+
+    // Secondary trigger: 10 second timer
+    useEffect(() => {
+        if (!newsletterTriggered) {
+            const timer = setTimeout(() => {
+                if (!newsletterTriggered) {
+                    setNewsletterTriggered(true);
+                    setNewsletterOpen(true);
+                }
+            }, 10000);
+            return () => clearTimeout(timer);
+        }
+    }, [newsletterTriggered]);
 
     return (
         <>
-            <OverlayMenu open={overlayOpen} onClose={() => setOverlayOpen(false)} navItems={navItems} />
+            <OverlayMenu
+                open={overlayOpen}
+                onClose={() => setOverlayOpen(false)}
+                navItems={navItems}
+                onNewsletterClick={() => setNewsletterOpen(true)}
+                onStrategyClick={() => setStrategyOpen(true)}
+            />
+
+            <NewsletterModal open={newsletterOpen} onOpenChange={setNewsletterOpen} />
+            <LeadModal
+                open={strategyOpen}
+                onOpenChange={setStrategyOpen}
+                source="Navbar Overlay Menu"
+                title="Book Strategy Call"
+                description="Our experts are ready to help you grow. Fill out the form below."
+            />
 
             <header
                 className={cn(

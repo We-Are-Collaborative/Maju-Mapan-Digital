@@ -47,7 +47,7 @@ export default function NavManager({ initialData }: NavManagerProps) {
 
         // Find item
         for (const c of categories) {
-            const item = c.items.find(i => i.id === active.id);
+            const item = (c.items as any[]).find(i => i.id === active.id);
             if (item) {
                 setActiveItem({ type: 'item', data: item });
                 return;
@@ -75,8 +75,8 @@ export default function NavManager({ initialData }: NavManagerProps) {
             const activeItems = prev.find(c => c.id === activeCatId)?.items || [];
             const overItems = prev.find(c => c.id === overCatId)?.items || [];
 
-            const activeIndex = activeItems.findIndex(i => i.id === activeId);
-            const overIndex = overItems.findIndex(i => i.id === overId);
+            const activeIndex = (activeItems as any[]).findIndex(i => i.id === activeId);
+            const overIndex = (overItems as any[]).findIndex(i => i.id === overId);
 
             let newIndex;
             if (overIndex >= 0) {
@@ -95,7 +95,7 @@ export default function NavManager({ initialData }: NavManagerProps) {
 
     const findContainer = (id: string) => {
         if (categories.find(c => c.id === id)) return id;
-        return categories.find(c => c.items.find(i => i.id === id))?.id;
+        return categories.find(c => (c.items as any[]).find(i => i.id === id))?.id;
     };
 
     const handleDragEnd = async (event: DragEndEvent) => {
@@ -137,36 +137,28 @@ export default function NavManager({ initialData }: NavManagerProps) {
                 const activeItems = categories[activeCatIndex].items;
                 const overItems = categories[overCatIndex].items;
 
-                const activeIndex = activeItems.findIndex(i => i.id === activeId);
-                const overIndex = overItems.findIndex(i => i.id === overId); // might be -1 if dropped on container placeholder
+                const activeIndex = (activeItems as any[]).findIndex(i => i.id === activeId);
+                const overIndex = (overItems as any[]).findIndex(i => i.id === overId);
 
                 let newCategories = [...categories];
 
                 if (activeContainer === overContainer) {
-                    // Same container reorder
                     if (activeIndex !== overIndex) {
                         newCategories[activeCatIndex].items = arrayMove(activeItems, activeIndex, overIndex);
-                        // Re-assign positions
-                        newCategories[activeCatIndex].items = newCategories[activeCatIndex].items.map((i, idx) => ({ ...i, position: idx }));
+                        newCategories[activeCatIndex].items = (newCategories[activeCatIndex].items as any[]).map((i, idx) => ({ ...i, position: idx }));
                         setCategories(newCategories);
                         await saveOrder(newCategories);
                     }
                 } else {
-                    // Different container - Moving item
-                    const [movedItem] = newCategories[activeCatIndex].items.splice(activeIndex, 1);
+                    const itemToMove = (activeItems as any[])[activeIndex];
+                    newCategories[activeCatIndex].items = (activeItems as any[]).filter(i => i.id !== activeId);
 
-                    // Assign new category ID
-                    movedItem.categoryId = overContainer;
+                    const insertAt = overIndex >= 0 ? overIndex : overItems.length;
+                    const newOverItems = [...overItems];
+                    newOverItems.splice(insertAt, 0, { ...itemToMove, categoryId: overContainer });
 
-                    if (overIndex >= 0) {
-                        newCategories[overCatIndex].items.splice(overIndex, 0, movedItem);
-                    } else {
-                        newCategories[overCatIndex].items.push(movedItem);
-                    }
-
-                    // Re-assign positions for BOTH categories
-                    newCategories[activeCatIndex].items = newCategories[activeCatIndex].items.map((i, idx) => ({ ...i, position: idx }));
-                    newCategories[overCatIndex].items = newCategories[overCatIndex].items.map((i, idx) => ({ ...i, position: idx }));
+                    newCategories[overCatIndex].items = newOverItems.map((i, idx) => ({ ...i, position: idx }));
+                    newCategories[activeCatIndex].items = (newCategories[activeCatIndex].items as any[]).map((i, idx) => ({ ...i, position: idx }));
 
                     setCategories(newCategories);
                     await saveOrder(newCategories);
@@ -180,7 +172,7 @@ export default function NavManager({ initialData }: NavManagerProps) {
         const payload = newCategories.map(c => ({
             id: c.id,
             position: c.position,
-            items: c.items.map(i => ({
+            items: (c.items as any[]).map(i => ({
                 id: i.id,
                 position: i.position,
                 categoryId: c.id

@@ -58,7 +58,7 @@ export function formatDate(input: string | number): string {
 }
 
 export function formatCurrency(amount: number, currency: 'IDR' | 'USD' = 'IDR'): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: currency,
         minimumFractionDigits: 0,

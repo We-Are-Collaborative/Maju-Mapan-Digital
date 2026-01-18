@@ -3,9 +3,15 @@
 import React from "react";
 import GlobalSettingsForm from "./components/GlobalSettingsForm";
 
+import AdminHeader from "../../../components/AdminHeader";
+
 export default function GlobalSettingsPage() {
     return (
-        <div className="p-8">
+        <div className="min-h-screen p-8 w-full mx-auto space-y-8 animate-in fade-in duration-700">
+            <AdminHeader
+                defaultTitle="Global Settings"
+                defaultSubtitle="Configure application-wide preferences."
+            />
             <GlobalSettingsForm />
         </div>
     );

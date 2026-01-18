@@ -163,7 +163,7 @@ export async function updateAdminNavOrder(
 ) {
     try {
         // Transaction to update all positions
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             for (const cat of categories) {
                 // Update category position
                 await tx.adminNavCategory.update({

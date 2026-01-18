@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Edit, Plus, Search, Trash2, ArrowLeft, FileText } from "lucide-react";
+import { Edit, Plus, Search, Trash2, ArrowLeft, FileText, Sparkles } from "lucide-react";
 import { getArticlesAdmin, deleteArticle } from "@/app/actions/articles";
 import { toast } from "sonner";
 import AdminHeader from "../../components/AdminHeader";
@@ -42,98 +42,101 @@ export default function InsightsManager() {
     const filteredArticles = articles.filter(a => a.title.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <div className="space-y-8 p-8  animate-in fade-in duration-700">
+        <div className="min-h-screen p-8 w-full mx-auto animate-in fade-in duration-700 space-y-8">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div className="flex-1">
-                    <Link href="/admin" className="text-slate-500 hover:text-slate-900 flex items-center gap-2 mb-2 font-bold text-sm uppercase tracking-wider">
-                        <ArrowLeft size={16} /> Back to Dashboard
-                    </Link>
                     <AdminHeader
-                        defaultTitle="Insights Manager"
-                        defaultSubtitle="Manage your articles and blog posts."
+                        defaultTitle="Insights & Blog"
+                        defaultSubtitle="Manage your editorial content and articles."
                     />
                 </div>
-                <Link
-                    href="/admin/insights/new"
-                    className="px-6 py-3 bg-gradient-to-r from-lime-400 to-black text-white font-bold rounded-lg shadow-lg shadow-lime-500/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                >
-                    <Plus size={20} />
-                    Add New Article
+                <Link href="/admin/insights/new">
+                    <button className="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center gap-3">
+                        <Plus className="size-5" />
+                        <span>Add Article</span>
+                    </button>
                 </Link>
             </div>
 
-            {/* Search Bar */}
-            <div className="relative max-w-md">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                <input
-                    type="text"
-                    placeholder="Search articles..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-white/50 backdrop-blur-sm border-2 border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-lime-400 font-medium transition-all"
-                />
-            </div>
+            {/* Content Area */}
+            <div className="space-y-6">
+                {/* Search Bar */}
+                <div className="relative w-full md:max-w-xl">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                    <input
+                        type="text"
+                        placeholder="Search by title..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full h-16 bg-white border-2 border-slate-100 rounded-2xl pl-14 pr-6 text-lg font-bold text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-lime-500 focus:ring-4 focus:ring-lime-100 transition-all shadow-sm"
+                    />
+                </div>
 
-            {/* Articles List */}
-            <div className="grid grid-cols-1 gap-4">
-                {loading ? (
-                    <div className="py-20 text-center">
-                        <div className="w-12 h-12 border-4 border-slate-200 border-t-lime-500 rounded-full animate-spin mx-auto mb-4"></div>
-                        <p className="text-slate-500 font-bold">Loading articles...</p>
-                    </div>
-                ) : filteredArticles.length > 0 ? (
-                    filteredArticles.map((article) => (
-                        <div key={article.id} className="group bg-white/90 backdrop-blur-sm border-2 border-slate-200 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-lime-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                            <div className="flex items-center gap-6">
-                                <div className="p-4 bg-lime-50 text-lime-700 rounded-xl border-2 border-lime-100 group-hover:scale-110 transition-transform relative overflow-hidden">
-                                    <FileText size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-slate-900">{article.title}</h3>
-                                    <div className="flex items-center gap-3 mt-1">
-                                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
-                                            /{article.slug}
-                                        </span>
-                                        {article.category && (
-                                            <span className="text-[10px] font-bold uppercase tracking-wider text-white bg-slate-900 px-2 py-0.5 rounded">
-                                                {article.category.name}
-                                            </span>
-                                        )}
-                                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${article.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                                            }`}>
-                                            {article.status}
-                                        </span>
-                                    </div>
-                                    <p className="text-slate-500 text-sm mt-2 line-clamp-1">{article.excerpt}</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                                <Link
-                                    href={`/admin/insights/${article.id}`}
-                                    className="px-5 py-2.5 bg-white border-2 border-slate-200 text-slate-900 font-bold rounded-lg hover:border-black hover:bg-slate-50 transition-all active:scale-95 flex items-center gap-2"
-                                >
-                                    <Edit size={16} /> Edit
-                                </Link>
-                                <button
-                                    onClick={() => handleDelete(article.id)}
-                                    className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                                    title="Delete Article"
-                                >
-                                    <Trash2 size={20} />
-                                </button>
-                            </div>
+                {/* Articles List */}
+                <div className="grid grid-cols-1 gap-6">
+                    {loading ? (
+                        <div className="py-32 text-center bg-white rounded-[2.5rem] border-4 border-slate-100 border-dashed">
+                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-lime-500 mx-auto mb-4"></div>
+                            <p className="text-slate-400 font-bold uppercase tracking-wider text-sm">Loading content...</p>
                         </div>
-                    ))
-                ) : (
-                    <div className="text-center py-20 bg-white/50 border-2 border-dashed border-slate-300 rounded-3xl">
-                        <p className="text-slate-500 font-bold text-lg">No articles found.</p>
-                        <Link href="/admin/insights/new" className="text-lime-600 font-bold hover:underline mt-2 inline-block">
-                            Create your first article
-                        </Link>
-                    </div>
-                )}
+                    ) : filteredArticles.length > 0 ? (
+                        filteredArticles.map((article) => (
+                            <div key={article.id} className="group bg-white rounded-[2.5rem] p-8 border-4 border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-8 hover:border-lime-200 hover:shadow-2xl transition-all duration-300">
+                                <div className="flex items-start gap-6">
+                                    <div className="p-5 bg-gradient-to-br from-lime-50 to-emerald-50 text-lime-600 rounded-2xl border-2 border-lime-100 group-hover:scale-110 transition-transform shadow-sm">
+                                        <FileText size={32} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${article.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                                                }`}>
+                                                {article.status}
+                                            </span>
+                                            {article.category && (
+                                                <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-slate-900 px-3 py-1 rounded-full">
+                                                    {article.category.name}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <h3 className="text-2xl font-black text-slate-900 leading-tight group-hover:text-lime-700 transition-colors">{article.title}</h3>
+                                        <p className="text-slate-500 font-medium text-sm line-clamp-1 max-w-2xl">{article.excerpt}</p>
+                                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 pt-1">
+                                            <span>/{article.slug}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 pl-6 border-l-2 border-slate-50">
+                                    <Link
+                                        href={`/admin/insights/${article.id}`}
+                                        className="size-12 bg-slate-50 border-2 border-slate-100 text-slate-600 rounded-xl flex items-center justify-center hover:border-slate-300 hover:bg-white hover:shadow-lg transition-all"
+                                        title="Edit Article"
+                                    >
+                                        <Edit size={20} />
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDelete(article.id)}
+                                        className="size-12 bg-rose-50 border-2 border-rose-100 text-rose-600 rounded-xl flex items-center justify-center hover:border-rose-300 hover:bg-white hover:shadow-lg transition-all"
+                                        title="Delete Article"
+                                    >
+                                        <Trash2 size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-32 bg-white rounded-[2.5rem] border-4 border-dashed border-slate-200">
+                            <Sparkles className="size-16 text-slate-300 mx-auto mb-6" />
+                            <p className="text-xl font-black text-slate-900 mb-2">No articles found.</p>
+                            <p className="text-slate-500 font-medium mb-6">Start writing your first piece of content.</p>
+                            <Link href="/admin/insights/new" className="px-6 py-3 bg-lime-400 text-slate-900 font-bold rounded-xl hover:bg-lime-500 transition-colors inline-flex items-center gap-2">
+                                <Plus size={18} />
+                                Create Article
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

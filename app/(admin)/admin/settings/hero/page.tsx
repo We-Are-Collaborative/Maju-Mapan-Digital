@@ -13,6 +13,8 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Slider } from "../../../../../components/ui/slider";
 import { SeoImageUpload } from "@/components/admin/seo-image-upload";
+import { getHomeSections, SectionItem } from "@/app/actions/home-sections";
+import SectionReorderList from "./components/SectionReorderList";
 
 function SlideEditor({
     slide,
@@ -195,6 +197,7 @@ export default function HomeHeroSettings() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [hero, setHero] = useState<any>(null);
+    const [sections, setSections] = useState<SectionItem[]>([]);
     const [activePreviewIndex, setActivePreviewIndex] = useState(0);
     const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
 
@@ -204,8 +207,14 @@ export default function HomeHeroSettings() {
 
     const fetchHero = async () => {
         setLoading(true);
-        const data = await getHomeHeroData();
-        if (data) setHero(data);
+        const [heroData, sectionData] = await Promise.all([
+            getHomeHeroData(),
+            getHomeSections()
+        ]);
+
+        if (heroData) setHero(heroData);
+        setSections(sectionData);
+
         setLoading(false);
     };
 
@@ -444,6 +453,10 @@ export default function HomeHeroSettings() {
                             </button>
                         </div>
                     </form>
+
+                    <div className="pt-12 border-t-2 border-slate-100">
+                        <SectionReorderList initialSections={sections} />
+                    </div>
                 </div>
             </div>
         </div>

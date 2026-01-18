@@ -6,56 +6,70 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useForm, usePage } from '@/lib/inertia-adapter';
+import { usePage } from '@/lib/inertia-adapter'; // Still needed for settings/props if they come from there
 import { Page } from '@/types/page';
-import { Loader2, MessageCircle, Send } from 'lucide-react';
-import { FormEventHandler, useCallback } from 'react';
+import { Loader2, MessageCircle, Send, CheckCircle2 } from 'lucide-react';
+import { FormEventHandler, useCallback, useActionState, useEffect, useState, useRef, startTransition } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { toast } from 'sonner';
 import { mockPageSeo } from '@/lib/mock-data';
 import { ContactForm } from '@/components/contact-form';
 import { getPageSeo } from '@/app/actions/public-data';
 import { BrandedHero } from '@/components/ui/branded-hero';
+import { submitLead, LeadState } from '@/app/actions/leads';
+
+const initialState: LeadState = {
+    success: false,
+    message: '',
+    errors: {}
+};
 
 export default function ContactUs() {
     const { contactSettings } = usePage<any>().props;
     const pageSeo: Page = mockPageSeo as Page;
+    const [state, formAction] = useActionState(submitLead, initialState);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
 
     const { executeRecaptcha } = useGoogleReCaptcha();
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-        captcha_token: '',
-    });
+    useEffect(() => {
+        if (state?.success) {
+            toast.success(state.message || 'Message sent successfully!');
+            formRef.current?.reset();
+        } else if (state?.message && !state?.success) {
+            toast.error(state.message);
+        }
+    }, [state]);
 
-    const submit: FormEventHandler = useCallback(
-        async (e) => {
-            e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
+        const formData = new FormData(e.currentTarget);
+
+        try {
             if (!executeRecaptcha) {
-                console.log('Execute recaptcha not yet available');
+                toast.error('ReCaptcha not ready. Please try again.');
+                setIsSubmitting(false);
                 return;
             }
 
             const token = await executeRecaptcha('contact_form_submit');
-            setData('captcha_token', token);
+            formData.append('captcha_token', token);
+            formData.append('source', 'Contact Page');
 
-            post(('/contact-us'), {
-                onSuccess: () => {
-                    toast.success('Message sent successfully!');
-                    reset();
-                },
-                onError: () => {
-                    toast.error('Failed to send message. Please try again.');
-                },
+            // Dispatch form action manually to include captcha token
+            startTransition(() => {
+                formAction(formData);
             });
-        },
-        [executeRecaptcha, post, setData, reset]
-    );
+        } catch (error) {
+            console.error('Submission error:', error);
+            toast.error('Something went wrong. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     const contactSchema = {
         '@context': 'https://schema.org',
@@ -170,101 +184,117 @@ export default function ContactUs() {
 
                         {/* Contact Form */}
                         <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm sm:p-8 lg:p-12">
-                            <form onSubmit={submit} className="space-y-6">
-                                <div className="grid gap-6 sm:grid-cols-2">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="name">Name</Label>
-                                        <Input
-                                            id="name"
-                                            value={data.name}
-                                            onChange={(e) => setData('name', e.target.value)}
-                                            placeholder="Your name"
-                                            className="border-gray-800 bg-black/50 focus:border-brand-500"
-                                        />
-                                        {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+                            {state?.success ? (
+                                <div className="flex flex-col items-center justify-center space-y-6 py-12 text-center">
+                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-500/20 text-brand-500 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                                        <CheckCircle2 size={40} />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="email">Email</Label>
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            value={data.email}
-                                            onChange={(e) => setData('email', e.target.value)}
-                                            placeholder="john@example.com"
-                                            className="border-gray-800 bg-black/50 focus:border-brand-500"
-                                        />
-                                        {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                                    <div>
+                                        <h3 className="text-2xl font-bold text-white">Message Sent!</h3>
+                                        <p className="mt-2 text-gray-400">
+                                            Thank you for reaching out. We've received your inquiry and will get back to you within 24 hours.
+                                        </p>
                                     </div>
+                                    <Button
+                                        onClick={() => window.location.reload()}
+                                        variant="outline"
+                                        className="border-gray-800 text-white hover:bg-white/5"
+                                    >
+                                        Send Another Message
+                                    </Button>
                                 </div>
-
-                                <div className="grid gap-6 sm:grid-cols-2">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="phone">Phone (Optional)</Label>
-                                        <Input
-                                            id="phone"
-                                            value={data.phone}
-                                            onChange={(e) => setData('phone', e.target.value)}
-                                            placeholder="+62..."
-                                            className="border-gray-800 bg-black/50 focus:border-brand-500"
-                                        />
-                                        {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
+                            ) : (
+                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="name">Name</Label>
+                                            <Input
+                                                id="name"
+                                                name="name"
+                                                required
+                                                placeholder="Your name"
+                                                className="border-gray-800 bg-black/50 focus:border-brand-500"
+                                            />
+                                            {state?.errors?.name && <p className="text-sm text-red-500">{state.errors.name[0]}</p>}
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="email">Email</Label>
+                                            <Input
+                                                id="email"
+                                                name="email"
+                                                type="email"
+                                                required
+                                                placeholder="john@example.com"
+                                                className="border-gray-800 bg-black/50 focus:border-brand-500"
+                                            />
+                                            {state?.errors?.email && <p className="text-sm text-red-500">{state.errors.email[0]}</p>}
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="subject">Subject</Label>
-                                        <Input
-                                            id="subject"
-                                            value={data.subject}
-                                            onChange={(e) => setData('subject', e.target.value)}
-                                            placeholder="Project inquiry"
-                                            className="border-gray-800 bg-black/50 focus:border-brand-500"
-                                        />
-                                        {errors.subject && <p className="text-sm text-red-500">{errors.subject}</p>}
+
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="whatsapp">Phone (Optional)</Label>
+                                            <Input
+                                                id="whatsapp"
+                                                name="whatsapp"
+                                                placeholder="+62..."
+                                                className="border-gray-800 bg-black/50 focus:border-brand-500"
+                                            />
+                                            {state?.errors?.whatsapp && <p className="text-sm text-red-500">{state.errors.whatsapp[0]}</p>}
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="subject">Subject</Label>
+                                            <Input
+                                                id="subject"
+                                                name="subject"
+                                                placeholder="Project inquiry"
+                                                className="border-gray-800 bg-black/50 focus:border-brand-500"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="message">Message</Label>
-                                    <Textarea
-                                        id="message"
-                                        value={data.message}
-                                        onChange={(e) => setData('message', e.target.value)}
-                                        placeholder="Tell us about your project..."
-                                        className="min-h-[150px] border-gray-800 bg-black/50 focus:border-brand-500"
-                                    />
-                                    {errors.message && <p className="text-sm text-red-500">{errors.message}</p>}
-                                </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="message">Message</Label>
+                                        <Textarea
+                                            id="message"
+                                            name="message"
+                                            placeholder="Tell us about your project..."
+                                            className="min-h-[150px] border-gray-800 bg-black/50 focus:border-brand-500"
+                                        />
+                                    </div>
 
-                                <Button
-                                    type="submit"
-                                    size="lg"
-                                    className="w-full bg-brand-500 text-black hover:bg-brand-400"
-                                    disabled={processing}
-                                >
-                                    {processing ? (
-                                        <>
-                                            <Loader2 className="mr-2 size-4 animate-spin" />
-                                            Sending...
-                                        </>
-                                    ) : (
-                                        <>
-                                            Send Message
-                                            <Send className="ml-2 size-4" />
-                                        </>
-                                    )}
-                                </Button>
+                                    <Button
+                                        type="submit"
+                                        size="lg"
+                                        className="w-full bg-brand-500 text-black hover:bg-brand-400"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <Loader2 className="mr-2 size-4 animate-spin" />
+                                                Sending...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Send Message
+                                                <Send className="ml-2 size-4" />
+                                            </>
+                                        )}
+                                    </Button>
 
-                                <p className="text-center text-xs text-gray-500">
-                                    This site is protected by reCAPTCHA and the Google{' '}
-                                    <a href="https://policies.google.com/privacy" className="underline hover:text-brand-500">
-                                        Privacy Policy
-                                    </a>{' '}
-                                    and{' '}
-                                    <a href="https://policies.google.com/terms" className="underline hover:text-brand-500">
-                                        Terms of Service
-                                    </a>{' '}
-                                    apply.
-                                </p>
-                            </form>
+                                    <p className="text-center text-xs text-gray-500">
+                                        This site is protected by reCAPTCHA and the Google{' '}
+                                        <a href="https://policies.google.com/privacy" className="underline hover:text-brand-500">
+                                            Privacy Policy
+                                        </a>{' '}
+                                        and{' '}
+                                        <a href="https://policies.google.com/terms" className="underline hover:text-brand-500">
+                                            Terms of Service
+                                        </a>{' '}
+                                        apply.
+                                    </p>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>

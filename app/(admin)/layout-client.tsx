@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from "next/navigation";
 import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
+
 import { Toaster } from "sonner";
 import { Menu, X } from "lucide-react";
 
@@ -51,24 +51,16 @@ export default function MainClientLayout({ children, navData = [] }: { children:
 
             <div className="flex-1 flex flex-col min-w-0 h-full relative">
                 {/* Responsive Header Injection */}
-                <header className="h-20 flex items-center justify-between px-6 lg:px-10 bg-white/80 backdrop-blur-xl border-b border-slate-100 sticky top-0 z-30 shadow-sm">
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => setSidebarOpen(true)}
-                            className="lg:hidden p-3 bg-slate-50 text-slate-900 rounded-xl hover:bg-slate-100 transition-all active:scale-95 border border-slate-200"
-                        >
-                            <Menu size={22} />
-                        </button>
-                        <div className="hidden sm:block">
-                            <h2 className="text-2xl font-black tracking-tight text-slate-900">
-                                {pathname === '/admin' ? 'Intelligence Dashboard' :
-                                    pathname.includes('settings') ? 'System Architecture' : 'Content Engine'}
-                            </h2>
-                        </div>
-                    </div>
-
-                    <Header user={session?.user} />
-                </header>
+                {/* Header Removed */}
+                {/* Mobile Menu Trigger (Preserved for accessibility if needed, placed absolutely or handled differently? User asked to remove top bar. I will provide a minimal mobile trigger or just remove it. Let's remove it for now as per strict instruction "Remove the top bar". If mobile nav is needed, we can add a floating button later.) */}
+                <div className="lg:hidden p-4 absolute top-0 left-0 z-50">
+                    <button
+                        onClick={() => setSidebarOpen(true)}
+                        className="p-3 bg-white/80 backdrop-blur text-slate-900 rounded-xl shadow-sm border border-slate-200"
+                    >
+                        <Menu size={22} />
+                    </button>
+                </div>
 
                 {/* Main Content Area - Full Width */}
                 <main className="flex-1 overflow-auto p-6 lg:p-10 relative scroll-smooth">
