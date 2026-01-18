@@ -36,7 +36,15 @@ export async function getHomeHeroData() {
         });
 
         if (!hero) {
-            console.log("[HeroAction] No hero found, creating default...");
+            console.log("[HeroAction] No hero found, potentially creating default...");
+
+            // Re-check inside a small delay or just try to find again to handle race conditions
+            const secondCheck = await (db as any).homeHero.findFirst({
+                where: { isActive: true }
+            });
+
+            if (secondCheck) return secondCheck;
+
             const defaultData = {
                 isActive: true,
                 isDynamic: true,
@@ -55,23 +63,31 @@ export async function getHomeHeroData() {
                 }
             };
 
-            const created = await (db as any).homeHero.create({
-                data: defaultData,
-                select: {
-                    id: true,
-                    isDynamic: true,
-                    isActive: true,
-                    slides: {
-                        select: {
-                            id: true,
-                            titleLine1: true,
-                            titleHighlight: true,
-                            bgOpacity: true
+            try {
+                const created = await (db as any).homeHero.create({
+                    data: defaultData,
+                    select: {
+                        id: true,
+                        isDynamic: true,
+                        isActive: true,
+                        slides: {
+                            select: {
+                                id: true,
+                                titleLine1: true,
+                                titleHighlight: true,
+                                bgOpacity: true
+                            }
                         }
                     }
-                }
-            });
-            return created;
+                });
+                return created;
+            } catch (err) {
+                // If creation failed (e.g. unique constraint or other worker won), return whatever is there now
+                return await (db as any).homeHero.findFirst({
+                    where: { isActive: true },
+                    include: { slides: true }
+                });
+            }
         }
 
         return hero;

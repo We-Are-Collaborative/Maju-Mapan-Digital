@@ -22,8 +22,10 @@ export async function getHomeSections(): Promise<SectionItem[]> {
 
         // Seed if page or sections missing
         if (!page) {
-            page = await prisma.pageContent.create({
-                data: {
+            page = await prisma.pageContent.upsert({
+                where: { slug: HOME_SLUG },
+                update: {},
+                create: {
                     title: 'Home',
                     slug: HOME_SLUG,
                     pageSlug: '/',
@@ -48,17 +50,23 @@ export async function getHomeSections(): Promise<SectionItem[]> {
             let lastPos = page.sections.length > 0 ? Math.max(...(page.sections as any[]).map(s => s.position)) : -1;
 
             for (const section of missing) {
-                lastPos++;
-                await prisma.pageSection.create({
-                    data: {
-                        pageId: page.id,
-                        type: section.type,
-                        name: section.name,
-                        position: lastPos,
-                        // Storing enabled state in JSON for flexibility or relying on existence
-                        splitFeatureSection: JSON.stringify({ enabled: true })
-                    }
+                // Check again to handle race conditions with other workers
+                const existing = await prisma.pageSection.findFirst({
+                    where: { pageId: page.id, type: section.type }
                 });
+
+                if (!existing) {
+                    lastPos++;
+                    await prisma.pageSection.create({
+                        data: {
+                            pageId: page.id,
+                            type: section.type,
+                            name: section.name,
+                            position: lastPos,
+                            splitFeatureSection: JSON.stringify({ enabled: true })
+                        }
+                    });
+                }
             }
 
             // Re-fetch after seeding
