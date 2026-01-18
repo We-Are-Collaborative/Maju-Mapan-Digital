@@ -6,6 +6,7 @@ import { Plus, Search, Trash2, Building, ExternalLink } from "lucide-react";
 import { getClientsAdmin, deleteClient, createClient } from "@/app/actions/clients";
 import { toast } from "sonner";
 import { SeoImageUpload } from "@/components/admin/seo-image-upload";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function ClientsManager() {
     const [clients, setClients] = useState<any[]>([]);
@@ -74,9 +75,11 @@ export default function ClientsManager() {
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Clients & Partners</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage client portfolios and case studies.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Clients & Partners"
+                        defaultSubtitle="Manage client portfolios and case studies."
+                    />
                 </div>
                 <button
                     onClick={() => setIsModalOpen(true)}

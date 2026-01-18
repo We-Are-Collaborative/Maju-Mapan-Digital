@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Search, Trash2, Tag, Layers } from "lucide-react";
 import { getCategoriesAdmin, createCategory, deleteCategory } from "@/app/actions/categories";
 import { toast } from "sonner";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function CategoriesManager() {
     const [categories, setCategories] = useState<any[]>([]);
@@ -56,9 +57,11 @@ export default function CategoriesManager() {
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Categories</h1>
-                    <p className="text-slate-500 font-medium mt-1">Organize articles and careers.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Categories"
+                        defaultSubtitle="Organize articles and careers."
+                    />
                 </div>
                 <button
                     onClick={handleCreate}

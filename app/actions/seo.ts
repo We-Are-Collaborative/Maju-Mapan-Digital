@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 export async function getPageSeoAnalysis(slug: string) {
     // Mock response
@@ -46,7 +47,12 @@ export async function getAllSeoPages() {
                 navMenu: true
             }
         });
-        return pages.map(p => ({
+        type PageContentWithNav = Prisma.PageContentGetPayload<{
+            include: {
+                navMenu: true
+            }
+        }>;
+        return pages.map((p: PageContentWithNav) => ({
             id: p.id,
             pageSlug: p.pageSlug,
             title: p.title,

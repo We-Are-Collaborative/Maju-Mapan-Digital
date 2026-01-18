@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Edit, Plus, Search, Trash2, ArrowLeft, FileText } from "lucide-react";
 import { getArticlesAdmin, deleteArticle } from "@/app/actions/articles";
 import { toast } from "sonner";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function InsightsManager() {
     const [articles, setArticles] = useState<any[]>([]);
@@ -44,12 +45,14 @@ export default function InsightsManager() {
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
+                <div className="flex-1">
                     <Link href="/admin" className="text-slate-500 hover:text-slate-900 flex items-center gap-2 mb-2 font-bold text-sm uppercase tracking-wider">
                         <ArrowLeft size={16} /> Back to Dashboard
                     </Link>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Insights Manager</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage your articles and blog posts.</p>
+                    <AdminHeader
+                        defaultTitle="Insights Manager"
+                        defaultSubtitle="Manage your articles and blog posts."
+                    />
                 </div>
                 <Link
                     href="/admin/insights/new"

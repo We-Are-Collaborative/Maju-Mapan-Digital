@@ -7,7 +7,9 @@ import Header from "./components/Header";
 import { Toaster } from "sonner";
 import { Menu, X } from "lucide-react";
 
-export default function MainClientLayout({ children }: { children: React.ReactNode }) {
+import { AdminNavCategoryWithItems } from "@/app/actions/navigation";
+
+export default function MainClientLayout({ children, navData = [] }: { children: React.ReactNode, navData?: AdminNavCategoryWithItems[] }) {
     const { data: session, status } = useSession();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const pathname = usePathname();
@@ -37,7 +39,7 @@ export default function MainClientLayout({ children }: { children: React.ReactNo
 
             {/* Sidebar Container */}
             <aside className={`fixed inset-y-0 left-0 z-50 transition-all duration-500 ease-in-out lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} w-72 h-full shadow-2xl lg:shadow-none`}>
-                <Sidebar />
+                <Sidebar navData={navData} />
                 {/* Mobile Close Button */}
                 <button
                     onClick={() => setSidebarOpen(false)}

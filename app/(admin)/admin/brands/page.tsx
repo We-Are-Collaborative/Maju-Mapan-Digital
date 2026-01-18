@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { getClientByEmail } from "@/app/actions/clients";
 import { Building, Image as ImageIcon, ExternalLink, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function ClientBrandsPage() {
     const { data: session } = useSession();
@@ -36,14 +37,14 @@ export default function ClientBrandsPage() {
     return (
         <div className="space-y-8 animate-in fade-in duration-700">
             <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Active Brands</h1>
-                    <p className="text-slate-500 font-medium mt-1">
-                        Managing projects for <span className="text-black font-bold">{client.name}</span>
-                    </p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Active Brands"
+                        defaultSubtitle={`Managing projects for ${client.name}`}
+                    />
                 </div>
                 {client.logoUrl && (
-                    <img src={client.logoUrl} alt={client.name} className="h-12 w-auto object-contain opacity-50 grayscale hover:grayscale-0 transition-all cursor-crosshair" />
+                    <img src={client.logoUrl} alt={client.name} className="h-12 w-auto object-contain opacity-50 grayscale hover:grayscale-0 transition-all cursor-crosshair pb-2" />
                 )}
             </div>
 

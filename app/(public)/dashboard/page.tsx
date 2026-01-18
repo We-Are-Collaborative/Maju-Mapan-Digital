@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, Calendar, MapPin } from "lucide-react";
 
+type Application = Awaited<ReturnType<typeof getUserApplications>>[number];
+
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions);
 
@@ -40,7 +42,7 @@ export default async function DashboardPage() {
                         </div>
                     ) : (
                         <div className="grid gap-4">
-                            {applications.map((app) => (
+                            {applications.map((app: Application) => (
                                 <div
                                     key={app.id}
                                     className="bg-gray-900 border border-gray-800 rounded-xl p-6 transition-colors hover:border-gray-700"

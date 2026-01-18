@@ -4,6 +4,7 @@ import { getSeoHealth, getAllSeoPages } from "@/app/actions/seo";
 import SeoHealthHeader from "./components/SeoHealthHeader";
 import SeoPageCard from "./components/SeoPageCard";
 import { Loader2 } from "lucide-react";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function SEOManager() {
     const [loading, setLoading] = useState(true);
@@ -35,10 +36,10 @@ export default function SEOManager() {
 
     return (
         <div className=" p-8 animate-in fade-in duration-700 space-y-8">
-            <div>
-                <h1 className="text-4xl font-black tracking-tight text-slate-900 mb-2">SEO Dashboard</h1>
-                <p className="text-slate-500 font-medium">Overview of your search visibility and page metrics.</p>
-            </div>
+            <AdminHeader
+                defaultTitle="SEO Dashboard"
+                defaultSubtitle="Overview of your search visibility and page metrics."
+            />
 
             <SeoHealthHeader stats={stats} />
 

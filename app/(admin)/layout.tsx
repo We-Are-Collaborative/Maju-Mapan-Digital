@@ -19,6 +19,8 @@ export const dynamic = 'force-dynamic';
 
 import { getTheme, generateThemeCss } from "@/lib/theme";
 
+import { getAdminNavigation } from "@/app/actions/navigation";
+
 export default async function AdminRootLayout({
     children,
 }: {
@@ -26,6 +28,7 @@ export default async function AdminRootLayout({
 }) {
     const theme = await getTheme("admin");
     const themeCss = generateThemeCss(theme);
+    const navData = await getAdminNavigation();
 
     return (
         <html lang="en" suppressHydrationWarning>
@@ -36,7 +39,7 @@ export default async function AdminRootLayout({
                 <GlobalErrorBoundary>
                     <GlobalErrorProvider>
                         <NextAuthSessionProvider>
-                            <MainClientLayout>
+                            <MainClientLayout navData={navData}>
                                 {children}
                             </MainClientLayout>
                         </NextAuthSessionProvider>

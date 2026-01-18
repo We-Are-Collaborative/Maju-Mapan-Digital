@@ -4,16 +4,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Plus, Pencil, Trash, Briefcase, Users } from 'lucide-react';
 import Link from 'next/link';
 import { deleteCareer, getAdminCareers } from './actions';
+import AdminHeader from '../../components/AdminHeader';
+
+type Career = Awaited<ReturnType<typeof getAdminCareers>>[number];
 
 export default async function AdminCareersPage() {
     const careers = await getAdminCareers();
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Careers</h1>
-                    <p className="text-muted-foreground">Manage job openings and applications.</p>
+                    <AdminHeader
+                        defaultTitle="Careers"
+                        defaultSubtitle="Manage job openings and applications."
+                    />
                 </div>
                 <Link href="/admin/careers/new">
                     <Button>
@@ -40,7 +45,7 @@ export default async function AdminCareersPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {careers.reduce((acc, curr) => acc + curr._count.applications, 0)}
+                            {careers.reduce((acc: number, curr: Career) => acc + curr._count.applications, 0)}
                         </div>
                     </CardContent>
                 </Card>
@@ -72,7 +77,7 @@ export default async function AdminCareersPage() {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                careers.map((career) => (
+                                careers.map((career: Career) => (
                                     <TableRow key={career.id}>
                                         <TableCell className="font-medium">{career.title}</TableCell>
                                         <TableCell>{career.category?.name || '-'}</TableCell>

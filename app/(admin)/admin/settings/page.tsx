@@ -4,6 +4,7 @@ import { Save, RefreshCw, Upload, Database, Layout, HardDrive, Shield, Palette, 
 import { restoreBackup } from "@/app/(admin)/_actions/database";
 import { getDesignSystems } from "@/app/actions/theme";
 import Link from "next/link";
+import AdminHeader from "../../components/AdminHeader";
 
 interface SettingsCardProps {
     title: string;
@@ -32,10 +33,10 @@ export default function SettingsPage() {
 
     return (
         <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
-            <div>
-                <h1 className="text-4xl font-black tracking-tight text-slate-900">System Settings</h1>
-                <p className="text-slate-500 font-medium mt-1">Configure global preferences and tools.</p>
-            </div>
+            <AdminHeader
+                defaultTitle="System Settings"
+                defaultSubtitle="Configure global preferences and tools."
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 

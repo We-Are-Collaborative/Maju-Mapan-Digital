@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Users, Trash2, Plus, UserPlus, Mail, Shield, Calendar, Search } from "lucide-react";
+import AdminHeader from "../../components/AdminHeader";
 
 interface User {
     id: string;
@@ -56,9 +57,11 @@ export default function UsersManager() {
     return (
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-4xl font-black tracking-tight text-slate-900">User Management</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage system access and roles.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="User Management"
+                        defaultSubtitle="Manage system access and roles."
+                    />
                 </div>
                 <button
                     onClick={() => setShowAdd(!showAdd)}

@@ -6,45 +6,25 @@ import { LayoutDashboard, FileText, Settings, Users, LogOut, Globe, Zap, Briefca
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
-const Sidebar = () => {
+import { AdminNavCategoryWithItems } from "@/app/actions/navigation";
+import * as Icons from "lucide-react";
+
+const Sidebar = ({ navData = [] }: { navData?: AdminNavCategoryWithItems[] }) => {
     const pathname = usePathname();
 
     const { data: session } = useSession();
     const role = session?.user?.role as string | undefined;
 
-    let navItems = [
-        { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    ];
+    // If we have dynamic data, use it. But we also need to respect role based filtering (which is partially in DB now, partially hardcoded logic in old sidebar)
+    // The requirement says "fetch from database".
+    // For now, let's just use the dynamic data if available.
+    // We can filter by role here if needed, but DB schema has 'roles' field.
 
-    // Employee / Admin Menu
-    if (!role || role === 'admin') { // Treat undefined/admin as Employee for now
-        navItems = [
-            { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-            { name: "Careers", href: "/admin/careers", icon: Briefcase },
-            { name: "Applications", href: "/admin/careers/applications", icon: FileText },
-            { name: "Candidate Users", href: "/admin/candidate-users", icon: Users },
-            { name: "Values", href: "/admin/values", icon: FileText },
-            { name: "Solutions", href: "/admin/solutions", icon: Zap },
-            { name: "Clients", href: "/admin/clients", icon: Building },
-            { name: "Insights", href: "/admin/insights", icon: FileText },
-            { name: "Categories", href: "/admin/categories", icon: Tag },
-            { name: "Content", href: "/admin/content", icon: LayoutDashboard },
-            { name: "Leads", href: "/admin/leads", icon: MessageSquare },
-            { name: "Scripts", href: "/admin/scripts", icon: Code },
-            // SEO moved to dedicated group
-            { name: "Users", href: "/admin/users", icon: Users },
-            { name: "Settings", href: "/admin/settings", icon: Settings },
-        ];
-    }
-    // Client Menu
-    else if (role === 'client') {
-        navItems = [
-            { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-            { name: "Active Brands", href: "/admin/brands", icon: Building }, // Assuming "Active Campaigns" roughly means Brands/Projects
-            // Note: User said "show the brands side menu which will display the active campaigns running with them."
-            // We might need a dedicated page /admin/brands or re-use existing if accessible?
-        ];
-    }
+    // Helper to generic icon
+    const DynamicIcon = ({ name }: { name: string }) => {
+        const Icon = (Icons as any)[name];
+        return Icon ? <Icon className="mr-2 h-4 w-4" /> : <Icons.Circle className="mr-2 h-4 w-4" />;
+    };
 
     return (
         <aside className="w-64 bg-slate-900 text-white flex flex-col h-full border-r border-slate-800">
@@ -59,186 +39,31 @@ const Sidebar = () => {
             </div>
 
             {/* Nav */}
+            {/* Dynamic Nav */}
             <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
-                {/* Dashboard & Hero */}
-                <div className="space-y-1">
-                    <Button variant={pathname === '/admin' ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                        <Link href="/admin">
-                            <LayoutDashboard className="mr-2 h-4 w-4" />
-                            Dashboard
-                        </Link>
-                    </Button>
-                    <Button variant={pathname.startsWith('/admin/settings/hero') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                        <Link href="/admin/settings/hero">
-                            <Zap className="mr-2 h-4 w-4 text-lime-400" />
-                            Hero Home
-                        </Link>
-                    </Button>
-                </div>
+                {navData.map((category) => (
+                    <div key={category.id}>
+                        {/* Only show title if it's not the very top "Dashboard & Hero" one if desired, or just show all titles to separate sections */}
+                        <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">{category.title}</h3>
 
-                {/* Content Management */}
-                <div>
-                    <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Content & Portfolio</h3>
-                    <div className="space-y-1">
-                        <Button variant={pathname.startsWith('/admin/solutions') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/solutions">
-                                <Zap className="mr-2 h-4 w-4" />
-                                Solutions
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/clients') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/clients">
-                                <Building className="mr-2 h-4 w-4" />
-                                Clients
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/insights') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/insights">
-                                <FileText className="mr-2 h-4 w-4" />
-                                Insights
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/content') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/content">
-                                <LayoutDashboard className="mr-2 h-4 w-4" />
-                                Content Blocks
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/media') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/media">
-                                <Activity className="mr-2 h-4 w-4" />
-                                Media Library
-                            </Link>
-                        </Button>
-
-                        <Button variant={pathname.startsWith('/admin/categories') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/categories">
-                                <Tag className="mr-2 h-4 w-4" />
-                                Categories
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/team') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/team">
-                                <Users className="mr-2 h-4 w-4" />
-                                Team
-                            </Link>
-                        </Button>
+                        <div className="space-y-1">
+                            {category.items.map((item: any) => (
+                                <Button
+                                    key={item.id}
+                                    variant={pathname === item.href || pathname.startsWith(item.href + '/') ? 'secondary' : 'ghost'}
+                                    size="sm"
+                                    className={`w-full justify-start ${item.uiRowClass || ''}`}
+                                    asChild
+                                >
+                                    <Link href={item.href}>
+                                        <DynamicIcon name={item.icon} />
+                                        {item.name}
+                                    </Link>
+                                </Button>
+                            ))}
+                        </div>
                     </div>
-                </div>
-
-                {/* Recruitment */}
-                <div>
-                    <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Recruitment</h3>
-                    <div className="space-y-1">
-                        <Button variant={pathname.startsWith('/admin/careers') && !pathname.includes('applications') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/careers">
-                                <Briefcase className="mr-2 h-4 w-4" />
-                                Jobs / Careers
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/careers/applications') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/careers/applications">
-                                <FileText className="mr-2 h-4 w-4" />
-                                Applications
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/candidate-users') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/candidate-users">
-                                <Users className="mr-2 h-4 w-4" />
-                                Candidates
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Business */}
-                <div>
-                    <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Business</h3>
-                    <div className="space-y-1">
-                        <Button variant={pathname.startsWith('/admin/leads') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/leads">
-                                <MessageSquare className="mr-2 h-4 w-4" />
-                                Leads
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Components we inserted previously for SEO go here, assume next chunk handles it or we preserve it? 
-                    Wait, if I replace lines 62-105 with this block, I am removing the loop logic. 
-                    I need to make sure I don't lose the SEO block if it was outside your generic range.
-                    The previous SEO block was inserted at line ~88 (inside previous range).
-                    I need to RE-INCLUDE the SEO part in this replacement or ensure it falls into the sequence.
-                */}
-
-                {/* SEO & GEO Manager */}
-                <div>
-                    <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">SEO & GEO Manager</h3>
-                    <div className="space-y-1">
-                        <Button variant={pathname === '/admin/seo' ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/seo">
-                                <LayoutDashboard className="mr-2 h-4 w-4" />
-                                Dashboard
-                            </Link>
-                        </Button>
-                        <Button variant={pathname?.startsWith('/admin/seo/audit') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/seo/audit">
-                                <Activity className="mr-2 h-4 w-4" />
-                                Audit & Scan
-                            </Link>
-                        </Button>
-                        <Button variant={pathname?.startsWith('/admin/seo/geo') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/seo/geo">
-                                <Map className="mr-2 h-4 w-4" />
-                                Geo Targeting
-                            </Link>
-                        </Button>
-                        <Button variant={pathname?.startsWith('/admin/seo/analysis') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/seo/analysis">
-                                <BarChart className="mr-2 h-4 w-4" />
-                                Content Analysis
-                            </Link>
-                        </Button>
-                        <Button variant={pathname?.startsWith('/admin/seo/settings') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/seo/settings">
-                                <Settings className="mr-2 h-4 w-4" />
-                                Settings
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-
-                {/* System */}
-                <div>
-                    <h3 className="mb-2 px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">System</h3>
-                    <div className="space-y-1">
-                        <Button variant={pathname.startsWith('/admin/users') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/users">
-                                <Users className="mr-2 h-4 w-4" />
-                                Users
-                            </Link>
-                        </Button>
-
-                        <Button variant={pathname.startsWith('/admin/system/files') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/system/files">
-                                <Folder className="mr-2 h-4 w-4" />
-                                File Directory
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/settings') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/settings">
-                                <Settings className="mr-2 h-4 w-4" />
-                                General Settings
-                            </Link>
-                        </Button>
-                        <Button variant={pathname.startsWith('/admin/settings/global') ? 'secondary' : 'ghost'} size="sm" className="w-full justify-start" asChild>
-                            <Link href="/admin/settings/global">
-                                <Globe className="mr-2 h-4 w-4" />
-                                Website Config
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
+                ))}
             </nav>
 
             {/* Footer / User */}

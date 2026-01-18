@@ -83,13 +83,13 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-br from-gray-100/50 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
 
-                                <div className="relative flex h-full items-center justify-center p-10">
+                                <div className="relative flex h-full items-center justify-center p-6">
                                     {client.logo?.originalUrl ? (
                                         <div className="relative flex h-full w-full items-center justify-center">
                                             <img
                                                 src={client.logo.originalUrl}
                                                 alt={client.logo.alt || `${client.name} logo`}
-                                                className="max-h-12 w-auto object-contain transition-all duration-500 brightness-0 invert opacity-100 group-hover:filter-none group-hover:scale-110"
+                                                className="w-[80%] h-[80%] object-contain transition-all duration-500 brightness-0 invert opacity-100 group-hover:filter-none group-hover:scale-110"
                                                 loading="lazy"
                                             />
                                         </div>

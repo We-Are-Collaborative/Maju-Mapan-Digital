@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Edit, Plus, Search, Trash2, ArrowLeft, Zap } from "lucide-react";
 import { getSolutionsAdmin, deleteSolution } from "@/app/actions/solutions";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function SolutionsManager() {
     const [solutions, setSolutions] = useState<any[]>([]);
@@ -37,12 +38,14 @@ export default function SolutionsManager() {
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
+                <div className="flex-1">
                     <Link href="/admin" className="text-slate-500 hover:text-slate-900 flex items-center gap-2 mb-2 font-bold text-sm uppercase tracking-wider">
                         <ArrowLeft size={16} /> Back to Dashboard
                     </Link>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Solutions Manager</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage your expertise and solutions.</p>
+                    <AdminHeader
+                        defaultTitle="Solutions Manager"
+                        defaultSubtitle="Manage your expertise and solutions."
+                    />
                 </div>
                 <Link
                     href="/admin/solutions/new"

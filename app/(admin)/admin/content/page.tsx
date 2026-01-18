@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Edit, FileText, Plus, Search, Trash2, Menu, LayoutDashboard } from "lucide-react";
 import { getAllPages, createPage, deletePage } from "@/app/actions/pages";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function ContentManager() {
     const [pages, setPages] = useState<any[]>([]);
@@ -47,9 +48,11 @@ export default function ContentManager() {
         <div className="space-y-8 p-8  animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Content Manager</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage your website's pages and sections.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Content Manager"
+                        defaultSubtitle="Manage your website's pages and sections."
+                    />
                 </div>
                 <button
                     onClick={handleCreate}

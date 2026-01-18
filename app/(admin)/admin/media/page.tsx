@@ -24,6 +24,7 @@ import { getMediaAssets, deleteMediaAsset, deleteMediaAssets, updateMediaMetadat
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { SeoImageUpload } from '@/components/admin/seo-image-upload';
+import AdminHeader from '../../components/AdminHeader';
 
 interface MediaAsset {
     id: string;
@@ -154,9 +155,11 @@ export default function MediaLibraryPage() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-24">
             {/* Header Area */}
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 className="text-4xl font-black tracking-tight text-slate-900">Media Library</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage and optimize your digital assets for SEO.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Media Library"
+                        defaultSubtitle="Manage and optimize your digital assets for SEO."
+                    />
                 </div>
                 <Button
                     onClick={() => setIsUploadModalOpen(true)}

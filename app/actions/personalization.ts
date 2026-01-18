@@ -1,7 +1,8 @@
 'use server'
 
 import { prisma as db } from '@/lib/db';
-import { PrismaClient } from '@prisma/client';
+
+import { PrismaClient, Prisma } from '@prisma/client';
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 import { cookies } from 'next/headers';
@@ -121,7 +122,7 @@ export async function getPersonalizedHero(defaultHero: any) {
         const contextData = {
             browsedPaths: intel?.browsingHistory ? JSON.parse(intel.browsingHistory) : [],
             lastSearch: intel?.lastSearch,
-            lastUserChat: chatMessages.filter(m => m.role === 'user').map(m => m.content).join(", "),
+            lastUserChat: chatMessages.filter((m: Prisma.ChatMessageGetPayload<object>) => m.role === 'user').map((m: Prisma.ChatMessageGetPayload<object>) => m.content).join(", "),
             trendingTopics
         };
 

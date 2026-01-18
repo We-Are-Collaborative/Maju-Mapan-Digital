@@ -6,6 +6,7 @@ import { Search, Trash2, ArrowLeft, MessageSquare, CheckCircle, Clock } from "lu
 import { getLeadsAdmin, deleteLead, updateLeadStatus } from "@/app/actions/leads";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import AdminHeader from "../../components/AdminHeader";
 
 export default function LeadsManager() {
     const [leads, setLeads] = useState<any[]>([]);
@@ -62,9 +63,11 @@ export default function LeadsManager() {
         <div className="space-y-8 p-8 w-full animate-in fade-in duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Leads & Inquiries</h1>
-                    <p className="text-slate-500 font-medium mt-1">Manage contact form submissions.</p>
+                <div className="flex-1">
+                    <AdminHeader
+                        defaultTitle="Leads & Inquiries"
+                        defaultSubtitle="Manage contact form submissions."
+                    />
                 </div>
                 {/* Search Bar */}
                 <div className="relative max-w-sm w-full">

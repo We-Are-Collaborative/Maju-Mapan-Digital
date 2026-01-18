@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getKpiStats } from "@/app/(admin)/_actions/dashboard";
 import PublicAccessWidget from "./components/PublicAccessWidget";
 import { useSession } from "next-auth/react";
+import AdminHeader from "../components/AdminHeader";
 
 export default function AdminDashboard() {
     const { data: session } = useSession();
@@ -47,12 +48,10 @@ export default function AdminDashboard() {
     return (
         <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
             {/* Header Section */}
-            <div>
-                <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-2">Dashboard</h1>
-                <p className="text-lg font-medium text-slate-500 max-w-2xl">
-                    Overview of your system's performance and content metrics.
-                </p>
-            </div>
+            <AdminHeader
+                defaultTitle="Dashboard"
+                defaultSubtitle="Overview of your system's performance and content metrics."
+            />
 
             {/* KPI Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -1,9 +1,13 @@
+
 import { getEmployees } from '@/app/actions/team';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import Link from 'next/link';
 import DeleteTeamMemberButton from './DeleteTeamMemberButton';
+import AdminHeader from '../../components/AdminHeader';
+
+type Employee = Awaited<ReturnType<typeof getEmployees>>[number];
 import { redirect } from 'next/navigation';
 import { TeamMemberImage } from '@/components/team/team-member-image';
 
@@ -12,13 +16,13 @@ export default async function AdminTeamPage() {
     const employees = await getEmployees();
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-10 p-8 w-full animate-in fade-in duration-700">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Team Members</h1>
-                    <p className="text-muted-foreground">
-                        Manage your team members for the About Us page.
-                    </p>
+                    <AdminHeader
+                        defaultTitle="Team Members"
+                        defaultSubtitle="Manage your team members for the About Us page."
+                    />
                 </div>
                 <Button asChild>
                     <Link href="/admin/team/new">
@@ -28,7 +32,7 @@ export default async function AdminTeamPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {employees.map((employee) => (
+                {employees.map((employee: Employee) => (
                     <Card key={employee.id} className="overflow-hidden group transition-all hover:border-brand-500/50">
                         <div className="aspect-[4/5] relative bg-muted overflow-hidden">
                             <TeamMemberImage

@@ -4,6 +4,8 @@ import { PropsWithChildren } from 'react';
 import { Toaster } from 'sonner';
 import { getNavItems } from '@/app/actions/public-data';
 
+type NavItem = Awaited<ReturnType<typeof getNavItems>>[number];
+
 export default async function PublicClientLayout({ children }: PropsWithChildren) {
     const navData = await getNavItems();
 
@@ -19,7 +21,7 @@ export default async function PublicClientLayout({ children }: PropsWithChildren
 
     // For now, mapping to the structure expectd by Navbar, but 'active' will be false initially 
     // and Navbar should ideally handle highlighting if it's a client component.
-    const navItems = navData.map(item => ({
+    const navItems = navData.map((item: NavItem) => ({
         title: item.title,
         href: item.href,
         // Client side handles active state calculation since active is undefined
