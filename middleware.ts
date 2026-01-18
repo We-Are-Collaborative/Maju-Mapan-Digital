@@ -33,7 +33,6 @@ export default withAuth(
         callbacks: {
             authorized: ({ token }) => !!token,
         },
-        secret: "development-secret-do-not-use-in-prod"
     }
 );
 
