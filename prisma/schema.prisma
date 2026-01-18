@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -35,8 +35,8 @@ model PageSection {
   name                String?
   type                String
   position            Int         @default(0)
-  htmlContent         String?
-  splitFeatureSection String?
+  htmlContent         String?     @db.LongText
+  splitFeatureSection String?     @db.Text
   pageId              String
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
@@ -65,13 +65,13 @@ model GlobalSettings {
   logoType              String   @default("svg")
   logoGifUrl            String?
   logoAlt               String?  @default("Maju Mapan Digital Logo")
-  robotsTxt             String?
-  htaccess              String?
-  googleAnalyticsScript String?
-  metaPixelScript       String?
-  tiktokPixelScript     String?
-  customHeadScripts     String?
-  customBodyScripts     String?
+  robotsTxt             String?  @db.Text
+  htaccess              String?  @db.Text
+  googleAnalyticsScript String?  @db.Text
+  metaPixelScript       String?  @db.Text
+  tiktokPixelScript     String?  @db.Text
+  customHeadScripts     String?  @db.Text
+  customBodyScripts     String?  @db.Text
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }
@@ -88,14 +88,14 @@ model Theme {
 model SEO {
   id              String       @id @default(cuid())
   metaTitle       String?
-  metaDescription String?
-  keywords        String?
+  metaDescription String?  @db.Text
+  keywords        String?  @db.Text
   canonicalUrl    String?
-  robots          String?      @default("index, follow")
+  robots          String?  @default("index, follow")
   ogTitle         String?
-  ogDescription   String?
+  ogDescription   String?  @db.Text
   ogImage         String?
-  structuredData  String?
+  structuredData  String?  @db.Text
   geoRegion       String?
   geoPlacename    String?
   geoPosition     String?
@@ -109,7 +109,7 @@ model SEO {
 model Script {
   id        String   @id @default(cuid())
   name      String
-  code      String
+  code      String   @db.Text
   location  String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -130,10 +130,10 @@ model Lead {
   monthlySpend    String?
   primaryGoal     String?
   role            String?
-  message         String?
+  message         String?       @db.Text
   subject         String?
-  browsingHistory String?
-  notes           String?
+  browsingHistory String?       @db.Text
+  notes           String?       @db.Text
   sessionId       String?
   chatSessions    ChatSession[]
 }
@@ -151,8 +151,8 @@ model ChatMessage {
   id              String      @id @default(cuid())
   sessionId       String
   role            String
-  content         String
-  behaviorContext String?
+  content         String      @db.Text
+  behaviorContext String?     @db.Text
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   session         ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
@@ -193,7 +193,7 @@ model Speciality {
   subtitle     String?
   slug         String   @unique
   excerpt      String?
-  description  String?
+  description  String? @db.Text
   iconUrl      String?
   bgUrl        String?
   thumbnailUrl String?
@@ -209,8 +209,8 @@ model Client {
   id          String      @id @default(cuid())
   name        String
   slug        String      @unique
-  description String?
-  excerpt     String?
+  description String?     @db.Text
+  excerpt     String?     @db.Text
   logoUrl     String?
   isFeatured  Boolean     @default(false)
   status      String      @default("active")
@@ -259,8 +259,8 @@ model Article {
   id           String    @id @default(cuid())
   title        String
   slug         String    @unique
-  excerpt      String?
-  content      String?
+  excerpt      String?   @db.Text
+  content      String?   @db.LongText
   thumbnailUrl String?
   status       String    @default("draft")
   isFeatured   Boolean   @default(false)
@@ -275,8 +275,8 @@ model CaseStudy {
   id           String    @id @default(cuid())
   title        String
   slug         String    @unique
-  excerpt      String?
-  content      String?
+  excerpt         String?   @db.Text
+  content         String?   @db.LongText
   thumbnailUrl String?
   clientId     String?
   startDate    DateTime?
@@ -285,7 +285,7 @@ model CaseStudy {
   isFeatured   Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  metrics      String?
+  metrics      String?   @db.Text
   thumbnailAlt String?
   client       Client?   @relation(fields: [clientId], references: [id], onDelete: Cascade)
 }
@@ -298,9 +298,9 @@ model Career {
   type         String?
   minSalary    Float?
   maxSalary    Float?
-  description  String?
-  content      String?
-  requirements String?          @default("[]")
+  description  String?          @db.Text
+  content      String?          @db.LongText
+  requirements String?          @default("[]") @db.Text
   isRemote     Boolean          @default(false)
   applyUrl     String?
   status       String           @default("published")
@@ -319,8 +319,8 @@ model JobApplication {
   linkedinUrl  String?
   portfolioUrl String?
   resumeUrl    String?
-  coverLetter  String?
-  answers      String?
+  coverLetter  String?  @db.Text
+  answers      String?  @db.Text
   status       String   @default("new")
   careerId     String
   userId       String?
@@ -361,10 +361,10 @@ model HomeHeroSlide {
 model AudienceIntelligence {
   id              String   @id @default(cuid())
   sessionId       String   @unique
-  interests       String?
-  browsingHistory String?
+  interests       String?  @db.Text
+  browsingHistory String?  @db.Text
   lastSearch      String?
-  topTopics       String?
+  topTopics       String?  @db.Text
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -462,9 +462,9 @@ model Campaign {
   spend       Float              @default(0)
   clientId    String
   objectiveId String?
-  metrics     String?
-  channels    String?
-  services    String?
+  metrics     String?            @db.Text
+  channels    String?            @db.Text
+  services    String?            @db.Text
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
   objective   CampaignObjective? @relation(fields: [objectiveId], references: [id])
