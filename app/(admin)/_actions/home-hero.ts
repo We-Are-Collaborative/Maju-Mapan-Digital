@@ -33,7 +33,7 @@ export async function getHomeHeroData() {
                 }
             },
             orderBy: { createdAt: 'desc' }
-        });
+        }).catch(() => null);
 
         if (!hero) {
             console.log("[HeroAction] No hero found, potentially creating default...");
@@ -41,7 +41,7 @@ export async function getHomeHeroData() {
             // Re-check inside a small delay or just try to find again to handle race conditions
             const secondCheck = await (db as any).homeHero.findFirst({
                 where: { isActive: true }
-            });
+            }).catch(() => null);
 
             if (secondCheck) return secondCheck;
 
@@ -79,21 +79,40 @@ export async function getHomeHeroData() {
                             }
                         }
                     }
-                });
-                return created;
+                }).catch(() => null);
+                if (created) return created;
             } catch (err) {
-                // If creation failed (e.g. unique constraint or other worker won), return whatever is there now
-                return await (db as any).homeHero.findFirst({
-                    where: { isActive: true },
-                    include: { slides: true }
-                });
+                // FALLTHROUGH
             }
+
+            // Final attempt to find what might have been created by another worker
+            return await (db as any).homeHero.findFirst({
+                where: { isActive: true },
+                include: { slides: true }
+            }).catch(() => null);
         }
 
         return hero;
     } catch (error: any) {
         console.error("[HeroAction] CRITICAL ERROR:", error.message);
-        return null;
+        // Stable mock for public UI
+        return {
+            id: 'mock-hero',
+            isDynamic: true,
+            isActive: true,
+            slides: [
+                {
+                    id: "mock-slide-1",
+                    titleLine1: "Powering",
+                    titleHighlight: "Growth",
+                    subtitle: "Your partner in profitable growth—turning traffic into tangible revenue.",
+                    ctaText: "Set a Meeting",
+                    ctaLink: "/contact-us",
+                    bgOpacity: 0.4,
+                    order: 0
+                }
+            ]
+        };
     }
 }
 

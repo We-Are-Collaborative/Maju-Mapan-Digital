@@ -1,14 +1,12 @@
 'use server'
 
 import { prisma as db } from '@/lib/db';
-
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 import { cookies } from 'next/headers';
 
 const PERSONALIZATION_COOKIE = 'mjmp_session_context';
-const localDb = new PrismaClient();
 
 export async function updateAudienceContext(path: string, search?: string) {
     const cookieStore = await cookies();
@@ -20,7 +18,7 @@ export async function updateAudienceContext(path: string, search?: string) {
     }
 
     try {
-        const prisma = (db as any).audienceIntelligence ? db : localDb;
+        const prisma = db;
         let intel: any = null;
 
         if ((prisma as any).audienceIntelligence) {
@@ -36,25 +34,29 @@ export async function updateAudienceContext(path: string, search?: string) {
                     lastSearch: search || undefined,
                     updatedAt: new Date()
                 }
-            });
+            }).catch(() => null);
         } else {
-            // Raw SQL fallback for upsert
-            // @ts-ignore
-            const existing: any[] = await prisma.$queryRawUnsafe('SELECT * FROM AudienceIntelligence WHERE sessionId = ?', sessionId);
-            if (existing && existing.length > 0) {
+            // Raw SQL fallback for upsert - catch all errors locally
+            try {
                 // @ts-ignore
-                await prisma.$executeRawUnsafe(
-                    'UPDATE AudienceIntelligence SET lastSearch = ?, updatedAt = ? WHERE sessionId = ?',
-                    search || existing[0].lastSearch, new Date().toISOString(), sessionId
-                );
-                intel = existing[0];
-            } else {
-                // @ts-ignore
-                await prisma.$executeRawUnsafe(
-                    'INSERT INTO AudienceIntelligence (id, sessionId, browsingHistory, lastSearch, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)',
-                    Math.random().toString(36).substring(2, 11), sessionId, JSON.stringify([path]), search || null, new Date().toISOString(), new Date().toISOString()
-                );
-                intel = { sessionId, browsingHistory: JSON.stringify([path]), lastSearch: search };
+                const existing: any[] = await prisma.$queryRawUnsafe('SELECT * FROM AudienceIntelligence WHERE sessionId = ?', sessionId).catch(() => []);
+                if (existing && existing.length > 0) {
+                    // @ts-ignore
+                    await prisma.$executeRawUnsafe(
+                        'UPDATE AudienceIntelligence SET lastSearch = ?, updatedAt = ? WHERE sessionId = ?',
+                        search || existing[0].lastSearch, new Date().toISOString(), sessionId
+                    ).catch(() => null);
+                    intel = existing[0];
+                } else {
+                    // @ts-ignore
+                    await prisma.$executeRawUnsafe(
+                        'INSERT INTO AudienceIntelligence (id, sessionId, browsingHistory, lastSearch, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)',
+                        Math.random().toString(36).substring(2, 11), sessionId, JSON.stringify([path]), search || null, new Date().toISOString(), new Date().toISOString()
+                    ).catch(() => null);
+                    intel = { sessionId, browsingHistory: JSON.stringify([path]), lastSearch: search };
+                }
+            } catch (e) {
+                // Ignore raw SQL failures
             }
         }
 
@@ -70,7 +72,7 @@ export async function updateAudienceContext(path: string, search?: string) {
                     await prisma.audienceIntelligence.update({
                         where: { sessionId },
                         data: { browsingHistory: JSON.stringify(history) }
-                    });
+                    }).catch(() => null);
                 } else {
                     // @ts-ignore
                     await prisma.$executeRawUnsafe(
@@ -95,15 +97,15 @@ export async function getPersonalizedHero(defaultHero: any) {
     if (!sessionId) return defaultHero;
 
     try {
-        const prisma = (db as any).audienceIntelligence ? db : localDb;
+        const prisma = db;
         // 1. Get Audience Intelligence
         let intel: any = null;
         if ((prisma as any).audienceIntelligence) {
             // @ts-ignore
-            intel = await prisma.audienceIntelligence.findUnique({ where: { sessionId } });
+            intel = await prisma.audienceIntelligence.findUnique({ where: { sessionId } }).catch(() => null);
         } else {
             // @ts-ignore
-            const results: any[] = await prisma.$queryRawUnsafe('SELECT * FROM AudienceIntelligence WHERE sessionId = ?', sessionId);
+            const results: any[] = await prisma.$queryRawUnsafe('SELECT * FROM AudienceIntelligence WHERE sessionId = ?', sessionId).catch(() => []);
             if (results && results.length > 0) intel = results[0];
         }
 
@@ -112,7 +114,7 @@ export async function getPersonalizedHero(defaultHero: any) {
             where: { sessionId },
             orderBy: { createdAt: 'desc' },
             take: 5
-        });
+        }).catch(() => []);
 
         if (!intel && chatMessages.length === 0) return defaultHero;
 

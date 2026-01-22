@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Calculator, Zap, ArrowRight, Gauge, Info } from "lucide-react";
+import { Calculator, Zap, ArrowRight, Gauge, Info, Users, DollarSign } from "lucide-react";
 
 export default function AveCalculatorPage() {
     return (
@@ -102,7 +102,4 @@ export default function AveCalculatorPage() {
         </div>
     );
 }
-
-// Helper icons for inputs (must be imported or defined if not using lucide properly everywhere)
-import { Users, DollarSign } from "lucide-react";
 

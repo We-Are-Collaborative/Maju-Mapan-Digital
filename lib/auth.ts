@@ -88,5 +88,22 @@ export const authOptions: NextAuthOptions = {
         maxAge: 300, // 5 minutes
     },
     secret: process.env.NEXTAUTH_SECRET || "development-secret-do-not-use-in-prod",
-    debug: true,
+    debug: false,
+    logger: {
+        error(code, metadata: any) {
+            // Silence the noisy JWT decryption error which happens during dev secret changes
+            const message = (metadata as any)?.message || "";
+            if (code === "JWT_SESSION_ERROR" && typeof message === 'string' && message.includes("decryption")) {
+                console.warn("[NextAuth] Session decryption failed (likely secret mismatch). Proceeding as guest.");
+                return;
+            }
+            console.error(`[NextAuth][error][${code}]`, metadata);
+        },
+        warn(code) {
+            console.warn(`[NextAuth][warn][${code}]`);
+        },
+        debug(code, metadata) {
+            // Only log debug if explicitly enabled elsewhere
+        }
+    }
 };

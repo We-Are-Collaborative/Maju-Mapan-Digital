@@ -6,39 +6,54 @@ import { GlobalSettings } from "@prisma/client";
 
 export async function getGlobalSettings(): Promise<GlobalSettings> {
     try {
-        const settings = await prisma.globalSettings.findFirst();
-        // If no settings exist, create default
+        // Attempt to fetch settings, with a catch on the promise itself for maximum safety
+        const settings = await prisma.globalSettings.findFirst().catch((e: any) => {
+            console.warn("[getGlobalSettings] Database connection failed, using fallback:", e.message);
+            return null;
+        });
+
+        // If no settings exist (or DB failed), return mock or try to create if DB might be up
         if (!settings) {
-            return await prisma.globalSettings.create({
-                data: {
-                    siteName: "Maju Mapan Digital"
-                }
-            });
+            try {
+                // Only attempt to create if we haven't already confirmed DB is down
+                // In a true "connection refused" scenario, this will also fail
+                return await prisma.globalSettings.create({
+                    data: {
+                        siteName: "Maju Mapan Digital"
+                    }
+                });
+            } catch (createError) {
+                // If creation fails, we fall through to the mock return below
+            }
+        } else {
+            return settings;
         }
-        return settings;
     } catch (e) {
-        console.error("Failed to fetch settings", e);
-        return {
-            id: "mock-id",
-            siteName: "Maju Mapan Digital",
-            publicAccess: true,
-            maintenanceMode: false,
-            siteDescription: null,
-            contactEmail: null,
-            logoType: "svg",
-            logoGifUrl: null,
-            logoAlt: null,
-            robotsTxt: null,
-            htaccess: null,
-            googleAnalyticsScript: null,
-            metaPixelScript: null,
-            tiktokPixelScript: null,
-            customHeadScripts: null,
-            customBodyScripts: null,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        } as GlobalSettings;
+        // Ultimate fallback
+        console.error("Critical failure in getGlobalSettings", e);
     }
+
+    // Default mock object returned if any part of the DB logic fails
+    return {
+        id: "mock-id",
+        siteName: "Maju Mapan Digital",
+        publicAccess: true,
+        maintenanceMode: false,
+        siteDescription: null,
+        contactEmail: null,
+        logoType: "svg",
+        logoGifUrl: null,
+        logoAlt: null,
+        robotsTxt: null,
+        htaccess: null,
+        googleAnalyticsScript: null,
+        metaPixelScript: null,
+        tiktokPixelScript: null,
+        customHeadScripts: null,
+        customBodyScripts: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    } as GlobalSettings;
 }
 
 export async function setMaintenanceMode(enabled: boolean) {

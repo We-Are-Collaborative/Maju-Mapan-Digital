@@ -72,51 +72,51 @@ export default function GlobalSettingsForm() {
     }
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
+        <div className="space-y-10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/40 backdrop-blur-md border border-white/40 rounded-[2.5rem] p-10 shadow-xl shadow-slate-200/20 gap-6">
                 <div>
-                    <h2 className="text-2xl font-black text-slate-900">Global Configuration</h2>
-                    <p className="text-slate-500 font-medium">Manage crawler access, analytics, and server rules.</p>
+                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Global Configuration</h2>
+                    <p className="text-slate-500 font-medium mt-1">Manage crawler access, analytics, and server rules.</p>
                 </div>
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-black transition-all disabled:opacity-50"
+                    className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-black transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-slate-900/10"
                 >
                     {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
-                    Save Changes
+                    Save System Changes
                 </button>
             </div>
 
             <Tabs defaultValue="crawlers" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 lg:w-[600px] mb-8 p-1 bg-slate-100/50 backdrop-blur rounded-xl">
-                    <TabsTrigger value="crawlers" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-sm font-bold">
-                        <Globe size={16} className="mr-2" /> Crawlers
+                <TabsList className="bg-slate-100/50 backdrop-blur-xl border border-slate-200/50 p-1.5 rounded-2xl mb-10 flex w-fit gap-1">
+                    <TabsTrigger value="crawlers" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-md font-bold transition-all text-slate-500">
+                        <Globe size={18} className="mr-2" /> Crawlers
                     </TabsTrigger>
-                    <TabsTrigger value="server" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-sm font-bold">
-                        <Shield size={16} className="mr-2" /> Server
+                    <TabsTrigger value="server" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-md font-bold transition-all text-slate-500">
+                        <Shield size={18} className="mr-2" /> Server
                     </TabsTrigger>
-                    <TabsTrigger value="analytics" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-sm font-bold">
-                        <Activity size={16} className="mr-2" /> Analytics
+                    <TabsTrigger value="analytics" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-md font-bold transition-all text-slate-500">
+                        <Activity size={18} className="mr-2" /> Analytics
                     </TabsTrigger>
-                    <TabsTrigger value="custom" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-sm font-bold">
-                        <Code size={16} className="mr-2" /> Scripts
+                    <TabsTrigger value="custom" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-lime-600 data-[state=active]:shadow-md font-bold transition-all text-slate-500">
+                        <Code size={18} className="mr-2" /> Scripts
                     </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="crawlers" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <Card className="border-2 border-slate-100 shadow-xl shadow-slate-100/50">
-                        <CardHeader>
-                            <CardTitle>Robots.txt Configuration</CardTitle>
-                            <CardDescription>Define how search engines crawl your site. This content is served dynamically at /robots.txt</CardDescription>
+                    <Card className="rounded-[2rem] border-4 border-slate-50 bg-white/60 backdrop-blur-md shadow-2xl shadow-slate-200/40 p-2">
+                        <CardHeader className="p-8 pb-4">
+                            <CardTitle className="text-2xl font-black text-slate-900">Robots.txt Configuration</CardTitle>
+                            <CardDescription className="font-medium text-slate-500">Define how search engines crawl your site. This content is served dynamically at /robots.txt</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label>Content</Label>
+                        <CardContent className="p-8 pt-0 space-y-6">
+                            <div className="space-y-3">
+                                <Label className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Configuration Content</Label>
                                 <Textarea
                                     value={formData.robotsTxt}
                                     onChange={(e) => setFormData({ ...formData, robotsTxt: e.target.value })}
-                                    className="font-mono text-sm min-h-[300px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
+                                    className="font-mono text-sm min-h-[400px] bg-slate-50/50 border-2 border-slate-100 focus:ring-4 focus:ring-lime-400/10 focus:border-lime-400 rounded-2xl transition-all p-6"
                                     placeholder="User-agent: *&#10;Allow: /"
                                 />
                             </div>
@@ -125,20 +125,21 @@ export default function GlobalSettingsForm() {
                 </TabsContent>
 
                 <TabsContent value="server" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <Card className="border-2 border-slate-100 shadow-xl shadow-slate-100/50">
-                        <CardHeader>
-                            <CardTitle>.htaccess Simulation</CardTitle>
-                            <CardDescription className="text-amber-600 font-bold">
-                                Note: This app is hosted on a Node.js environment (Next.js). This .htaccess file is for reference or migration planning only and does NOT affect the live server directly.
+                    <Card className="rounded-[2rem] border-4 border-slate-50 bg-white/60 backdrop-blur-md shadow-2xl shadow-slate-200/40 p-2">
+                        <CardHeader className="p-8 pb-4">
+                            <CardTitle className="text-2xl font-black text-slate-900">Server Rules (.htaccess)</CardTitle>
+                            <CardDescription className="text-amber-600 font-bold bg-amber-50/50 p-4 rounded-xl border border-amber-100 flex items-center gap-3">
+                                <Shield size={18} className="shrink-0" />
+                                Note: This application uses Next.js. These rules are for reference or migration planning and do NOT affect the live environment.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label>Content</Label>
+                        <CardContent className="p-8 pt-2 space-y-6">
+                            <div className="space-y-3">
+                                <Label className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Rule Definitions</Label>
                                 <Textarea
                                     value={formData.htaccess}
                                     onChange={(e) => setFormData({ ...formData, htaccess: e.target.value })}
-                                    className="font-mono text-sm min-h-[300px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
+                                    className="font-mono text-sm min-h-[400px] bg-slate-50/50 border-2 border-slate-100 focus:ring-4 focus:ring-lime-400/10 focus:border-lime-400 rounded-2xl transition-all p-6"
                                     placeholder="# Rewrite rules here"
                                 />
                             </div>
@@ -147,65 +148,58 @@ export default function GlobalSettingsForm() {
                 </TabsContent>
 
                 <TabsContent value="analytics" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <Card className="border-2 border-slate-100 shadow-xl shadow-slate-100/50">
-                        <CardHeader>
-                            <CardTitle>Tracking Pixels & Analytics</CardTitle>
-                            <CardDescription>Enter your measurement IDs. Scripts are automatically injected into the head/body.</CardDescription>
+                    <Card className="rounded-[2rem] border-4 border-slate-50 bg-white/60 backdrop-blur-md shadow-2xl shadow-slate-200/40 p-2">
+                        <CardHeader className="p-8 pb-4">
+                            <CardTitle className="text-2xl font-black text-slate-900">Analytics & Tracking</CardTitle>
+                            <CardDescription className="font-medium text-slate-500">Enter your measurement IDs. Scripts are automatically injected into the appropriate sections.</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="space-y-2">
-                                <Label>Google Analytics Script</Label>
-                                <Textarea
-                                    value={formData.googleAnalyticsScript}
-                                    onChange={(e) => setFormData({ ...formData, googleAnalyticsScript: e.target.value })}
-                                    className="font-mono text-sm min-h-[100px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
-                                    placeholder="<script async src='...'>"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label>Meta Pixel Script</Label>
-                                <Textarea
-                                    value={formData.metaPixelScript}
-                                    onChange={(e) => setFormData({ ...formData, metaPixelScript: e.target.value })}
-                                    className="font-mono text-sm min-h-[100px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
-                                    placeholder="<script>...</script>"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label>TikTok Pixel Script</Label>
-                                <Textarea
-                                    value={formData.tiktokPixelScript}
-                                    onChange={(e) => setFormData({ ...formData, tiktokPixelScript: e.target.value })}
-                                    className="font-mono text-sm min-h-[100px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
-                                    placeholder="<script>...</script>"
-                                />
-                            </div>
+                        <CardContent className="p-8 pt-0 space-y-8">
+                            {[
+                                { id: 'googleAnalyticsScript', label: 'Google Analytics G4', icon: Globe },
+                                { id: 'metaPixelScript', label: 'Meta (Facebook) Pixel', icon: Activity },
+                                { id: 'tiktokPixelScript', label: 'TikTok Pixel', icon: Activity }
+                            ].map((pixel) => (
+                                <div key={pixel.id} className="space-y-3">
+                                    <Label className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                                        <pixel.icon size={14} /> {pixel.label}
+                                    </Label>
+                                    <Textarea
+                                        value={formData[pixel.id as keyof typeof formData]}
+                                        onChange={(e) => setFormData({ ...formData, [pixel.id]: e.target.value })}
+                                        className="font-mono text-sm min-h-[120px] bg-slate-50/50 border-2 border-slate-100 focus:ring-4 focus:ring-lime-400/10 focus:border-lime-400 rounded-2xl transition-all p-5"
+                                        placeholder="<script async src='...'>"
+                                    />
+                                </div>
+                            ))}
                         </CardContent>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="custom" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <Card className="border-2 border-slate-100 shadow-xl shadow-slate-100/50">
-                        <CardHeader>
-                            <CardTitle>Custom Script Injection</CardTitle>
-                            <CardDescription className="text-rose-500 font-bold">Warning: Malformed scripts can break your site. Use with caution.</CardDescription>
+                    <Card className="rounded-[2rem] border-4 border-slate-50 bg-white/60 backdrop-blur-md shadow-2xl shadow-slate-200/40 p-2">
+                        <CardHeader className="p-8 pb-4">
+                            <CardTitle className="text-2xl font-black text-slate-900">Custom Script Injection</CardTitle>
+                            <CardDescription className="text-rose-500 font-bold bg-rose-50/50 p-4 rounded-xl border border-rose-100 flex items-center gap-3">
+                                <Activity size={18} className="shrink-0" />
+                                Warning: Malformed scripts can break your site frontend. Use with extreme caution.
+                            </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="space-y-2">
-                                <Label>{`Header Scripts (<head>)`}</Label>
+                        <CardContent className="p-8 pt-2 space-y-8">
+                            <div className="space-y-3">
+                                <Label className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">{`Header Scripts (<head>)`}</Label>
                                 <Textarea
                                     value={formData.customHeadScripts}
                                     onChange={(e) => setFormData({ ...formData, customHeadScripts: e.target.value })}
-                                    className="font-mono text-sm min-h-[200px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
+                                    className="font-mono text-sm min-h-[250px] bg-slate-50/50 border-2 border-slate-100 focus:ring-4 focus:ring-lime-400/10 focus:border-lime-400 rounded-2xl transition-all p-6"
                                     placeholder="<script>...</script>"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <Label>{`Body Scripts (<body>)`}</Label>
+                            <div className="space-y-3">
+                                <Label className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">{`Body Scripts (<body>)`}</Label>
                                 <Textarea
                                     value={formData.customBodyScripts}
                                     onChange={(e) => setFormData({ ...formData, customBodyScripts: e.target.value })}
-                                    className="font-mono text-sm min-h-[200px] bg-slate-50 border-2 border-slate-200 focus:ring-lime-400"
+                                    className="font-mono text-sm min-h-[250px] bg-slate-50/50 border-2 border-slate-100 focus:ring-4 focus:ring-lime-400/10 focus:border-lime-400 rounded-2xl transition-all p-6"
                                     placeholder="<script>...</script>"
                                 />
                             </div>

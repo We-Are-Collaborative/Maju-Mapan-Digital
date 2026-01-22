@@ -20,7 +20,7 @@ export default function MainClientLayout({ children, navData = [] }: { children:
     }, [pathname]);
 
     // Auth Check
-    if (status === "loading") return <div className="flex h-screen items-center justify-center bg-slate-900 text-indigo-400 font-black uppercase tracking-[0.3em] animate-pulse">Neural Syncing...</div>;
+    if (status === "loading") return <div className="flex h-screen items-center justify-center bg-slate-900 text-brand-400 font-black uppercase tracking-[0.3em] animate-pulse">Neural Syncing...</div>;
     if (!session) {
         redirect("/login");
     }

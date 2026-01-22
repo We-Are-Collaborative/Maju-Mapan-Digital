@@ -61,7 +61,13 @@ export default async function PublicRootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await getServerSession(authOptions);
+    let session = null;
+    try {
+        session = await getServerSession(authOptions).catch(() => null);
+    } catch (e) {
+        // Silently fail session decryption if secret changed or cookie corrupted
+        console.warn("[Layout] Session decryption failed, proceeding as guest.");
+    }
     const settings = await getGlobalSettings();
 
     return (

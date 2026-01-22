@@ -1,10 +1,29 @@
 import { PrismaClient } from '@prisma/client';
 import { mockValues, mockTeam, mockSpecialities, mockClients, mockCategories, mockArticles, mockCaseStudies, mockCareers, mockPageSeo } from '../lib/mock-data';
 
+import { hashSync } from 'bcryptjs';
+
 const prisma = new PrismaClient();
 
 async function main() {
     console.log('Start seeding ...');
+
+    // Admin User
+    const adminEmail = 'admin@majumapandigital.com';
+    const hashedPassword = hashSync('admin123', 10);
+
+    await prisma.user.upsert({
+        where: { email: adminEmail },
+        update: {},
+        create: {
+            email: adminEmail,
+            name: 'Master Admin',
+            password: hashedPassword,
+            role: 'admin'
+        }
+    });
+
+    console.log(`Admin user created: ${adminEmail} / admin123`);
 
     // Nav Menu
     const navItems = [
@@ -176,16 +195,29 @@ async function main() {
         }
     });
 
-    // Create/Update the content section
-    await prisma.pageSection.create({
-        data: {
-            pageId: homePage.id,
-            name: 'main_content',
-            type: 'json_content',
-            splitFeatureSection: JSON.stringify(mockPageSeo.content),
-            position: 0
-        }
+    // Create the content section (Avoid duplicates)
+    const existingMainContent = await prisma.pageSection.findFirst({
+        where: { pageId: homePage.id, name: 'main_content', type: 'json_content' }
     });
+
+    if (!existingMainContent) {
+        await prisma.pageSection.create({
+            data: {
+                pageId: homePage.id,
+                name: 'main_content',
+                type: 'json_content',
+                splitFeatureSection: JSON.stringify(mockPageSeo.content),
+                position: 0
+            }
+        });
+    } else {
+        await prisma.pageSection.update({
+            where: { id: existingMainContent.id },
+            data: {
+                splitFeatureSection: JSON.stringify(mockPageSeo.content)
+            }
+        });
+    }
 
     // SEO Config
     // @ts-ignore

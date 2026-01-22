@@ -125,7 +125,7 @@ export const mockClients: Client[] = [
         order: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Traveloka-Logo-Vector.svg-.svg' } as any,
+        logo: { originalUrl: '/assets/client/traveloka.svg' } as any,
         brandColor: '#0194f3'
     },
     {
@@ -139,7 +139,7 @@ export const mockClients: Client[] = [
         order: 2,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Shopee_logo.svg' } as any,
+        logo: { originalUrl: '/assets/client/shopee.svg' } as any,
         brandColor: '#ee4d2d'
     },
     {
@@ -153,7 +153,7 @@ export const mockClients: Client[] = [
         order: 3,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/HokBen_new_logo.svg' } as any,
+        logo: { originalUrl: '/assets/client/hokben.svg' } as any,
         brandColor: '#ffcc00'
     },
     {
@@ -167,7 +167,7 @@ export const mockClients: Client[] = [
         order: 4,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/J&T_Express_logo.svg' } as any,
+        logo: { originalUrl: '/assets/client/jt_express.svg' } as any,
         brandColor: '#ff0000'
     },
     {
@@ -181,7 +181,7 @@ export const mockClients: Client[] = [
         order: 5,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Logo_ovo_purple.svg.svg' } as any,
+        logo: { originalUrl: '/assets/client/ovo.svg' } as any,
         brandColor: '#4c2a86'
     },
     {
@@ -195,7 +195,7 @@ export const mockClients: Client[] = [
         order: 6,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Pegadaian_logo.svg' } as any,
+        logo: { originalUrl: '/assets/client/pegadaian.svg' } as any,
         brandColor: '#006a4d'
     },
     {
@@ -209,7 +209,7 @@ export const mockClients: Client[] = [
         order: 7,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Citroen-Logo-PNG-Cutout.svg' } as any,
+        logo: { originalUrl: '/assets/client/citroen.svg' } as any,
         brandColor: '#6e6e6e'
     },
     {
@@ -223,7 +223,7 @@ export const mockClients: Client[] = [
         order: 8,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        logo: { originalUrl: '/assets/client/Axis_logo.svg' } as any,
+        logo: { originalUrl: '/assets/client/axis.svg' } as any,
         brandColor: '#ed008c'
     }
 ];

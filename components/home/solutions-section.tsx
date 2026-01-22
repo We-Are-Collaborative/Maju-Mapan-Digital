@@ -97,19 +97,19 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({
                             if (isDigitalPerformance) {
                                 bgImage = '/assets/bg_banner_dekstop.webp';
                                 englishDescription = "Data-driven campaigns designed to scale. We optimize your ad spend across Google, Meta, and TikTok to deliver maximum ROI and predictable revenue growth.";
-                                clientLogos = ['/assets/client/grab.svg', '/assets/client/jenius.svg', '/assets/client/traveloka.svg'];
+                                clientLogos = ['/assets/client/shopee.svg', '/assets/client/ovo.svg', '/assets/client/traveloka.svg'];
                             } else if (isInfluencer) {
                                 bgImage = '/assets/bg-speciality.webp';
                                 englishDescription = "Connect your brand with authentic voices that resonate. We manage end-to-end influencer campaigns that drive engagement, trust, and measurable conversions.";
-                                clientLogos = ['/assets/client/finally_find_you.svg', '/assets/client/ascott.svg', '/assets/client/pegadaian.svg'];
+                                clientLogos = ['/assets/client/finally_found_you.svg', '/assets/client/ascott.svg', '/assets/client/pegadaian.svg'];
                             } else if (isSEO) {
                                 bgImage = '/assets/bg-tools.webp';
                                 englishDescription = "Dominate search results and build long-term authority. Our technical SEO and content strategies ensure your brand is found by the right audience at the right time.";
-                                clientLogos = ['/assets/client/prime_video.svg', '/assets/client/jet.svg', '/assets/client/citroen.svg'];
+                                clientLogos = ['/assets/client/shopback.svg', '/assets/client/jt_express.svg', '/assets/client/citroen.svg'];
                             } else if (isCreative) {
                                 bgImage = '/assets/bg_hello_dekstop.webp';
                                 englishDescription = "Transform your brand story into high-impact visual assets. We produce professional video, photography, and motion graphics that capture attention and drive conversions.";
-                                clientLogos = ['/assets/client/achieva.svg', '/assets/client/yesci.svg', '/assets/client/prime_video.svg'];
+                                clientLogos = ['/assets/client/achieva.svg', '/assets/client/hokben.svg', '/assets/client/axis.svg'];
                             }
 
                             // Symmetrical 2-column layout

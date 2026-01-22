@@ -5,11 +5,31 @@ const prisma = new PrismaClient();
 async function main() {
     console.log('Seeding Admin Navigation...');
 
+    // Clear existing navigation to ensure a clean state
+    await prisma.adminNavItem.deleteMany({});
+    await prisma.adminNavCategory.deleteMany({});
+
+    // 0. Mapan Dashboard (Restored to previous state)
+    const mapanCat = await prisma.adminNavCategory.create({
+        data: {
+            title: 'Mapan Dashboard',
+            position: 0,
+            items: {
+                create: [
+                    { name: 'Dashboard', href: '/admin/mapan/dashboard', icon: 'LayoutDashboard', position: 0 },
+                    { name: 'Brands', href: '/admin/mapan/brands', icon: 'Briefcase', position: 1 },
+                    { name: 'AVE Calculator', href: '/admin/mapan/ave-calculator', icon: 'Calculator', position: 2 },
+                    { name: 'Settings', href: '/admin/mapan/settings', icon: 'Settings', position: 3 },
+                ],
+            },
+        },
+    });
+
     // 1. Dashboard & Hero
     const dashCat = await prisma.adminNavCategory.create({
         data: {
             title: 'Dashboard & Hero',
-            position: 0,
+            position: 1, // Shifted from 0
             items: {
                 create: [
                     { name: 'Dashboard', href: '/admin', icon: 'LayoutDashboard', position: 0 },
@@ -23,7 +43,7 @@ async function main() {
     const contentCat = await prisma.adminNavCategory.create({
         data: {
             title: 'Content & Portfolio',
-            position: 1,
+            position: 2, // Shifted from 1
             items: {
                 create: [
                     { name: 'Solutions', href: '/admin/solutions', icon: 'Zap', position: 0 },
@@ -42,7 +62,7 @@ async function main() {
     const recruitCat = await prisma.adminNavCategory.create({
         data: {
             title: 'Recruitment',
-            position: 2,
+            position: 3, // Shifted from 2
             items: {
                 create: [
                     { name: 'Jobs / Careers', href: '/admin/careers', icon: 'Briefcase', position: 0 },
@@ -57,10 +77,11 @@ async function main() {
     const businessCat = await prisma.adminNavCategory.create({
         data: {
             title: 'Business',
-            position: 3,
+            position: 4, // Shifted from 3
             items: {
                 create: [
                     { name: 'Leads', href: '/admin/leads', icon: 'MessageSquare', position: 0 },
+                    { name: 'Newsletter / Leads', href: '/admin/newsletter', icon: 'Mail', position: 1 },
                 ],
             },
         },
@@ -70,7 +91,7 @@ async function main() {
     const seoCat = await prisma.adminNavCategory.create({
         data: {
             title: 'SEO & GEO Manager',
-            position: 4,
+            position: 5, // Shifted from 4
             items: {
                 create: [
                     { name: 'Dashboard', href: '/admin/seo', icon: 'LayoutDashboard', position: 0 },
@@ -87,7 +108,7 @@ async function main() {
     const systemCat = await prisma.adminNavCategory.create({
         data: {
             title: 'System',
-            position: 5,
+            position: 6, // Shifted from 5
             items: {
                 create: [
                     { name: 'Users', href: '/admin/users', icon: 'Users', position: 0 },

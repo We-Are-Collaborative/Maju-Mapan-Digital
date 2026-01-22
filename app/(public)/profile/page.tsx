@@ -13,9 +13,14 @@ export default async function CandidateProfilePage() {
     }
 
     // Fetch candidate details
-    const candidate = await prisma.candidate.findUnique({
-        where: { email: session.user.email || '' },
-    });
+    let candidate = null;
+    try {
+        candidate = await prisma.candidate.findUnique({
+            where: { email: session.user.email || '' },
+        }).catch(() => null);
+    } catch (e) {
+        console.error("Failed to fetch candidate", e);
+    }
 
     if (!candidate) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Candidate profile not found</div>;
 

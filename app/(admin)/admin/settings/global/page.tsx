@@ -7,7 +7,7 @@ import AdminHeader from "../../../components/AdminHeader";
 
 export default function GlobalSettingsPage() {
     return (
-        <div className="min-h-screen p-8 w-full mx-auto space-y-8 animate-in fade-in duration-700">
+        <div className="min-h-screen p-[30px] w-full mx-auto space-y-12 animate-in fade-in duration-700">
             <AdminHeader
                 defaultTitle="Global Settings"
                 defaultSubtitle="Configure application-wide preferences."
